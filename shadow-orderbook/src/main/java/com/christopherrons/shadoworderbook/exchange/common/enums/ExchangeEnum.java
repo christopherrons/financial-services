@@ -28,8 +28,13 @@ public enum ExchangeEnum {
         return name;
     }
 
-    public URI getUri() throws URISyntaxException {
-        return new URI(uri);
+    public URI getUri() {
+        try {
+            return new URI(uri);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getUriString() {

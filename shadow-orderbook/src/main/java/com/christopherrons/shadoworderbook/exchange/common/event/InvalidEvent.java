@@ -1,8 +1,8 @@
 package com.christopherrons.shadoworderbook.exchange.common.event;
 
+import com.christopherrons.shadoworderbook.exchange.api.ExchangeEvent;
 import com.christopherrons.shadoworderbook.exchange.api.enums.ChannelEnum;
 import com.christopherrons.shadoworderbook.exchange.api.enums.EventDescriptionEnum;
-import com.christopherrons.shadoworderbook.exchange.api.ExchangeEvent;
 import com.christopherrons.shadoworderbook.exchange.common.enums.EventTypeEnum;
 import com.christopherrons.shadoworderbook.exchange.common.enums.ExchangeEnum;
 

@@ -39,7 +39,6 @@ public class EventHandlerService {
                 LOGGER.warning("Forced reconnect received!");
                 break;
             case SUBSCRIPTION_SUCCEEDED:
-                LOGGER.info(String.format("Subscription to %s succeeded", event.getChannelEnum()));
         }
     }
 }

@@ -23,7 +23,7 @@ public enum BitstampTradingPairEnum {
     }
 
     public static String extractValue(String value) {
-        for (BitstampTradingPairEnum tradingPairEnum: BitstampTradingPairEnum.values()) {
+        for (BitstampTradingPairEnum tradingPairEnum : BitstampTradingPairEnum.values()) {
             if (value.contains(tradingPairEnum.getValue())) {
                 return tradingPairEnum.getValue();
             }

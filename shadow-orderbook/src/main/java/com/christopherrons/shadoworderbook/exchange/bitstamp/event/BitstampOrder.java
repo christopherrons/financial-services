@@ -41,13 +41,12 @@ public class BitstampOrder extends Event implements ExchangeOrder {
     private double price;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    BitstampOrder(@JsonProperty("data") Map<String, Object> data,
-                  @JsonProperty("channel") String channel,
-                  @JsonProperty("event") String event) {
+    BitstampOrder(@JsonProperty("data") Map<String, Object> data, @JsonProperty("channel") String channel, @JsonProperty("event") String event) {
         super(ExchangeEnum.BITSTAMP, BitstampEventDescriptionEnum.fromValue(event), BitstampChannelEnum.extractValue(channel), EventTypeEnum.ORDER);
 
         this.orderOperationEnum = OrderOperationEnum.extractValue(event);
         this.tradingPair = BitstampTradingPairEnum.extractValue(channel);
+
         if (!data.isEmpty()) {
             this.orderId = Long.parseLong((String) data.get("id_str"));
             this.orderType = (int) data.get("order_type");
@@ -94,14 +93,6 @@ public class BitstampOrder extends Event implements ExchangeOrder {
 
     @Override
     public String toString() {
-        return "BitstampOrder{" +
-                "tradingPair='" + tradingPair + '\'' +
-                ", orderOperationEnum=" + orderOperationEnum +
-                ", orderId=" + orderId +
-                ", orderType=" + orderType +
-                ", timeStampInMs=" + timeStampInMs +
-                ", volume=" + volume +
-                ", price=" + price +
-                '}';
+        return "BitstampOrder{" + "tradingPair='" + tradingPair + '\'' + ", orderOperationEnum=" + orderOperationEnum + ", orderId=" + orderId + ", orderType=" + orderType + ", timeStampInMs=" + timeStampInMs + ", volume=" + volume + ", price=" + price + '}';
     }
 }

@@ -14,8 +14,9 @@ public class ShadowOrderbookApplication {
 
     public static void main(String[] args) throws InterruptedException, DeploymentException, IOException, URISyntaxException {
         ApplicationContext applicationContext = SpringApplication.run(ShadowOrderbookApplication.class, args);
+
         BitstampWebsocketClient bitstampWebsocketClient = applicationContext.getBean(BitstampWebsocketClient.class);
-		bitstampWebsocketClient.subscribeToLiveOrders();
+        bitstampWebsocketClient.subscribeToLiveOrders();
 
         while (true) {
             Thread.sleep(10000);

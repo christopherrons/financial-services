@@ -1,7 +1,6 @@
 package com.christopherrons.shadoworderbook.exchange.bitstamp.client.enums;
 
 import com.christopherrons.shadoworderbook.exchange.api.enums.ChannelEnum;
-import com.christopherrons.shadoworderbook.exchange.common.enums.OrderOperationEnum;
 
 public enum BitstampChannelEnum implements ChannelEnum {
     INVALID_CHANNEL("Invalid Channel"),
@@ -26,7 +25,7 @@ public enum BitstampChannelEnum implements ChannelEnum {
     }
 
     public static BitstampChannelEnum extractValue(String value) {
-        for (BitstampChannelEnum channelEnum: BitstampChannelEnum.values()) {
+        for (BitstampChannelEnum channelEnum : BitstampChannelEnum.values()) {
             if (value.contains(channelEnum.getValue())) {
                 return channelEnum;
             }

@@ -6,6 +6,7 @@ import com.christopherrons.shadoworderbook.exchange.common.enums.EventTypeEnum;
 import com.christopherrons.shadoworderbook.exchange.common.enums.ExchangeEnum;
 
 public interface ExchangeEvent {
+
     EventTypeEnum getEventTypeEnum();
 
     ChannelEnum getChannelEnum();
