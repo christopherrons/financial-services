@@ -1,12 +1,7 @@
 package com.christopherrons.shadoworderbook.exchange.bitstamp.event;
 
 import com.christopherrons.shadoworderbook.exchange.api.ExchangeOrder;
-import com.christopherrons.shadoworderbook.exchange.bitstamp.client.enums.BitstampChannelEnum;
-import com.christopherrons.shadoworderbook.exchange.bitstamp.client.enums.BitstampEventDescriptionEnum;
-import com.christopherrons.shadoworderbook.exchange.bitstamp.client.enums.BitstampTradingPairEnum;
-import com.christopherrons.shadoworderbook.exchange.common.enums.EventTypeEnum;
-import com.christopherrons.shadoworderbook.exchange.common.enums.ExchangeEnum;
-import com.christopherrons.shadoworderbook.exchange.common.enums.OrderOperationEnum;
+import com.christopherrons.shadoworderbook.exchange.common.enums.*;
 import com.christopherrons.shadoworderbook.exchange.common.event.Event;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,7 +27,6 @@ public class BitstampOrder extends Event implements ExchangeOrder {
         "event": "order_deleted"
     }*/
 
-    private final String tradingPair;
     private final OrderOperationEnum orderOperationEnum;
     private long orderId;
     private int orderType;
@@ -42,10 +36,9 @@ public class BitstampOrder extends Event implements ExchangeOrder {
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     BitstampOrder(@JsonProperty("data") Map<String, Object> data, @JsonProperty("channel") String channel, @JsonProperty("event") String event) {
-        super(ExchangeEnum.BITSTAMP, BitstampEventDescriptionEnum.fromValue(event), BitstampChannelEnum.extractValue(channel), EventTypeEnum.ORDER);
+        super(ExchangeEnum.BITSTAMP, event, channel, EventTypeEnum.ORDER);
 
         this.orderOperationEnum = OrderOperationEnum.extractValue(event);
-        this.tradingPair = BitstampTradingPairEnum.extractValue(channel);
 
         if (!data.isEmpty()) {
             this.orderId = Long.parseLong((String) data.get("id_str"));
@@ -77,8 +70,8 @@ public class BitstampOrder extends Event implements ExchangeOrder {
     }
 
     @Override
-    public String getTradingPair() {
-        return tradingPair;
+    public TradingPairEnum getTradingPair() {
+        return super.getTradingPairEnum();
     }
 
     @Override
@@ -93,6 +86,6 @@ public class BitstampOrder extends Event implements ExchangeOrder {
 
     @Override
     public String toString() {
-        return "BitstampOrder{" + "tradingPair='" + tradingPair + '\'' + ", orderOperationEnum=" + orderOperationEnum + ", orderId=" + orderId + ", orderType=" + orderType + ", timeStampInMs=" + timeStampInMs + ", volume=" + volume + ", price=" + price + '}';
+        return "BitstampOrder{" + '\'' + ", orderOperationEnum=" + orderOperationEnum + ", orderId=" + orderId + ", orderType=" + orderType + ", timeStampInMs=" + timeStampInMs + ", volume=" + volume + ", price=" + price + '}';
     }
 }

@@ -1,10 +1,13 @@
 package com.christopherrons.shadoworderbook.exchange.bitstamp.client;
 
+import com.christopherrons.shadoworderbook.exchange.api.ExchangeEvent;
 import com.christopherrons.shadoworderbook.exchange.api.ExchangeSubscription;
-import com.christopherrons.shadoworderbook.exchange.bitstamp.client.enums.BitstampChannelEnum;
-import com.christopherrons.shadoworderbook.exchange.bitstamp.client.enums.BitstampTradingPairEnum;
 import com.christopherrons.shadoworderbook.exchange.common.client.CustomClientEndpoint;
+import com.christopherrons.shadoworderbook.exchange.common.client.JsonMessageDecoder;
+import com.christopherrons.shadoworderbook.exchange.common.enums.ChannelEnum;
 import com.christopherrons.shadoworderbook.exchange.common.enums.ExchangeEnum;
+import com.christopherrons.shadoworderbook.exchange.common.enums.TradingPairEnum;
+import com.christopherrons.shadoworderbook.exchange.common.service.EventHandlerService;
 import com.christopherrons.shadoworderbook.helper.ThreadWrapper;
 
 import javax.json.Json;
@@ -19,14 +22,37 @@ public class BitstampSubscription implements ExchangeSubscription {
     private static final Logger LOGGER = Logger.getLogger(BitstampSubscription.class.getName());
     private static final URI websocketURI = ExchangeEnum.BITSTAMP.getUri();
 
-    private final BitstampChannelEnum bitstampChannelEnum;
-    private final BitstampTradingPairEnum bitstampTradingPairEnum;
+    private final ChannelEnum channelEnum;
+    private final TradingPairEnum tradingPairEnum;
     private Session session;
+    private boolean isSubscribed = false;
 
-    public BitstampSubscription(MessageHandler messageHandler, BitstampChannelEnum bitstampChannelEnum, BitstampTradingPairEnum bitstampTradingPairEnum) throws DeploymentException, IOException {
-        this.bitstampChannelEnum = bitstampChannelEnum;
-        this.bitstampTradingPairEnum = bitstampTradingPairEnum;
-        this.session = createSession(messageHandler);
+    public BitstampSubscription(JsonMessageDecoder messageDecoder, EventHandlerService eventHandlerService,
+                                ChannelEnum channelEnum, TradingPairEnum tradingPairEnum) throws DeploymentException, IOException {
+        this.channelEnum = channelEnum;
+        this.tradingPairEnum = tradingPairEnum;
+        this.session = createSession(createMessageHandler(messageDecoder, eventHandlerService));
+    }
+
+    private MessageHandler createMessageHandler(final JsonMessageDecoder messageDecoder, final EventHandlerService eventHandlerService) {
+        return new MessageHandler.Whole<String>() {
+            @Override
+            public void onMessage(String message) {
+                ExchangeEvent event = messageDecoder.decodeMessage(message);
+                switch (event.getEventDescriptionEnum()) {
+                    case SUBSCRIPTION_SUCCEEDED:
+                        isSubscribed = true;
+                        LOGGER.info(String.format("Successfully subscribed to: %s.", createChannel()));
+                        break;
+                    case FORCED_RECONNECT:
+                        LOGGER.warning("Forced reconnect received!");
+                        isSubscribed = false; //TODO: Handle such that it reconnects
+                        break;
+                    default:
+                        eventHandlerService.handleEvent(event);
+                }
+            }
+        };
     }
 
     private Session createSession(final MessageHandler messageHandler) throws DeploymentException, IOException {
@@ -44,7 +70,7 @@ public class BitstampSubscription implements ExchangeSubscription {
     }
 
     public void subscribe() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadWrapper(String.format("Sub: %s", bitstampTradingPairEnum.getValue())));
+        ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadWrapper(String.format("Sub: %s", tradingPairEnum.getName())));
         executorService.execute(() -> {
             int timeout = 30;
             int timeWaited = 0;
@@ -62,7 +88,6 @@ public class BitstampSubscription implements ExchangeSubscription {
             RemoteEndpoint.Basic basicRemoteEndpoint = session.getBasicRemote();
             try {
                 basicRemoteEndpoint.sendObject(createSubscriptionJson());
-                LOGGER.info(String.format("Successfully subscribed to: %s.", createChannel()));
             } catch (IOException | EncodeException e) {
                 e.printStackTrace();
             }
@@ -98,6 +123,11 @@ public class BitstampSubscription implements ExchangeSubscription {
     }
 
     private String createChannel() {
-        return String.format("%s_%s", bitstampChannelEnum.getValue(), bitstampTradingPairEnum.getValue());
+        return String.format("%s_%s", channelEnum.getChannelName(), tradingPairEnum.getName());
+    }
+
+    @Override
+    public boolean isSubscribed() {
+        return isSubscribed;
     }
 }

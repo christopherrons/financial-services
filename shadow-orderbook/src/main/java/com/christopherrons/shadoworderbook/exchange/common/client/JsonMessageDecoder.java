@@ -5,11 +5,11 @@ import com.christopherrons.shadoworderbook.exchange.common.event.InvalidEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonMessageDecoder<T extends ExchangeEvent> {
+public class JsonMessageDecoder {
 
-    private final Class<T> classToBeDecoded;
+    private final Class<? extends ExchangeEvent> classToBeDecoded;
 
-    public JsonMessageDecoder(Class<T> classToBeDecoded) {
+    public JsonMessageDecoder(Class<? extends ExchangeEvent> classToBeDecoded) {
         this.classToBeDecoded = classToBeDecoded;
     }
 

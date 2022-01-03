@@ -2,28 +2,28 @@ package com.christopherrons.shadoworderbook.exchange.common.enums;
 
 
 public enum OrderTypeEnum {
-    INVALID_ORDER_TYPE("Invalid Order Type"),
-    BUY("buy"),
-    SELL("sell");
+    INVALID_ORDER_TYPE(-1),
+    BUY(0),
+    SELL(1);
 
-    private final String value;
+    private final int value;
 
-    OrderTypeEnum(String value) {
+    OrderTypeEnum(int value) {
         this.value = value;
     }
 
-    public OrderTypeEnum fromValue(String value) {
-        switch (value.toLowerCase()) {
-            case "buy":
+    public OrderTypeEnum fromValue(int value) {
+        switch (value) {
+            case 0:
                 return BUY;
-            case "sell":
+            case 1:
                 return SELL;
             default:
                 return INVALID_ORDER_TYPE;
         }
     }
 
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 }

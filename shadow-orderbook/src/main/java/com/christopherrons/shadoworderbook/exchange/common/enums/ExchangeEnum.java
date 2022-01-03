@@ -2,6 +2,8 @@ package com.christopherrons.shadoworderbook.exchange.common.enums;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 public enum ExchangeEnum {
     INVALID_EXCHANGE("none", "none"),
@@ -15,7 +17,7 @@ public enum ExchangeEnum {
         this.uri = uri;
     }
 
-    public ExchangeEnum fromName(String name) {
+    public static ExchangeEnum fromName(String name) {
         switch (name.toLowerCase()) {
             case "bitstamp":
                 return BITSTAMP;
@@ -26,6 +28,17 @@ public enum ExchangeEnum {
 
     public String getName() {
         return name;
+    }
+
+    public static List<String> getExchangeNames() {
+        List<String> exchangeNames = new ArrayList<>();
+        for (ExchangeEnum exchangeEnum : ExchangeEnum.values()) {
+            if (exchangeEnum.equals(ExchangeEnum.INVALID_EXCHANGE)) {
+                continue;
+            }
+            exchangeNames.add(exchangeEnum.getName());
+        }
+        return exchangeNames;
     }
 
     public URI getUri() {

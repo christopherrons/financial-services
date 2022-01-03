@@ -15,7 +15,7 @@ public class ShadowOrderbookService {
 
     public void updateOrderbook(ExchangeOrder order) {
         System.out.println(order);
-        final ShadowOrderbook shadowOrderbook = shadowOrderbookCache.findOrCreate(order.getExchangeEnum().getName(), order.getTradingPair());
+        final ShadowOrderbook shadowOrderbook = shadowOrderbookCache.findOrCreate(order.getExchangeEnum().getName(), order.getTradingPair().getName());
         switch (order.getOrderOperationEnum()) {
             case UPDATE:
                 break;

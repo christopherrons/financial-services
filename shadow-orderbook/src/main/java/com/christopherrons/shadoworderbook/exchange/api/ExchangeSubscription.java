@@ -1,8 +1,9 @@
 package com.christopherrons.shadoworderbook.exchange.api;
 
 public interface ExchangeSubscription {
-
-    void subscribe();
+    boolean isSubscribed();
 
     void unsubscribe();
+
+    void subscribe();
 }
