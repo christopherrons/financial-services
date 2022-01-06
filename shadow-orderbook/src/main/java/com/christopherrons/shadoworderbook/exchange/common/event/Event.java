@@ -1,10 +1,7 @@
 package com.christopherrons.shadoworderbook.exchange.common.event;
 
 import com.christopherrons.shadoworderbook.exchange.api.ExchangeEvent;
-import com.christopherrons.shadoworderbook.exchange.api.enums.ChannelEnum;
-import com.christopherrons.shadoworderbook.exchange.api.enums.EventDescriptionEnum;
-import com.christopherrons.shadoworderbook.exchange.common.enums.EventTypeEnum;
-import com.christopherrons.shadoworderbook.exchange.common.enums.ExchangeEnum;
+import com.christopherrons.shadoworderbook.exchange.common.enums.*;
 
 public class Event implements ExchangeEvent {
 
@@ -12,12 +9,14 @@ public class Event implements ExchangeEvent {
     private final EventDescriptionEnum eventDescriptionEnum;
     private final ChannelEnum channelEnum;
     private final EventTypeEnum eventTypeEnum;
+    private final TradingPairEnum tradingPairEnum;
 
-    public Event(ExchangeEnum exchangeEnum, EventDescriptionEnum eventDescriptionEnum, ChannelEnum channelEnum, EventTypeEnum eventTypeEnum) {
+    public Event(ExchangeEnum exchangeEnum, String eventDescription, String channel, EventTypeEnum eventTypeEnum) {
         this.exchangeEnum = exchangeEnum;
-        this.eventDescriptionEnum = eventDescriptionEnum;
-        this.channelEnum = channelEnum;
+        this.eventDescriptionEnum = EventDescriptionEnum.inferEventDescriptionEnum(eventDescription, exchangeEnum);
+        this.channelEnum = ChannelEnum.inferChannelEnum(channel, exchangeEnum);
         this.eventTypeEnum = eventTypeEnum;
+        this.tradingPairEnum = TradingPairEnum.inferTradingPairEnum(channel, exchangeEnum);
     }
 
     @Override
@@ -38,5 +37,9 @@ public class Event implements ExchangeEvent {
     @Override
     public EventDescriptionEnum getEventDescriptionEnum() {
         return eventDescriptionEnum;
+    }
+
+    public TradingPairEnum getTradingPairEnum() {
+        return tradingPairEnum;
     }
 }

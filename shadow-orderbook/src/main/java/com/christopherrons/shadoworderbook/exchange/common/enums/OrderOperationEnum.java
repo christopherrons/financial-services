@@ -1,7 +1,5 @@
 package com.christopherrons.shadoworderbook.exchange.common.enums;
 
-import com.christopherrons.shadoworderbook.exchange.bitstamp.client.enums.BitstampTradingPairEnum;
-
 public enum OrderOperationEnum {
     INVALID_ORDER_OPERATION("Invalid Order Operation"),
     CREATE("create"),
@@ -12,6 +10,15 @@ public enum OrderOperationEnum {
 
     OrderOperationEnum(String value) {
         this.value = value;
+    }
+
+    public static OrderOperationEnum extractValue(String value) {
+        for (OrderOperationEnum orderOperationEnum : OrderOperationEnum.values()) {
+            if (value.contains(orderOperationEnum.getValue())) {
+                return orderOperationEnum;
+            }
+        }
+        return OrderOperationEnum.INVALID_ORDER_OPERATION;
     }
 
     public OrderOperationEnum fromValue(String value) {
@@ -25,15 +32,6 @@ public enum OrderOperationEnum {
             default:
                 return INVALID_ORDER_OPERATION;
         }
-    }
-
-    public static OrderOperationEnum extractValue(String value) {
-        for (OrderOperationEnum orderOperationEnum: OrderOperationEnum.values()) {
-            if (value.contains(orderOperationEnum.getValue())) {
-                return orderOperationEnum;
-            }
-        }
-        return OrderOperationEnum.INVALID_ORDER_OPERATION;
     }
 
     public String getValue() {

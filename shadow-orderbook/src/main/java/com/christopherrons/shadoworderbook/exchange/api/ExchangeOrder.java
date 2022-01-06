@@ -2,6 +2,7 @@ package com.christopherrons.shadoworderbook.exchange.api;
 
 import com.christopherrons.shadoworderbook.exchange.common.enums.ExchangeEnum;
 import com.christopherrons.shadoworderbook.exchange.common.enums.OrderOperationEnum;
+import com.christopherrons.shadoworderbook.exchange.common.enums.TradingPairEnum;
 
 public interface ExchangeOrder {
 
@@ -19,7 +20,5 @@ public interface ExchangeOrder {
 
     long getTimeStampInMs();
 
-    String getTradingPair();
-
-
+    TradingPairEnum getTradingPair();
 }
