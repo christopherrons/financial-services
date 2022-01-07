@@ -6,6 +6,10 @@ plugins {
 
 group = 'com.christopherrons.shadow-orderbook'
 version = '0.0.1-SNAPSHOT'
+
+if (release) {
+    version = releaseVersion
+}
 sourceCompatibility = '11'
 
 repositories {
