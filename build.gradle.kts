@@ -2,6 +2,7 @@ plugins {
     id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("java")
+    kotlin("jvm") version "1.6.10"
 }
 
 repositories {
@@ -45,6 +46,9 @@ tasks.register<Tar>("packageRelease") {
     from(layout.projectDirectory.dir("deploy/scripts")) {
         exclude("**/*.md")
     }
-    from(layout.buildDirectory.file("libs/${rootProject.name}-${version}.jar"))
+    from(layout.buildDirectory.file("libs/${rootProject.name}-${archiveVersion}.jar"))
+}
+
+tasks.register<PackageReleaseTask>("packageReleaseTest") {
 }
 
