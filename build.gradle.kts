@@ -2,7 +2,6 @@ plugins {
     id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("java")
-    kotlin("jvm") version "1.6.10"
 }
 
 repositories {
@@ -37,6 +36,7 @@ dependencies {
     implementation("org.glassfish.tyrus.bundles", "tyrus-standalone-client", "1.18")
     implementation("com.fasterxml.jackson.core", "jackson-databind", "2.13.1")
     implementation("io.springfox", "springfox-boot-starter", "3.0.0")
+    implementation("com.github.javafaker", "javafaker", "1.0.2")
 }
 
 tasks.register<Tar>("packageRelease") {
@@ -49,6 +49,6 @@ tasks.register<Tar>("packageRelease") {
     from(layout.buildDirectory.file("libs/${rootProject.name}-${archiveVersion}.jar"))
 }
 
-tasks.register<PackageReleaseTask>("packageReleaseTest") {
-}
+//tasks.register<PackageReleaseTask>("packageReleaseTest") {
+//}
 

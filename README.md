@@ -1,2 +1,2 @@
-# shadow-orderbook
-The application shadows an orderbook from a given exchange and allows the user to access data through a rest api. 
+# Financial Services
+This application takes market data and feeds it through the matching engine. 
