@@ -1,6 +1,5 @@
 package com.christopherrons.restapi.refdata.controller;
 
-import com.christopherrons.restapi.marketdata.dto.ApiAvailableTradingPairsDto;
 import com.christopherrons.restapi.refdata.dto.ApiAvailableInstrumentTypesDto;
 import com.christopherrons.restapi.refdata.dto.ApiAvailableInstrumentsByTypeDto;
 import com.christopherrons.restapi.refdata.dto.ApiAvailableInstrumentsDto;
