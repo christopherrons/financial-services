@@ -3,13 +3,13 @@ package com.christopherrons.marketdata.bitstamp.model;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
-import com.christopherrons.marketdata.common.enums.event.MargetDataEnum;
+import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.common.model.EventData;
 import com.christopherrons.refdata.api.Instrument;
-import com.christopherrons.refdata.enums.InstrumentType;
+import com.christopherrons.refdata.enums.InstrumentTypeEnum;
 import com.christopherrons.refdata.model.participant.Member;
 import com.christopherrons.refdata.model.participant.Participant;
 import com.christopherrons.refdata.model.participant.User;
@@ -59,16 +59,16 @@ public class BitstampOrder implements MarketDataOrder {
             timeStampInMs = Long.parseLong((String) data.get("microtimestamp")) / 1000;
         }
         this.eventData = new EventData(
-                MargetDataEnum.BITSTAMP,
+                MargetDataFeedEnum.BITSTAMP,
                 event,
                 channel,
                 EventTypeEnum.ORDER,
                 timeStampInMs,
                 new Participant(
-                        new Member(MargetDataEnum.BITSTAMP.getName()),
+                        new Member(MargetDataFeedEnum.BITSTAMP.getName()),
                         new User(nameFaker.funnyName().name(), nameFaker.name().lastName())
                 ),
-                InstrumentType.STOCK
+                InstrumentTypeEnum.STOCK
         );
     }
 
@@ -118,7 +118,7 @@ public class BitstampOrder implements MarketDataOrder {
     }
 
     @Override
-    public MargetDataEnum getMarketDataEnum() {
+    public MargetDataFeedEnum getMarketDataEnum() {
         return eventData.getMarketDataEnum();
     }
 

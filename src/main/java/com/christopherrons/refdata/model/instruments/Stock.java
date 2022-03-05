@@ -1,7 +1,7 @@
 package com.christopherrons.refdata.model.instruments;
 
 import com.christopherrons.refdata.api.Instrument;
-import com.christopherrons.refdata.enums.InstrumentType;
+import com.christopherrons.refdata.enums.InstrumentTypeEnum;
 
 public class Stock implements Instrument {
 
@@ -12,8 +12,8 @@ public class Stock implements Instrument {
     }
 
     @Override
-    public InstrumentType getInstrumentType() {
-        return InstrumentType.STOCK;
+    public InstrumentTypeEnum getInstrumentType() {
+        return InstrumentTypeEnum.STOCK;
     }
 
     @Override

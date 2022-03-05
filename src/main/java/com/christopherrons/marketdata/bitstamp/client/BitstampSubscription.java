@@ -5,7 +5,7 @@ import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.common.client.CustomClientEndpoint;
 import com.christopherrons.marketdata.common.client.JsonMessageDecoder;
-import com.christopherrons.marketdata.common.enums.event.MargetDataEnum;
+import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.MarketDataService;
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public class BitstampSubscription implements MarketDataSubscription {
     private static final Logger LOGGER = Logger.getLogger(BitstampSubscription.class.getName());
-    private static final URI websocketURI = MargetDataEnum.BITSTAMP.getUri();
+    private static final URI websocketURI = MargetDataFeedEnum.BITSTAMP.getUri();
     private static final String SUBSCRIBE = "bts:subscribe";
     private static final String UNSUBSCRIBE = "bts:unsubscribe";
 

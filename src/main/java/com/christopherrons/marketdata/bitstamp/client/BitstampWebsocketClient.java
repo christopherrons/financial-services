@@ -4,7 +4,7 @@ import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.api.MarketDataWebsocketClient;
 import com.christopherrons.marketdata.common.cache.WebsocketSubscriptionCache;
 import com.christopherrons.marketdata.common.client.JsonMessageDecoder;
-import com.christopherrons.marketdata.common.enums.event.MargetDataEnum;
+import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.MarketDataService;
@@ -35,16 +35,16 @@ public class BitstampWebsocketClient implements MarketDataWebsocketClient {
                 tradingPairEnum
         );
         subscription.subscribe();
-        websocketSubscriptionCache.addSubscription(MargetDataEnum.BITSTAMP, tradingPairEnum, channelEnum, subscription);
+        websocketSubscriptionCache.addSubscription(MargetDataFeedEnum.BITSTAMP, tradingPairEnum, channelEnum, subscription);
     }
 
     public void unsubscribe(final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) {
-        Optional<MarketDataSubscription> subscription = websocketSubscriptionCache.getSubscription(MargetDataEnum.BITSTAMP, tradingPairEnum, channelEnum);
+        Optional<MarketDataSubscription> subscription = websocketSubscriptionCache.getSubscription(MargetDataFeedEnum.BITSTAMP, tradingPairEnum, channelEnum);
         subscription.ifPresent(MarketDataSubscription::unsubscribe);
     }
 
     public boolean isSubscribed(final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) {
-        Optional<MarketDataSubscription> subscription = websocketSubscriptionCache.getSubscription(MargetDataEnum.BITSTAMP, tradingPairEnum, channelEnum);
+        Optional<MarketDataSubscription> subscription = websocketSubscriptionCache.getSubscription(MargetDataFeedEnum.BITSTAMP, tradingPairEnum, channelEnum);
         return subscription.map(MarketDataSubscription::isSubscribed).orElse(false);
     }
 }

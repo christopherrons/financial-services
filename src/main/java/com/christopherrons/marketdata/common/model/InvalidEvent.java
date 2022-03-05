@@ -2,7 +2,7 @@ package com.christopherrons.marketdata.common.model;
 
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
-import com.christopherrons.marketdata.common.enums.event.MargetDataEnum;
+import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
@@ -28,8 +28,8 @@ public class InvalidEvent implements MarketDataEvent {
     }
 
     @Override
-    public MargetDataEnum getMarketDataEnum() {
-        return MargetDataEnum.INVALID_EXCHANGE;
+    public MargetDataFeedEnum getMarketDataEnum() {
+        return MargetDataFeedEnum.INVALID_DATA_FEED;
     }
 
     @Override

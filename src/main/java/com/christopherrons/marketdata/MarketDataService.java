@@ -44,6 +44,7 @@ public class MarketDataService {
             refDataService.addRefData(event);
             switch (event.getEventTypeEnum()) {
                 case ORDER:
+                    // Switch to event and add listners
                     tradingEngineService.runMatchingEngine((MarketDataOrder) event);
                     break;
                 case TRADE:

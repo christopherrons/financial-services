@@ -3,16 +3,16 @@ package com.christopherrons.marketdata.common.model;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
-import com.christopherrons.marketdata.common.enums.event.MargetDataEnum;
+import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.refdata.api.Instrument;
-import com.christopherrons.refdata.enums.InstrumentType;
+import com.christopherrons.refdata.enums.InstrumentTypeEnum;
 import com.christopherrons.refdata.model.participant.Participant;
 
 public class EventData implements MarketDataEvent {
 
-    private final MargetDataEnum margetDataEnum;
+    private final MargetDataFeedEnum margetDataFeedEnum;
     private final EventDescriptionEnum eventDescriptionEnum;
     private final ChannelEnum channelEnum;
     private final EventTypeEnum eventTypeEnum;
@@ -22,19 +22,19 @@ public class EventData implements MarketDataEvent {
     private final String orderbookId;
     private final Instrument instrument;
 
-    public EventData(MargetDataEnum margetDataEnum,
+    public EventData(MargetDataFeedEnum margetDataFeedEnum,
                      String eventDescription,
                      String channel,
                      EventTypeEnum eventTypeEnum,
                      long timeStampInMs,
                      Participant participant,
-                     InstrumentType instrumentedType) {
-        this.margetDataEnum = margetDataEnum;
-        this.eventDescriptionEnum = EventDescriptionEnum.inferEventDescriptionEnum(eventDescription, margetDataEnum);
-        this.channelEnum = ChannelEnum.inferChannelEnum(channel, margetDataEnum);
+                     InstrumentTypeEnum instrumentedType) {
+        this.margetDataFeedEnum = margetDataFeedEnum;
+        this.eventDescriptionEnum = EventDescriptionEnum.inferEventDescriptionEnum(eventDescription, margetDataFeedEnum);
+        this.channelEnum = ChannelEnum.inferChannelEnum(channel, margetDataFeedEnum);
         this.eventTypeEnum = eventTypeEnum;
-        this.tradingPairEnum = TradingPairEnum.inferTradingPairEnum(channel, margetDataEnum);
-        this.orderbookId = String.format("%s-%s", margetDataEnum.getName(), tradingPairEnum.getName());
+        this.tradingPairEnum = TradingPairEnum.inferTradingPairEnum(channel, margetDataFeedEnum);
+        this.orderbookId = String.format("%s-%s", margetDataFeedEnum.getName(), tradingPairEnum.getName());
         this.timeStampInMs = timeStampInMs;
         this.participant = participant;
         this.instrument = Instrument.createInstrument(instrumentedType, tradingPairEnum.getName());
@@ -51,8 +51,8 @@ public class EventData implements MarketDataEvent {
     }
 
     @Override
-    public MargetDataEnum getMarketDataEnum() {
-        return margetDataEnum;
+    public MargetDataFeedEnum getMarketDataEnum() {
+        return margetDataFeedEnum;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class EventData implements MarketDataEvent {
     @Override
     public String toString() {
         return "EventData{" +
-                "margetDataEnum=" + margetDataEnum +
+                "margetDataEnum=" + margetDataFeedEnum +
                 ", eventDescriptionEnum=" + eventDescriptionEnum +
                 ", channelEnum=" + channelEnum +
                 ", eventTypeEnum=" + eventTypeEnum +

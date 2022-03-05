@@ -1,7 +1,7 @@
 package com.christopherrons.refdata.model.instruments;
 
 import com.christopherrons.refdata.api.Derivative;
-import com.christopherrons.refdata.enums.InstrumentType;
+import com.christopherrons.refdata.enums.InstrumentTypeEnum;
 
 public class Option implements Derivative {
 
@@ -22,7 +22,7 @@ public class Option implements Derivative {
     }
 
     @Override
-    public InstrumentType getInstrumentType() {
-        return InstrumentType.OPTION;
+    public InstrumentTypeEnum getInstrumentType() {
+        return InstrumentTypeEnum.OPTION;
     }
 }

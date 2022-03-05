@@ -1,12 +1,12 @@
 package com.christopherrons.refdata.api;
 
-import com.christopherrons.refdata.enums.InstrumentType;
+import com.christopherrons.refdata.enums.InstrumentTypeEnum;
 
 public interface Derivative extends Instrument {
 
     @Override
-    default InstrumentType getInstrumentType() {
-        return InstrumentType.DERIVATIVE;
+    default InstrumentTypeEnum getInstrumentType() {
+        return InstrumentTypeEnum.DERIVATIVE;
     }
 
     long getTimeToMaturity();

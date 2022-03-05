@@ -5,32 +5,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum EventDescriptionEnum {
-    INVALID_EVENT_DESCRIPTION(MargetDataEnum.INVALID_EXCHANGE, "none"),
-    ORDER_CREATED(MargetDataEnum.BITSTAMP, "order_created"),
-    ORDER_DELETED(MargetDataEnum.BITSTAMP, "order_deleted"),
-    ORDER_UPDATED(MargetDataEnum.BITSTAMP, "order_changed"),
-    TRADE(MargetDataEnum.BITSTAMP, "trade"),
-    SUBSCRIPTION_SUCCEEDED(MargetDataEnum.BITSTAMP, "bts:subscription_succeeded"),
-    FORCED_RECONNECT(MargetDataEnum.BITSTAMP, "bts:request_reconnect");
+    INVALID_EVENT_DESCRIPTION(MargetDataFeedEnum.INVALID_DATA_FEED, "none"),
+    ORDER_CREATED(MargetDataFeedEnum.BITSTAMP, "order_created"),
+    ORDER_DELETED(MargetDataFeedEnum.BITSTAMP, "order_deleted"),
+    ORDER_UPDATED(MargetDataFeedEnum.BITSTAMP, "order_changed"),
+    TRADE(MargetDataFeedEnum.BITSTAMP, "trade"),
+    SUBSCRIPTION_SUCCEEDED(MargetDataFeedEnum.BITSTAMP, "bts:subscription_succeeded"),
+    FORCED_RECONNECT(MargetDataFeedEnum.BITSTAMP, "bts:request_reconnect");
 
-    private final MargetDataEnum margetDataEnum;
+    private final MargetDataFeedEnum margetDataFeedEnum;
     private final String eventDescription;
 
-    EventDescriptionEnum(MargetDataEnum margetDataEnum, String eventDescription) {
-        this.margetDataEnum = margetDataEnum;
+    EventDescriptionEnum(MargetDataFeedEnum margetDataFeedEnum, String eventDescription) {
+        this.margetDataFeedEnum = margetDataFeedEnum;
         this.eventDescription = eventDescription;
     }
 
-    public MargetDataEnum getExchangeEnum() {
-        return margetDataEnum;
+    public MargetDataFeedEnum getExchangeEnum() {
+        return margetDataFeedEnum;
     }
 
     public String getEventDescription() {
         return eventDescription;
     }
 
-    public static EventDescriptionEnum inferEventDescriptionEnum(final String eventDescription, final MargetDataEnum margetDataEnum) {
-        for (EventDescriptionEnum eventDescriptionEnum : getAvailableExchangeEventDescriptionEnums(margetDataEnum)) {
+    public static EventDescriptionEnum inferEventDescriptionEnum(final String eventDescription, final MargetDataFeedEnum margetDataFeedEnum) {
+        for (EventDescriptionEnum eventDescriptionEnum : getAvailableExchangeEventDescriptionEnums(margetDataFeedEnum)) {
             if (eventDescription.contains(eventDescriptionEnum.getEventDescription())) {
                 return eventDescriptionEnum;
             }
@@ -38,18 +38,18 @@ public enum EventDescriptionEnum {
         return INVALID_EVENT_DESCRIPTION;
     }
 
-    public static List<String> getAvailableExchangeEventDescriptions(final MargetDataEnum margetDataEnum) {
+    public static List<String> getAvailableExchangeEventDescriptions(final MargetDataFeedEnum margetDataFeedEnum) {
         return Arrays.stream(EventDescriptionEnum.values())
                 .filter(eventDescriptionEnum -> !eventDescriptionEnum.equals(EventDescriptionEnum.INVALID_EVENT_DESCRIPTION))
-                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataEnum))
+                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .map(EventDescriptionEnum::getEventDescription)
                 .collect(Collectors.toList());
     }
 
-    public static List<EventDescriptionEnum> getAvailableExchangeEventDescriptionEnums(final MargetDataEnum margetDataEnum) {
+    public static List<EventDescriptionEnum> getAvailableExchangeEventDescriptionEnums(final MargetDataFeedEnum margetDataFeedEnum) {
         return Arrays.stream(EventDescriptionEnum.values())
                 .filter(eventDescriptionEnum -> !eventDescriptionEnum.equals(EventDescriptionEnum.INVALID_EVENT_DESCRIPTION))
-                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataEnum))
+                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .collect(Collectors.toList());
     }
 }
