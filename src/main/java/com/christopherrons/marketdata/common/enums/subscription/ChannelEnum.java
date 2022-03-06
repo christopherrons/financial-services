@@ -1,9 +1,9 @@
 package com.christopherrons.marketdata.common.enums.subscription;
 
-import com.christopherrons.marketdata.bitstamp.model.BitstampTrade;
-import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.bitstamp.model.BitstampOrder;
+import com.christopherrons.marketdata.bitstamp.model.BitstampTrade;
+import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,18 +22,6 @@ public enum ChannelEnum {
         this.margetDataFeedEnum = margetDataFeedEnum;
         this.channelName = channelName;
         this.decodingClass = decodingClass;
-    }
-
-    public MargetDataFeedEnum getExchangeEnum() {
-        return margetDataFeedEnum;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public Class<? extends MarketDataEvent> getDecodingClass() {
-        return decodingClass;
     }
 
     public static ChannelEnum fromChannelName(final String channelName, final MargetDataFeedEnum margetDataFeedEnum) {
@@ -67,5 +55,17 @@ public enum ChannelEnum {
                 .filter(channelEnum -> !channelEnum.equals(ChannelEnum.INVALID_CHANNEL))
                 .filter(channelEnum -> channelEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .collect(Collectors.toList());
+    }
+
+    public MargetDataFeedEnum getExchangeEnum() {
+        return margetDataFeedEnum;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public Class<? extends MarketDataEvent> getDecodingClass() {
+        return decodingClass;
     }
 }

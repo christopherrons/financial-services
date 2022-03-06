@@ -26,10 +26,6 @@ public enum MargetDataFeedEnum {
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
     public static List<String> getDataFeedNames() {
         List<String> dataFeedNames = new ArrayList<>();
         for (MargetDataFeedEnum margetDataFeedEnum : MargetDataFeedEnum.values()) {
@@ -39,6 +35,10 @@ public enum MargetDataFeedEnum {
             dataFeedNames.add(margetDataFeedEnum.getName());
         }
         return dataFeedNames;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public URI getUri() {

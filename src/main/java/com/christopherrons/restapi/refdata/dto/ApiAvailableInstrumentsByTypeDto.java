@@ -1,7 +1,5 @@
 package com.christopherrons.restapi.refdata.dto;
 
-import com.christopherrons.refdata.api.Instrument;
-
 import java.util.List;
 
 public class ApiAvailableInstrumentsByTypeDto {

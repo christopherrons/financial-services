@@ -4,7 +4,6 @@ import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Objects;
@@ -12,7 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-@Component
+
 public class WebsocketSubscriptionCache {
 
     private static final Logger LOGGER = Logger.getLogger(WebsocketSubscriptionCache.class.getName());

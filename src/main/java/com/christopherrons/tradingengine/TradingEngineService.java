@@ -3,14 +3,14 @@ package com.christopherrons.tradingengine;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.tradingengine.matchingengine.MatchingEngineService;
+import com.christopherrons.tradingengine.shadoworderbook.ShadowOrderbookService;
 import com.christopherrons.tradingengine.shadoworderbook.model.ShadowOrderbook;
-import com.christopherrons.tradingengine.shadoworderbook.service.ShadowOrderbookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TradingEngineService implements ApplicationListener<OrderEventBroadcast> {
+public class TradingEngineService {
 
     @Autowired
     private ShadowOrderbookService shadowOrderbookService;
@@ -18,8 +18,8 @@ public class TradingEngineService implements ApplicationListener<OrderEventBroad
     private MatchingEngineService matchingEngineService;
 
 
-    @Override
-    public void onApplicationEvent(OrderEventBroadcast event) {
+    @EventListener
+    public void onOrderEvent(OrderEventBroadcast event) {
         for (MarketDataOrder order : event.getOrders()) {
             ShadowOrderbook orderbook = shadowOrderbookService.updateAndGetOrderbook(order);
             runMatchingEngine(orderbook);

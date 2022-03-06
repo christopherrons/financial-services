@@ -13,6 +13,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 group = "com.christopherrons.shadoworderbook"
 version = "0.0.1-SNAPSHOT"
 if (project.hasProperty("releaseVersion")) {
@@ -37,7 +41,11 @@ dependencies {
     implementation("com.fasterxml.jackson.core", "jackson-databind", "2.13.1")
     implementation("io.springfox", "springfox-boot-starter", "3.0.0")
     implementation("com.github.javafaker", "javafaker", "1.0.2")
+    implementation("org.apache.commons", "commons-math3", "3.2")
+    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.8.1")
+    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "5.8.1")
 }
+
 
 tasks.register<Tar>("packageRelease") {
     compression = Compression.GZIP

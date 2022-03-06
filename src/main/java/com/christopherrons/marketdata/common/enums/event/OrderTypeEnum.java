@@ -12,7 +12,7 @@ public enum OrderTypeEnum {
         this.value = value;
     }
 
-    public OrderTypeEnum fromValue(int value) {
+    public static OrderTypeEnum fromValue(int value) {
         switch (value) {
             case 0:
                 return BUY;

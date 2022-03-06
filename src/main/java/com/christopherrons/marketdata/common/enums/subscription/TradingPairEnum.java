@@ -23,22 +23,6 @@ public enum TradingPairEnum {
         this.cryptoCurrencyEnum = cryptoCurrencyEnum;
     }
 
-    public MargetDataFeedEnum getExchangeEnum() {
-        return margetDataFeedEnum;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public CashCurrencyEnum getCashCurrencyEnum() {
-        return cashCurrencyEnum;
-    }
-
-    public CryptoCurrency getCryptoCurrencyEnum() {
-        return cryptoCurrencyEnum;
-    }
-
     public static TradingPairEnum fromTradingPair(final String tradingPair, final MargetDataFeedEnum margetDataFeedEnum) {
         for (TradingPairEnum tradingPairEnum : getAvailableExchangeTradingPairEnums(margetDataFeedEnum)) {
             if (tradingPair.toLowerCase().equals(tradingPairEnum.getName())) {
@@ -70,5 +54,21 @@ public enum TradingPairEnum {
                 .filter(tradingPairEnum -> !tradingPairEnum.equals(TradingPairEnum.INVALID_TRADING_PAIR))
                 .filter(tradingPairEnum -> tradingPairEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .collect(Collectors.toList());
+    }
+
+    public MargetDataFeedEnum getExchangeEnum() {
+        return margetDataFeedEnum;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public CashCurrencyEnum getCashCurrencyEnum() {
+        return cashCurrencyEnum;
+    }
+
+    public CryptoCurrency getCryptoCurrencyEnum() {
+        return cryptoCurrencyEnum;
     }
 }

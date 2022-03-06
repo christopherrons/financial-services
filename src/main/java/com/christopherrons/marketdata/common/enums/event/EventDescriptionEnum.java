@@ -21,14 +21,6 @@ public enum EventDescriptionEnum {
         this.eventDescription = eventDescription;
     }
 
-    public MargetDataFeedEnum getExchangeEnum() {
-        return margetDataFeedEnum;
-    }
-
-    public String getEventDescription() {
-        return eventDescription;
-    }
-
     public static EventDescriptionEnum inferEventDescriptionEnum(final String eventDescription, final MargetDataFeedEnum margetDataFeedEnum) {
         for (EventDescriptionEnum eventDescriptionEnum : getAvailableExchangeEventDescriptionEnums(margetDataFeedEnum)) {
             if (eventDescription.contains(eventDescriptionEnum.getEventDescription())) {
@@ -51,5 +43,13 @@ public enum EventDescriptionEnum {
                 .filter(eventDescriptionEnum -> !eventDescriptionEnum.equals(EventDescriptionEnum.INVALID_EVENT_DESCRIPTION))
                 .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .collect(Collectors.toList());
+    }
+
+    public MargetDataFeedEnum getExchangeEnum() {
+        return margetDataFeedEnum;
+    }
+
+    public String getEventDescription() {
+        return eventDescription;
     }
 }

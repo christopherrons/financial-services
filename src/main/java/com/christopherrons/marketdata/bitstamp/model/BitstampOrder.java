@@ -8,16 +8,16 @@ import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.common.model.EventData;
-import com.christopherrons.refdata.api.Instrument;
-import com.christopherrons.refdata.enums.InstrumentTypeEnum;
-import com.christopherrons.refdata.model.participant.Member;
-import com.christopherrons.refdata.model.participant.Participant;
-import com.christopherrons.refdata.model.participant.User;
+import com.christopherrons.refdata.instrument.api.Instrument;
+import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
+import com.christopherrons.refdata.participant.model.Member;
+import com.christopherrons.refdata.participant.model.Participant;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.javafaker.Faker;
 
 import java.util.Map;
+
+import static com.christopherrons.refdata.participant.utils.UserGeneratorUtils.generateUser;
 
 public class BitstampOrder implements MarketDataOrder {
 
@@ -38,17 +38,23 @@ public class BitstampOrder implements MarketDataOrder {
         "event": "order_deleted"
     }*/
 
-    private static final Faker nameFaker = new Faker();
+
     private final OrderOperationEnum orderOperationEnum;
-    private EventData eventData;
+    private final Participant participant;
+    private final EventData eventData;
     private long orderId;
     private int orderType;
     private double volume;
     private double price;
 
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     BitstampOrder(@JsonProperty("data") Map<String, Object> data, @JsonProperty("channel") String channel, @JsonProperty("event") String event) {
         this.orderOperationEnum = OrderOperationEnum.extractValue(event);
+        this.participant = new Participant(
+                new Member(MargetDataFeedEnum.BITSTAMP.getName()),
+                generateUser()
+        );
 
         long timeStampInMs = 0;
         if (!data.isEmpty()) {
@@ -64,10 +70,6 @@ public class BitstampOrder implements MarketDataOrder {
                 channel,
                 EventTypeEnum.ORDER,
                 timeStampInMs,
-                new Participant(
-                        new Member(MargetDataFeedEnum.BITSTAMP.getName()),
-                        new User(nameFaker.funnyName().name(), nameFaker.name().lastName())
-                ),
                 InstrumentTypeEnum.STOCK
         );
     }
@@ -134,7 +136,7 @@ public class BitstampOrder implements MarketDataOrder {
 
     @Override
     public Participant getParticipant() {
-        return eventData.getParticipant();
+        return participant;
     }
 
     @Override
@@ -146,6 +148,7 @@ public class BitstampOrder implements MarketDataOrder {
     public String toString() {
         return eventData.toString() + "-" + "BitstampOrder{" +
                 "orderOperationEnum=" + orderOperationEnum +
+                ", participant=" + participant +
                 ", eventData=" + eventData +
                 ", orderId=" + orderId +
                 ", orderType=" + orderType +

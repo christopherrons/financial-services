@@ -1,6 +1,6 @@
 package com.christopherrons.restapi.refdata.dto;
 
-import com.christopherrons.refdata.enums.InstrumentTypeEnum;
+import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 
 import java.util.List;
 

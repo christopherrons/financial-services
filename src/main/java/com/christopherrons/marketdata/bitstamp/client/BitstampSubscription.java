@@ -1,6 +1,6 @@
 package com.christopherrons.marketdata.bitstamp.client;
 
-import com.christopherrons.common.model.ThreadWrapper;
+import com.christopherrons.common.misc.wrappers.ThreadWrapper;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.common.client.CustomClientEndpoint;

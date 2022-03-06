@@ -1,6 +1,7 @@
 package com.christopherrons.marketdata.api;
 
 import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
+import com.christopherrons.refdata.participant.model.Participant;
 
 public interface MarketDataOrder extends MarketDataEvent {
 
@@ -13,4 +14,7 @@ public interface MarketDataOrder extends MarketDataEvent {
     double getPrice();
 
     double getVolume();
+
+    Participant getParticipant();
+
 }

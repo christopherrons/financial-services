@@ -7,7 +7,7 @@ import java.util.List;
 
 public class OrderEventBroadcast extends ApplicationEvent {
 
-    private List<MarketDataOrder> orders;
+    private final List<MarketDataOrder> orders;
 
     public OrderEventBroadcast(Object source, List<MarketDataOrder> orders) {
         super(source);

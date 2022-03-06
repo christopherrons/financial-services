@@ -20,12 +20,12 @@ import java.util.logging.Logger;
 public class BitstampWebsocketClient implements MarketDataWebsocketClient {
 
     private static final Logger LOGGER = Logger.getLogger(BitstampWebsocketClient.class.getName());
+    private final WebsocketSubscriptionCache websocketSubscriptionCache = new WebsocketSubscriptionCache();
 
     @Autowired
     private MarketDataService marketDataService;
 
-    @Autowired
-    private WebsocketSubscriptionCache websocketSubscriptionCache;
+
 
     public void subscribe(final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) throws DeploymentException, IOException {
         BitstampSubscription subscription = new BitstampSubscription(

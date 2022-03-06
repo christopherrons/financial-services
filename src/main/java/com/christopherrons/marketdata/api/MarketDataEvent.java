@@ -6,8 +6,7 @@ import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
 import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import com.christopherrons.refdata.api.Instrument;
-import com.christopherrons.refdata.model.participant.Participant;
+import com.christopherrons.refdata.instrument.api.Instrument;
 
 public interface MarketDataEvent extends HasTimeStamp {
 
@@ -22,8 +21,6 @@ public interface MarketDataEvent extends HasTimeStamp {
     EventDescriptionEnum getEventDescriptionEnum();
 
     String getOrderbookId();
-
-    Participant getParticipant();
 
     Instrument getInstrument();
 

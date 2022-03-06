@@ -1,13 +1,13 @@
 package com.christopherrons.restapi.marketdata.controller;
 
-import com.christopherrons.restapi.marketdata.requests.ApiAvailableChannelRequest;
-import com.christopherrons.restapi.marketdata.requests.ApiAvailableTradingPairsRequest;
-import com.christopherrons.restapi.marketdata.requests.ApiSubscriptionRequest;
+import com.christopherrons.restapi.marketdata.MarketDataApiService;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableChannelsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableMarketDataFeedDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableTradingPairsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiSubscriptionDto;
-import com.christopherrons.restapi.marketdata.service.MarketDataApiService;
+import com.christopherrons.restapi.marketdata.requests.ApiAvailableChannelRequest;
+import com.christopherrons.restapi.marketdata.requests.ApiAvailableTradingPairsRequest;
+import com.christopherrons.restapi.marketdata.requests.ApiSubscriptionRequest;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -7,16 +7,18 @@ import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.common.model.EventData;
-import com.christopherrons.refdata.api.Instrument;
-import com.christopherrons.refdata.enums.InstrumentTypeEnum;
-import com.christopherrons.refdata.model.participant.Member;
-import com.christopherrons.refdata.model.participant.Participant;
-import com.christopherrons.refdata.model.participant.User;
+import com.christopherrons.refdata.instrument.api.Instrument;
+import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
+import com.christopherrons.refdata.participant.model.Member;
+import com.christopherrons.refdata.participant.model.Participant;
+import com.christopherrons.refdata.participant.model.User;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.javafaker.Faker;
 
 import java.util.Map;
+
+import static com.christopherrons.refdata.participant.utils.UserGeneratorUtils.generateUser;
 
 public class BitstampTrade implements MarketDataTrade {
 
@@ -39,36 +41,46 @@ public class BitstampTrade implements MarketDataTrade {
     }*/
 
     private static final Faker nameFaker = new Faker();
-    private EventData eventData;
+    private final Participant askParticipant;
+    private final Participant bidParticipant;
+    private final EventData eventData;
     private int tradeId;
     private long buyOrderId;
     private long sellOrderId;
-    private int sideAggressor;
+    private boolean isBidSideAggressor;
     private double volume;
     private double price;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     BitstampTrade(@JsonProperty("data") Map<String, Object> data, @JsonProperty("channel") String channel, @JsonProperty("event") String event) {
+        this.askParticipant = new Participant(
+                new Member(MargetDataFeedEnum.BITSTAMP.getName()),
+                generateUser()
+        );
+        this.bidParticipant = new Participant(
+                new Member(MargetDataFeedEnum.BITSTAMP.getName()),
+                generateUser()
+        );
+
+        long timeStampInMs = 0;
         if (!data.isEmpty()) {
             this.tradeId = (int) data.get("id");
             this.buyOrderId = (long) data.get("buy_order_id");
             this.sellOrderId = (long) data.get("sell_order_id");
-            this.sideAggressor = (int) data.get("type");
+            this.isBidSideAggressor = (int) data.get("type") == 0;
             this.volume = Double.parseDouble((String) data.get("amount_str"));
             this.price = Double.parseDouble((String) data.get("price_str"));
-            this.eventData = new EventData(
-                    MargetDataFeedEnum.BITSTAMP,
-                    event,
-                    channel,
-                    EventTypeEnum.TRADE,
-                    Long.parseLong((String) data.get("microtimestamp")) / 1000,
-                    new Participant(
-                            new Member(MargetDataFeedEnum.BITSTAMP.getName()),
-                            new User(nameFaker.name().firstName(), nameFaker.name().lastName())
-                    ),
-                    InstrumentTypeEnum.STOCK
-            );
+            timeStampInMs = Long.parseLong((String) data.get("microtimestamp")) / 1000;
         }
+
+        this.eventData = new EventData(
+                MargetDataFeedEnum.BITSTAMP,
+                event,
+                channel,
+                EventTypeEnum.TRADE,
+                timeStampInMs,
+                InstrumentTypeEnum.STOCK
+        );
     }
 
     @Override
@@ -87,8 +99,8 @@ public class BitstampTrade implements MarketDataTrade {
     }
 
     @Override
-    public int getSideAggressor() {
-        return sideAggressor;
+    public boolean isBidSideAggressor() {
+        return isBidSideAggressor;
     }
 
     @Override
@@ -137,23 +149,35 @@ public class BitstampTrade implements MarketDataTrade {
     }
 
     @Override
-    public Participant getParticipant() {
-        return eventData.getParticipant();
-    }
-
-    @Override
     public Instrument getInstrument() {
         return eventData.getInstrument();
     }
 
     @Override
+    public User tradeAggressorUser() {
+        return isBidSideAggressor ? bidParticipant.getUser() : askParticipant.getUser();
+    }
+
+    @Override
+    public Participant getAskParticipant() {
+        return askParticipant;
+    }
+
+    @Override
+    public Participant getBidParticipant() {
+        return bidParticipant;
+    }
+
+    @Override
     public String toString() {
         return eventData.toString() + "-" + "BitstampTrade{" +
-                "event=" + eventData +
+                "askParticipant=" + askParticipant +
+                ", bidParticipant=" + bidParticipant +
+                ", eventData=" + eventData +
                 ", tradeId=" + tradeId +
                 ", buyOrderId=" + buyOrderId +
                 ", sellOrderId=" + sellOrderId +
-                ", sideAggressor=" + sideAggressor +
+                ", isBidSideAggressor=" + isBidSideAggressor +
                 ", volume=" + volume +
                 ", price=" + price +
                 '}';

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TradeEventBroadcast extends ApplicationEvent {
 
-    private List<MarketDataTrade> trades;
+    private final List<MarketDataTrade> trades;
 
     public TradeEventBroadcast(Object source, List<MarketDataTrade> trades) {
         super(source);

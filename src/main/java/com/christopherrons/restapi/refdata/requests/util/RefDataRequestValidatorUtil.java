@@ -1,6 +1,6 @@
 package com.christopherrons.restapi.refdata.requests.util;
 
-import com.christopherrons.refdata.enums.InstrumentTypeEnum;
+import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 import com.christopherrons.restapi.refdata.exceptions.ApiInstrumentsByTypeRequestException;
 
 public class RefDataRequestValidatorUtil {

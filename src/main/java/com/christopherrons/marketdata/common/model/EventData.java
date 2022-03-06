@@ -6,9 +6,8 @@ import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
 import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import com.christopherrons.refdata.api.Instrument;
-import com.christopherrons.refdata.enums.InstrumentTypeEnum;
-import com.christopherrons.refdata.model.participant.Participant;
+import com.christopherrons.refdata.instrument.api.Instrument;
+import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 
 public class EventData implements MarketDataEvent {
 
@@ -18,7 +17,6 @@ public class EventData implements MarketDataEvent {
     private final EventTypeEnum eventTypeEnum;
     private final TradingPairEnum tradingPairEnum;
     private final long timeStampInMs;
-    private final Participant participant;
     private final String orderbookId;
     private final Instrument instrument;
 
@@ -27,17 +25,15 @@ public class EventData implements MarketDataEvent {
                      String channel,
                      EventTypeEnum eventTypeEnum,
                      long timeStampInMs,
-                     Participant participant,
                      InstrumentTypeEnum instrumentedType) {
         this.margetDataFeedEnum = margetDataFeedEnum;
         this.eventDescriptionEnum = EventDescriptionEnum.inferEventDescriptionEnum(eventDescription, margetDataFeedEnum);
         this.channelEnum = ChannelEnum.inferChannelEnum(channel, margetDataFeedEnum);
         this.eventTypeEnum = eventTypeEnum;
         this.tradingPairEnum = TradingPairEnum.inferTradingPairEnum(channel, margetDataFeedEnum);
-        this.orderbookId = String.format("%s-%s", margetDataFeedEnum.getName(), tradingPairEnum.getName());
+        this.orderbookId = String.format("%s-%s", margetDataFeedEnum.getName(), tradingPairEnum.getName()); //TODO: Not correct must be Feed-TradingPair-Type
         this.timeStampInMs = timeStampInMs;
-        this.participant = participant;
-        this.instrument = Instrument.createInstrument(instrumentedType, tradingPairEnum.getName());
+        this.instrument = Instrument.createInstrument(instrumentedType, tradingPairEnum);
     }
 
     @Override
@@ -75,11 +71,6 @@ public class EventData implements MarketDataEvent {
     }
 
     @Override
-    public Participant getParticipant() {
-        return participant;
-    }
-
-    @Override
     public Instrument getInstrument() {
         return instrument;
     }
@@ -93,7 +84,6 @@ public class EventData implements MarketDataEvent {
                 ", eventTypeEnum=" + eventTypeEnum +
                 ", tradingPairEnum=" + tradingPairEnum +
                 ", timeStampInMs=" + timeStampInMs +
-                ", participant=" + participant +
                 ", orderbookId='" + orderbookId + '\'' +
                 ", instrument=" + instrument +
                 '}';
