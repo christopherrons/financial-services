@@ -6,13 +6,7 @@ import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 
 import java.util.Objects;
 
-public class Option implements Derivative {
-
-    private final TradingPairEnum tradingPairEnum;
-
-    public Option(TradingPairEnum tradingPairEnum) {
-        this.tradingPairEnum = tradingPairEnum;
-    }
+public record Option(TradingPairEnum tradingPairEnum) implements Derivative {
 
     @Override
     public TradingPairEnum getTradingPairEnum() {

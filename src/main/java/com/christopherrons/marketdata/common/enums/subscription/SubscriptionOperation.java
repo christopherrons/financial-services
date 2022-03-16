@@ -13,16 +13,12 @@ public enum SubscriptionOperation {
     }
 
     public SubscriptionOperation fromValue(String value) {
-        switch (value.toLowerCase()) {
-            case "subscribe":
-                return SUBSCRIBE;
-            case "unsubscribe":
-                return UNSUBSCRIBE;
-            case "is_subscribe":
-                return IS_SUBSCRIBED;
-            default:
-                return INVALID_SUBSCRIPTION_OPERATION;
-        }
+        return switch (value.toLowerCase()) {
+            case "subscribe" -> SUBSCRIBE;
+            case "unsubscribe" -> UNSUBSCRIBE;
+            case "is_subscribe" -> IS_SUBSCRIBED;
+            default -> INVALID_SUBSCRIPTION_OPERATION;
+        };
     }
 
     public String getValue() {

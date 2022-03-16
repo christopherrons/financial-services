@@ -11,14 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PricingCache {
 
-    private final Map<TradingPairEnum, PriceSnapshot> tradingPairToPriceSnaphot = new ConcurrentHashMap<>();
+    private final Map<TradingPairEnum, PriceSnapshot> tradingPairToPriceSnapshot = new ConcurrentHashMap<>();
 
     public PriceSnapshot findOrCreateSnapshot(final TradingPairEnum tradingPairEnum) {
-        return tradingPairToPriceSnaphot.computeIfAbsent(tradingPairEnum, PriceSnapshot::new);
+        return tradingPairToPriceSnapshot.computeIfAbsent(tradingPairEnum, PriceSnapshot::new);
     }
 
     public List<PriceSnapshot> getAllPriceSnapshots() {
-        return !tradingPairToPriceSnaphot.values().isEmpty() ? new ArrayList<>(tradingPairToPriceSnaphot.values()) :
+        return !tradingPairToPriceSnapshot.values().isEmpty() ? new ArrayList<>(tradingPairToPriceSnapshot.values()) :
                 Collections.emptyList();
     }
 }

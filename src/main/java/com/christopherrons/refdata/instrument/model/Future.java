@@ -6,12 +6,7 @@ import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 
 import java.util.Objects;
 
-public class Future implements Derivative {
-    private final TradingPairEnum tradingPairEnum;
-
-    public Future(TradingPairEnum tradingPairEnum) {
-        this.tradingPairEnum = tradingPairEnum;
-    }
+public record Future(TradingPairEnum tradingPairEnum) implements Derivative {
 
     @Override
     public TradingPairEnum getTradingPairEnum() {
@@ -31,8 +26,7 @@ public class Future implements Derivative {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Future)) return false;
-        Future future = (Future) o;
+        if (!(o instanceof Future future)) return false;
         return tradingPairEnum == future.tradingPairEnum;
     }
 

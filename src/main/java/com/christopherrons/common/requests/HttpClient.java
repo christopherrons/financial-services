@@ -13,7 +13,7 @@ public class HttpClient {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String getRequest(final URL url) throws IOException {
+    public static String requestGET(final URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setDoOutput(true);

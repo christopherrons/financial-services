@@ -43,17 +43,16 @@ public class BitstampSubscription implements MarketDataSubscription {
             public void onMessage(String message) {
                 MarketDataEvent event = messageDecoder.decodeMessage(message);
                 switch (event.getEventDescriptionEnum()) {
-                    case SUBSCRIPTION_SUCCEEDED:
+                    case SUBSCRIPTION_SUCCEEDED -> {
                         isSubscribed = true;
                         LOGGER.info(String.format("Successfully subscribed to: %s.", createChannel()));
-                        break;
-                    case FORCED_RECONNECT:
+                    }
+                    case FORCED_RECONNECT -> {
                         LOGGER.warning("Forced reconnect received!");
                         isSubscribed = false;
                         subscribe();
-                        break;
-                    default:
-                        marketDataService.handleEvent(event);
+                    }
+                    default -> marketDataService.handleEvent(event);
                 }
             }
         };

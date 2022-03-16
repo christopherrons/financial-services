@@ -30,21 +30,12 @@ public class InstrumentCache {
                 new ArrayList<>(instrumentTypeToTradingPair.keySet());
     }
 
-    private static class CompositeKey {
-
-        private final InstrumentTypeEnum instrumentTypeEnum;
-        private final String tradingPair;
-
-        public CompositeKey(InstrumentTypeEnum instrumentTypeEnum, String tradingPair) {
-            this.instrumentTypeEnum = instrumentTypeEnum;
-            this.tradingPair = tradingPair;
-        }
+    private record CompositeKey(InstrumentTypeEnum instrumentTypeEnum, String tradingPair) {
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof CompositeKey)) return false;
-            CompositeKey that = (CompositeKey) o;
+            if (!(o instanceof CompositeKey that)) return false;
             return instrumentTypeEnum == that.instrumentTypeEnum && tradingPair.equals(that.tradingPair);
         }
 

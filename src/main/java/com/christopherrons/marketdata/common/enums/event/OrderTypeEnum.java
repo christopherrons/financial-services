@@ -13,14 +13,11 @@ public enum OrderTypeEnum {
     }
 
     public static OrderTypeEnum fromValue(int value) {
-        switch (value) {
-            case 0:
-                return BUY;
-            case 1:
-                return SELL;
-            default:
-                return INVALID_ORDER_TYPE;
-        }
+        return switch (value) {
+            case 0 -> BUY;
+            case 1 -> SELL;
+            default -> INVALID_ORDER_TYPE;
+        };
     }
 
     public int getValue() {

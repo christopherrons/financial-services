@@ -2,15 +2,7 @@ package com.christopherrons.pricingengine.yieldcurve.model;
 
 import com.christopherrons.common.math.api.CartesianPoint2d;
 
-public class YieldPoint implements CartesianPoint2d {
-
-    private final double maturity;
-    private final double yieldInDecimalForm;
-
-    public YieldPoint(double maturity, double yieldInDecimalForm) {
-        this.maturity = maturity;
-        this.yieldInDecimalForm = yieldInDecimalForm;
-    }
+public record YieldPoint(double maturity, double yieldInDecimalForm) implements CartesianPoint2d {
 
     @Override
     public double getValueX() {

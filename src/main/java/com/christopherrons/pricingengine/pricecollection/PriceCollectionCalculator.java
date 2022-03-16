@@ -8,6 +8,7 @@ import com.christopherrons.pricingengine.pricecollection.model.PriceSnapshot;
 import com.christopherrons.pricingengine.yieldcurve.YieldCurve;
 import com.christopherrons.refdata.yield.model.YieldRefData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PriceCollectionCalculator {
@@ -15,23 +16,28 @@ public class PriceCollectionCalculator {
     private static final MarginPriceCalculator marginPriceCalculator = new MarginPriceCalculator();
 
     public PriceCollection createPriceCollection(final List<PriceSnapshot> snapshots, final YieldRefData yieldRefData) {
-        PriceCollection priceCollection = new PriceCollection();
-        priceCollection.setYieldCurve(new YieldCurve(yieldRefData));
-        addPriceCollectionItems(priceCollection.getPriceCollectionItems(), snapshots);
-        return priceCollection;
+        return new PriceCollection(
+                addPriceCollectionItems(snapshots),
+                new YieldCurve(yieldRefData)
+        );
     }
 
-    private void addPriceCollectionItems(final List<PriceCollectionItem> priceCollectionItems, List<PriceSnapshot> snapshots) {
+    private List<PriceCollectionItem> addPriceCollectionItems(final List<PriceSnapshot> snapshots) {
+        final List<PriceCollectionItem> priceCollectionItems = new ArrayList<>();
         for (PriceSnapshot snapshot : snapshots) {
-            final PriceCollectionItem priceCollectionItem = new PriceCollectionItem(snapshot.getTradingPairEnum());
-            priceCollectionItem.setMarginPrice(calculateMarginPrice(snapshot));
-
-            priceCollectionItems.add(priceCollectionItem);
+            priceCollectionItems.add(createPriceCollectionItem(snapshot));
         }
+        return priceCollectionItems;
+    }
+
+    private PriceCollectionItem createPriceCollectionItem(final PriceSnapshot snapshot) {
+        return new PriceCollectionItem(
+                snapshot.getTradingPairEnum(),
+                calculateMarginPrice(snapshot)
+        );
     }
 
     public MarginPrice calculateMarginPrice(final PriceSnapshot snapshot) {
         return marginPriceCalculator.calculateMarginPrice(snapshot);
-
     }
 }

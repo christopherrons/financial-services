@@ -18,31 +18,26 @@ public enum InstrumentTypeEnum {
     }
 
     public static InstrumentTypeEnum fromName(final String instrumentTypeName) {
-        switch (instrumentTypeName) {
-            case "stock":
-                return InstrumentTypeEnum.STOCK;
-            case "derivative":
-                return InstrumentTypeEnum.DERIVATIVE;
-            case "future":
-                return InstrumentTypeEnum.FUTURE;
-            case "option":
-                return InstrumentTypeEnum.OPTION;
-            default:
-                return InstrumentTypeEnum.INVALID_INSTRUMENT;
-        }
+        return switch (instrumentTypeName) {
+            case "stock" -> InstrumentTypeEnum.STOCK;
+            case "derivative" -> InstrumentTypeEnum.DERIVATIVE;
+            case "future" -> InstrumentTypeEnum.FUTURE;
+            case "option" -> InstrumentTypeEnum.OPTION;
+            default -> InstrumentTypeEnum.INVALID_INSTRUMENT;
+        };
     }
 
     public static List<InstrumentTypeEnum> getInstrumentType() {
         return Arrays.stream(InstrumentTypeEnum.values())
                 .filter(channelEnum -> !channelEnum.equals(InstrumentTypeEnum.INVALID_INSTRUMENT))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static List<String> getInstrumentTypeNames() {
         return Arrays.stream(InstrumentTypeEnum.values())
                 .filter(channelEnum -> !channelEnum.equals(InstrumentTypeEnum.INVALID_INSTRUMENT))
                 .map(InstrumentTypeEnum::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public String getName() {

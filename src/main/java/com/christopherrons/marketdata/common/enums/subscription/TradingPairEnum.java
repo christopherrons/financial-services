@@ -46,14 +46,14 @@ public enum TradingPairEnum {
                 .filter(tradingPairEnum -> !tradingPairEnum.equals(TradingPairEnum.INVALID_TRADING_PAIR))
                 .filter(tradingPairEnum -> tradingPairEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .map(TradingPairEnum::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static List<TradingPairEnum> getAvailableExchangeTradingPairEnums(final MargetDataFeedEnum margetDataFeedEnum) {
         return Arrays.stream(TradingPairEnum.values())
                 .filter(tradingPairEnum -> !tradingPairEnum.equals(TradingPairEnum.INVALID_TRADING_PAIR))
                 .filter(tradingPairEnum -> tradingPairEnum.getExchangeEnum().equals(margetDataFeedEnum))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public MargetDataFeedEnum getExchangeEnum() {

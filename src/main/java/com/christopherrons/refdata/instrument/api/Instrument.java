@@ -9,16 +9,12 @@ import com.christopherrons.refdata.instrument.model.Stock;
 
 public interface Instrument {
     static Instrument createInstrument(final InstrumentTypeEnum instrumentTypeEnum, final TradingPairEnum tradingPairEnum) {
-        switch (instrumentTypeEnum) {
-            case STOCK:
-                return new Stock(tradingPairEnum);
-            case FUTURE:
-                return new Future(tradingPairEnum);
-            case OPTION:
-                return new Option(tradingPairEnum);
-            default:
-                return new InvalidInstrument();
-        }
+        return switch (instrumentTypeEnum) {
+            case STOCK -> new Stock(tradingPairEnum);
+            case FUTURE -> new Future(tradingPairEnum);
+            case OPTION -> new Option(tradingPairEnum);
+            default -> new InvalidInstrument();
+        };
     }
 
     InstrumentTypeEnum getInstrumentType();

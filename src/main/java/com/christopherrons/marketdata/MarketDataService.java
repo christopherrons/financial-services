@@ -44,12 +44,8 @@ public class MarketDataService {
         List<MarketDataTrade> trades = new ArrayList<>();
         for (MarketDataEvent event : events) {
             switch (event.getEventTypeEnum()) {
-                case ORDER:
-                    orders.add((MarketDataOrder) event);
-                    break;
-                case TRADE:
-                    trades.add((MarketDataTrade) event);
-                    break;
+                case ORDER -> orders.add((MarketDataOrder) event);
+                case TRADE -> trades.add((MarketDataTrade) event);
             }
         }
         broadCastEvents(orders, trades);

@@ -13,16 +13,12 @@ public enum EventTypeEnum {
     }
 
     public EventTypeEnum fromValue(String value) {
-        switch (value.toLowerCase()) {
-            case "order":
-                return ORDER;
-            case "TRADE":
-                return TRADE;
-            case "order_book":
-                return ORDER_BOOK;
-            default:
-                return INVALID_EVENT_TYPE;
-        }
+        return switch (value.toLowerCase()) {
+            case "order" -> ORDER;
+            case "trade" -> TRADE;
+            case "order_book" -> ORDER_BOOK;
+            default -> INVALID_EVENT_TYPE;
+        };
     }
 
     public String getValue() {

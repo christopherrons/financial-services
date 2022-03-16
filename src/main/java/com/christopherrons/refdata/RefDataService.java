@@ -64,7 +64,6 @@ public class RefDataService {
         return instrumentRefDataService.getInstrumentTypes();
     }
 
-
     public YieldRefData getYieldRefData() throws IOException {
         return yieldRefDataService.getYieldRefData();
     }

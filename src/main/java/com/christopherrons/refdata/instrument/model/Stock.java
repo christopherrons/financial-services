@@ -6,13 +6,7 @@ import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 
 import java.util.Objects;
 
-public class Stock implements Instrument {
-
-    private final TradingPairEnum tradingPairEnum;
-
-    public Stock(TradingPairEnum tradingPairEnum) {
-        this.tradingPairEnum = tradingPairEnum;
-    }
+public record Stock(TradingPairEnum tradingPairEnum) implements Instrument {
 
     @Override
     public InstrumentTypeEnum getInstrumentType() {

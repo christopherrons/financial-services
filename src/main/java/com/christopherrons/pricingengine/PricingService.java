@@ -11,7 +11,6 @@ import com.christopherrons.pricingengine.pricecollection.PriceCollectionCalculat
 import com.christopherrons.pricingengine.pricecollection.model.PriceCollection;
 import com.christopherrons.pricingengine.pricecollection.model.PriceSnapshot;
 import com.christopherrons.refdata.RefDataService;
-import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -41,12 +40,8 @@ public class PricingService {
         for (MarketDataOrder order : event.getOrders()) { //TODO: Not quite correct as the bid ask is alwyas the lastest order not the best
             PriceSnapshot priceSnapshot = pricingCache.findOrCreateSnapshot(order.getTradingPairEnum());
             switch (OrderTypeEnum.fromValue(order.getOrderType())) {
-                case BUY:
-                    priceSnapshot.setBidPrice(order.getPrice());
-                    break;
-                case SELL:
-                    priceSnapshot.setAskPrice(order.getPrice());
-                    break;
+                case BUY -> priceSnapshot.setBidPrice(order.getPrice());
+                case SELL -> priceSnapshot.setAskPrice(order.getPrice());
             }
         }
     }

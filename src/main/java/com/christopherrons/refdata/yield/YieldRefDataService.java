@@ -11,13 +11,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static com.christopherrons.common.requests.HttpClient.getRequest;
+import static com.christopherrons.common.requests.HttpClient.requestGET;
+import static com.christopherrons.refdata.yield.enums.NasdaqDataLinkMaturityDatesEnum.createMaturityDate;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class YieldRefDataService {
+    private static final Logger LOGGER = Logger.getLogger(YieldRefDataService.class.getName());
     private static final String BASE_URL = "https://data.nasdaq.com/api/v3/datasets/USTREASURY/YIELD.json/";
     private static final String API_KEY = "bG3_NQF6ohqTN2PVTFgy";
     private static final int UPDATE_INTERVAL_IN_DAYS = 1;
@@ -28,6 +32,7 @@ public class YieldRefDataService {
     public YieldRefData getYieldRefData() throws IOException {
         LocalDate currentTime = LocalDate.now();
         if (updateYield(currentTime)) {
+            LOGGER.log(Level.INFO, "Updating Yield Ref Data: Previous updated on: {}", lastUpdateTime);
             lastUpdateTime = currentTime;
             return getYield(lastUpdateTime.toString());
         }
@@ -40,7 +45,7 @@ public class YieldRefDataService {
 
     private YieldRefData getYield(final String requestDate) throws IOException {
         URL url = new URL(String.format("%s?start_date=%s?end_date=%s?api_key=%s", BASE_URL, requestDate, requestDate, API_KEY));
-        String jsonResponse = getRequest(url);
+        String jsonResponse = requestGET(url);
 
         JsonNode yieldJsonObject = mapper.readValue(jsonResponse, JsonNode.class).get("dataset");
         String newestDate = yieldJsonObject.get("newest_available_date").asText();
@@ -74,46 +79,7 @@ public class YieldRefDataService {
         maturitiesAsString.set(0, startDate);
         return maturitiesAsString.stream()
                 .map(maturityString -> createMaturityDate(LocalDate.parse(startDate), maturityString))
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public LocalDate createMaturityDate(final LocalDate startDate, final String maturityString) {
-        if (maturityString.equals("1 MO")) {
-            return startDate.plusMonths(1);
-        }
-        if (maturityString.equals("2 MO")) {
-            return startDate.plusMonths(2);
-        }
-        if (maturityString.equals("3 MO")) {
-            return startDate.plusMonths(3);
-        }
-        if (maturityString.equals("6 MO")) {
-            return startDate.plusMonths(6);
-        }
-        if (maturityString.equals("1 YR")) {
-            return startDate.plusYears(1);
-        }
-        if (maturityString.equals("2 YR")) {
-            return startDate.plusYears(2);
-        }
-        if (maturityString.equals("3 YR")) {
-            return startDate.plusYears(3);
-        }
-        if (maturityString.equals("5 YR")) {
-            return startDate.plusYears(5);
-        }
-        if (maturityString.equals("7 YR")) {
-            return startDate.plusYears(7);
-        }
-        if (maturityString.equals("10 YR")) {
-            return startDate.plusYears(10);
-        }
-        if (maturityString.equals("20 YR")) {
-            return startDate.plusYears(20);
-        }
-        if (maturityString.equals("30 YR")) {
-            return startDate.plusYears(30);
-        }
-        return startDate;
-    }
 }

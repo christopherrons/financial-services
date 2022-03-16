@@ -35,14 +35,14 @@ public enum EventDescriptionEnum {
                 .filter(eventDescriptionEnum -> !eventDescriptionEnum.equals(EventDescriptionEnum.INVALID_EVENT_DESCRIPTION))
                 .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .map(EventDescriptionEnum::getEventDescription)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static List<EventDescriptionEnum> getAvailableExchangeEventDescriptionEnums(final MargetDataFeedEnum margetDataFeedEnum) {
         return Arrays.stream(EventDescriptionEnum.values())
                 .filter(eventDescriptionEnum -> !eventDescriptionEnum.equals(EventDescriptionEnum.INVALID_EVENT_DESCRIPTION))
                 .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataFeedEnum))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public MargetDataFeedEnum getExchangeEnum() {

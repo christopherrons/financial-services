@@ -47,14 +47,14 @@ public enum ChannelEnum {
                 .filter(channelEnum -> !channelEnum.equals(ChannelEnum.INVALID_CHANNEL))
                 .filter(channelEnum -> channelEnum.getExchangeEnum().equals(margetDataFeedEnum))
                 .map(ChannelEnum::getChannelName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static List<ChannelEnum> getAvailableExchangeChannelEnums(final MargetDataFeedEnum margetDataFeedEnum) {
         return Arrays.stream(ChannelEnum.values())
                 .filter(channelEnum -> !channelEnum.equals(ChannelEnum.INVALID_CHANNEL))
                 .filter(channelEnum -> channelEnum.getExchangeEnum().equals(margetDataFeedEnum))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public MargetDataFeedEnum getExchangeEnum() {

@@ -22,16 +22,12 @@ public enum OrderOperationEnum {
     }
 
     public OrderOperationEnum fromValue(String value) {
-        switch (value.toLowerCase()) {
-            case "create":
-                return CREATE;
-            case "update":
-                return UPDATE;
-            case "delete":
-                return DELETE;
-            default:
-                return INVALID_ORDER_OPERATION;
-        }
+        return switch (value.toLowerCase()) {
+            case "create" -> CREATE;
+            case "update" -> UPDATE;
+            case "delete" -> DELETE;
+            default -> INVALID_ORDER_OPERATION;
+        };
     }
 
     public String getValue() {

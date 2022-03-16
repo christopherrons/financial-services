@@ -34,23 +34,14 @@ public class WebsocketSubscriptionCache {
         return Optional.ofNullable(keyToSubscription.get(key));
     }
 
-    private static class CompositeKey {
-
-        private final MargetDataFeedEnum margetDataFeedEnum;
-        private final TradingPairEnum tradingPairEnum;
-        private final ChannelEnum channelEnum;
-
-        public CompositeKey(MargetDataFeedEnum margetDataFeedEnum, TradingPairEnum tradingPairEnum, ChannelEnum channelEnum) {
-            this.margetDataFeedEnum = margetDataFeedEnum;
-            this.tradingPairEnum = tradingPairEnum;
-            this.channelEnum = channelEnum;
-        }
+    private record CompositeKey(MargetDataFeedEnum margetDataFeedEnum,
+                                TradingPairEnum tradingPairEnum,
+                                ChannelEnum channelEnum) {
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof CompositeKey)) return false;
-            CompositeKey that = (CompositeKey) o;
+            if (!(o instanceof CompositeKey that)) return false;
             return margetDataFeedEnum == that.margetDataFeedEnum && tradingPairEnum == that.tradingPairEnum && channelEnum == that.channelEnum;
         }
 
