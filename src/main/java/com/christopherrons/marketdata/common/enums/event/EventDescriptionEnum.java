@@ -2,7 +2,6 @@ package com.christopherrons.marketdata.common.enums.event;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum EventDescriptionEnum {
     INVALID_EVENT_DESCRIPTION(MargetDataFeedEnum.INVALID_DATA_FEED, "none"),

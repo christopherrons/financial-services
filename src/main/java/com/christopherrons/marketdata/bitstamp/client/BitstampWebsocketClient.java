@@ -1,5 +1,6 @@
 package com.christopherrons.marketdata.bitstamp.client;
 
+import com.christopherrons.marketdata.MarketDataService;
 import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.api.MarketDataWebsocketClient;
 import com.christopherrons.marketdata.common.cache.WebsocketSubscriptionCache;
@@ -7,7 +8,6 @@ import com.christopherrons.marketdata.common.client.JsonMessageDecoder;
 import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import com.christopherrons.marketdata.MarketDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,6 @@ public class BitstampWebsocketClient implements MarketDataWebsocketClient {
 
     @Autowired
     private MarketDataService marketDataService;
-
 
 
     public void subscribe(final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) throws DeploymentException, IOException {

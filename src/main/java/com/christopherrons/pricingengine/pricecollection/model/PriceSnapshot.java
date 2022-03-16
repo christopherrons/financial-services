@@ -13,18 +13,6 @@ public class PriceSnapshot {
         this.tradingPairEnum = tradingPairEnum;
     }
 
-    public void setBidPrice(double bidPrice) {
-        this.bidPrice = bidPrice;
-    }
-
-    public void setAskPrice(double askPrice) {
-        this.askPrice = askPrice;
-    }
-
-    public void setLastPrice(double lastPrice) {
-        this.lastPrice = lastPrice;
-    }
-
     public TradingPairEnum getTradingPairEnum() {
         return tradingPairEnum;
     }
@@ -33,11 +21,23 @@ public class PriceSnapshot {
         return bidPrice;
     }
 
+    public void setBidPrice(double bidPrice) {
+        this.bidPrice = bidPrice;
+    }
+
     public double getAskPrice() {
         return askPrice;
     }
 
+    public void setAskPrice(double askPrice) {
+        this.askPrice = askPrice;
+    }
+
     public double getLastPrice() {
         return lastPrice;
+    }
+
+    public void setLastPrice(double lastPrice) {
+        this.lastPrice = lastPrice;
     }
 }

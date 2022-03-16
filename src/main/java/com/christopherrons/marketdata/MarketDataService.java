@@ -7,6 +7,7 @@ import com.christopherrons.common.misc.datastructures.TimeBoundPriorityQueue;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataTrade;
+import com.christopherrons.marketdata.common.EventLogging;
 import com.christopherrons.refdata.instrument.api.Instrument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,8 +22,9 @@ import java.util.logging.Logger;
 @Service
 public class MarketDataService {
     private static final Logger LOGGER = Logger.getLogger(MarketDataService.class.getName());
+    private static final int TIME_IN_QUEUE_MS = 10000;
+    private static final EventLogging eventLogging = new EventLogging();
     private final Map<Instrument, TimeBoundPriorityQueue<MarketDataEvent>> instrumentToEventPriorityQueue = new ConcurrentHashMap<>();
-    private static final int TIME_IN_MS = 10000;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -30,12 +32,13 @@ public class MarketDataService {
     public void handleEvent(final MarketDataEvent event) {
         TimeBoundPriorityQueue<MarketDataEvent> queue = findOrCreateQueue(event);
         handleEvent(queue.addItemThenPurge(event));
+        eventLogging.logEvent();
     }
 
     private TimeBoundPriorityQueue<MarketDataEvent> findOrCreateQueue(final MarketDataEvent event) {
         return instrumentToEventPriorityQueue.computeIfAbsent(
                 event.getInstrument(),
-                e -> new TimeBoundPriorityQueue<>(TIME_IN_MS, new EventComparator<>())
+                e -> new TimeBoundPriorityQueue<>(TIME_IN_QUEUE_MS, new EventComparator<>())
         );
     }
 
@@ -62,12 +65,10 @@ public class MarketDataService {
     }
 
     private void broadcastOrders(final List<MarketDataOrder> orders) {
-       // LOGGER.info(String.format("Broadcasting %s orders,", orders.size()));
         applicationEventPublisher.publishEvent(new OrderEventBroadcast(this, orders));
     }
 
     private void broadcastTrades(final List<MarketDataTrade> trades) {
-       // LOGGER.info(String.format("Broadcasting %s trades.", trades.size()));
         applicationEventPublisher.publishEvent(new TradeEventBroadcast(this, trades));
     }
 }

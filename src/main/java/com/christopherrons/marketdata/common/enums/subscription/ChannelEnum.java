@@ -7,7 +7,6 @@ import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum ChannelEnum {
     INVALID_CHANNEL(MargetDataFeedEnum.INVALID_DATA_FEED, "Invalid Channel", null),

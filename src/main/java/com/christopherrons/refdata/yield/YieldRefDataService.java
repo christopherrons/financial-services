@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static com.christopherrons.common.requests.HttpClient.requestGET;
 import static com.christopherrons.refdata.yield.enums.NasdaqDataLinkMaturityDatesEnum.createMaturityDate;
@@ -32,7 +30,7 @@ public class YieldRefDataService {
     public YieldRefData getYieldRefData() throws IOException {
         LocalDate currentTime = LocalDate.now();
         if (updateYield(currentTime)) {
-            LOGGER.log(Level.INFO, "Updating Yield Ref Data: Previous updated on: {}", lastUpdateTime);
+            LOGGER.info("Updating Yield Ref Data: Previous updated on: " + lastUpdateTime.toString());
             lastUpdateTime = currentTime;
             return getYield(lastUpdateTime.toString());
         }

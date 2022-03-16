@@ -4,7 +4,6 @@ import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum TradingPairEnum {
     INVALID_TRADING_PAIR(MargetDataFeedEnum.INVALID_DATA_FEED, "Invalid Trading Pair", CashCurrencyEnum.INVALID_CASH_CURRENCY, CryptoCurrency.INVALID_CASH_CURRENCY),

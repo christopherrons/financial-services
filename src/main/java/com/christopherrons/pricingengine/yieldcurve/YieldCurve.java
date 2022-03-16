@@ -10,8 +10,8 @@ import java.util.List;
 
 public class YieldCurve {
 
-    private final CubicSplineInterpolation splineInterpolation;
     public final YieldRefData yieldRefData;
+    private final CubicSplineInterpolation splineInterpolation;
     private final List<CartesianPoint2d> yieldPoints = new ArrayList<>();
 
     public YieldCurve(YieldRefData yieldRefData) {

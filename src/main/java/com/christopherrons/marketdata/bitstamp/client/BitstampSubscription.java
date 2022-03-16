@@ -1,6 +1,7 @@
 package com.christopherrons.marketdata.bitstamp.client;
 
 import com.christopherrons.common.misc.wrappers.ThreadWrapper;
+import com.christopherrons.marketdata.MarketDataService;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.common.client.CustomClientEndpoint;
@@ -8,7 +9,6 @@ import com.christopherrons.marketdata.common.client.JsonMessageDecoder;
 import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import com.christopherrons.marketdata.MarketDataService;
 
 import javax.json.Json;
 import javax.websocket.*;
@@ -23,7 +23,6 @@ public class BitstampSubscription implements MarketDataSubscription {
     private static final URI websocketURI = MargetDataFeedEnum.BITSTAMP.getUri();
     private static final String SUBSCRIBE = "bts:subscribe";
     private static final String UNSUBSCRIBE = "bts:unsubscribe";
-
 
     private final ChannelEnum channelEnum;
     private final TradingPairEnum tradingPairEnum;

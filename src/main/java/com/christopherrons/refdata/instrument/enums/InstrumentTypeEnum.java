@@ -2,7 +2,6 @@ package com.christopherrons.refdata.instrument.enums;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum InstrumentTypeEnum {
     INVALID_INSTRUMENT("invalid_instrument_type"),

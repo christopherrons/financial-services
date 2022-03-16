@@ -27,14 +27,6 @@ public enum NasdaqDataLinkMaturityDatesEnum {
         this.maturityDateBuilder = maturityDateBuilder;
     }
 
-    public String getMaturityName() {
-        return maturityName;
-    }
-
-    public Function<LocalDate, LocalDate> getMaturityDateBuilder() {
-        return maturityDateBuilder;
-    }
-
     public static LocalDate createMaturityDate(final LocalDate startDate, final String maturityString) {
         for (NasdaqDataLinkMaturityDatesEnum maturityDatesEnum : NasdaqDataLinkMaturityDatesEnum.values()) {
             if (maturityString.equals(maturityDatesEnum.getMaturityName())) {
@@ -42,5 +34,13 @@ public enum NasdaqDataLinkMaturityDatesEnum {
             }
         }
         return startDate;
+    }
+
+    public String getMaturityName() {
+        return maturityName;
+    }
+
+    public Function<LocalDate, LocalDate> getMaturityDateBuilder() {
+        return maturityDateBuilder;
     }
 }
