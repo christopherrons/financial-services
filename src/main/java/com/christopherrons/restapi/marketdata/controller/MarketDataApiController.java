@@ -10,15 +10,15 @@ import com.christopherrons.restapi.marketdata.requests.ApiAvailableTradingPairsR
 import com.christopherrons.restapi.marketdata.requests.ApiSubscriptionRequest;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@RestController
+@RestController()
+@CrossOrigin("*")
+@RequestMapping("/marketData")
 public class MarketDataApiController {
 
     private static final Logger LOGGER = Logger.getLogger(MarketDataApiController.class.getName());

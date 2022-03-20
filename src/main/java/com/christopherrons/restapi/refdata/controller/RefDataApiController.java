@@ -7,13 +7,13 @@ import com.christopherrons.restapi.refdata.dto.ApiAvailableInstrumentsDto;
 import com.christopherrons.restapi.refdata.requests.ApiAvailableInstrumentsByTypeRequest;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin("*")
+@RequestMapping("/referenceData")
 public class RefDataApiController {
 
     private static final Logger LOGGER = Logger.getLogger(RefDataApiController.class.getName());
