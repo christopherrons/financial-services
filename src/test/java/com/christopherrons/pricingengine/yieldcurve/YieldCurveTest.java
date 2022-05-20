@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.christopherrons.TestAssertionUtils.assertDouble;
 import static com.christopherrons.common.math.interpolation.CubicSplintInterpolationTestUtils.getFunctionValue5Points;
+import static testutils.TestAssertionUtils.assertDouble;
 
 class YieldCurveTest {
 

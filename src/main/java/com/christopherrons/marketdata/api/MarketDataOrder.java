@@ -13,8 +13,12 @@ public interface MarketDataOrder extends MarketDataEvent {
 
     double getPrice();
 
-    double getVolume();
+    double getInitialVolume();
+
+    double getCurrentVolume();
 
     Participant getParticipant();
+
+    boolean isFilled();
 
 }

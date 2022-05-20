@@ -4,11 +4,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.stream;
+import static java.util.function.UnaryOperator.identity;
+import static java.util.stream.Collectors.toMap;
 
 public enum MargetDataFeedEnum {
     INVALID_DATA_FEED("none", "none"),
     BITSTAMP("bitstamp", "wss://ws.bitstamp.net");
 
+    private static final Map<String, MargetDataFeedEnum> VALUES_BY_IDENTIFIER =
+            stream(MargetDataFeedEnum.values()).collect(toMap(MargetDataFeedEnum::getName, identity()));
     private final String name;
     private final String uri;
 
@@ -18,12 +25,7 @@ public enum MargetDataFeedEnum {
     }
 
     public static MargetDataFeedEnum fromName(String name) {
-        switch (name.toLowerCase()) {
-            case "bitstamp":
-                return BITSTAMP;
-            default:
-                return INVALID_DATA_FEED;
-        }
+        return VALUES_BY_IDENTIFIER.getOrDefault(name.toLowerCase(), INVALID_DATA_FEED);
     }
 
     public static List<String> getDataFeedNames() {

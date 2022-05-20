@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.christopherrons.TestAssertionUtils.assertDouble;
 import static com.christopherrons.common.math.interpolation.CubicSplintInterpolationTestUtils.*;
+import static testutils.TestAssertionUtils.assertDouble;
 
 class CubicSplineInterpolationTest {
 

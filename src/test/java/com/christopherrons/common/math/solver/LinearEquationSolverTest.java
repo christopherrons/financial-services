@@ -5,9 +5,9 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.junit.jupiter.api.Test;
 
-import static com.christopherrons.TestAssertionUtils.assertDoubleArray;
 import static com.christopherrons.common.math.solver.LinearEquationSolverTestUtils.getCoefficientMatrix;
 import static com.christopherrons.common.math.solver.LinearEquationSolverTestUtils.getConstantVector;
+import static testutils.TestAssertionUtils.assertDoubleArray;
 
 class LinearEquationSolverTest {
 

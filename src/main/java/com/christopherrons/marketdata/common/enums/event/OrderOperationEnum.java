@@ -1,11 +1,19 @@
 package com.christopherrons.marketdata.common.enums.event;
 
+import java.util.Map;
+
+import static java.util.Arrays.stream;
+import static java.util.function.UnaryOperator.identity;
+import static java.util.stream.Collectors.toMap;
+
 public enum OrderOperationEnum {
     INVALID_ORDER_OPERATION("Invalid Order Operation"),
     CREATE("create"),
     UPDATE("update"),
     DELETE("delete");
 
+    private static final Map<String, OrderOperationEnum> VALUES_BY_IDENTIFIER =
+            stream(OrderOperationEnum.values()).collect(toMap(OrderOperationEnum::getValue, identity()));
     private final String value;
 
     OrderOperationEnum(String value) {
@@ -21,13 +29,8 @@ public enum OrderOperationEnum {
         return OrderOperationEnum.INVALID_ORDER_OPERATION;
     }
 
-    public OrderOperationEnum fromValue(String value) {
-        return switch (value.toLowerCase()) {
-            case "create" -> CREATE;
-            case "update" -> UPDATE;
-            case "delete" -> DELETE;
-            default -> INVALID_ORDER_OPERATION;
-        };
+    public static OrderOperationEnum fromValue(String value) {
+        return VALUES_BY_IDENTIFIER.getOrDefault(value.toLowerCase(), INVALID_ORDER_OPERATION);
     }
 
     public String getValue() {

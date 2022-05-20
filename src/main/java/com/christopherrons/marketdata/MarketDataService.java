@@ -31,7 +31,7 @@ public class MarketDataService {
 
     public void handleEvent(final MarketDataEvent event) {
         TimeBoundPriorityQueue<MarketDataEvent> queue = findOrCreateQueue(event);
-        handleEvent(queue.addItemThenPurge(event));
+        handleEvents(queue.addItemThenPurge(event));
         eventLogging.logEvent();
     }
 
@@ -42,7 +42,7 @@ public class MarketDataService {
         );
     }
 
-    private void handleEvent(final List<MarketDataEvent> events) {
+    private void handleEvents(final List<MarketDataEvent> events) {
         List<MarketDataOrder> orders = new ArrayList<>();
         List<MarketDataTrade> trades = new ArrayList<>();
         for (MarketDataEvent event : events) {
@@ -56,19 +56,11 @@ public class MarketDataService {
 
     private void broadCastEvents(final List<MarketDataOrder> orders, final List<MarketDataTrade> trades) {
         if (!orders.isEmpty()) {
-            broadcastOrders(orders);
+            applicationEventPublisher.publishEvent(new OrderEventBroadcast(this, orders));
         }
 
         if (!trades.isEmpty()) {
-            broadcastTrades(trades);
+            applicationEventPublisher.publishEvent(new TradeEventBroadcast(this, trades));
         }
-    }
-
-    private void broadcastOrders(final List<MarketDataOrder> orders) {
-        applicationEventPublisher.publishEvent(new OrderEventBroadcast(this, orders));
-    }
-
-    private void broadcastTrades(final List<MarketDataTrade> trades) {
-        applicationEventPublisher.publishEvent(new TradeEventBroadcast(this, trades));
     }
 }
