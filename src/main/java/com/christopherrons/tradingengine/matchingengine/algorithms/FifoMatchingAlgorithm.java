@@ -27,7 +27,7 @@ public class FifoMatchingAlgorithm implements MatchingAlgorithm {
         MarketDataOrder bestBid = activeOrders.getBestBidOrder().get();
         MarketDataOrder bestAsk = activeOrders.getBestAskOrder().get();
 
-        while (isTrade(bestBid.getPrice(), bestAsk.getPrice())) {
+        while (isMatch(bestBid.getPrice(), bestAsk.getPrice())) {
             runPostTrade(matchingEngineResult, bestBid, bestAsk);
 
             if (!activeOrders.hasBidAndAskOrders()) {
@@ -41,7 +41,7 @@ public class FifoMatchingAlgorithm implements MatchingAlgorithm {
         return matchingEngineResult;
     }
 
-    private boolean isTrade(final double bidPrice, final double askPrice) {
+    private boolean isMatch(final double bidPrice, final double askPrice) {
         return bidPrice >= askPrice;
     }
 

@@ -38,7 +38,7 @@ public class RefDataService {
     }
 
     @EventListener
-    public void onTradeEvent(OrderEventBroadcast event) {
+    public void onOrderEvent(OrderEventBroadcast event) {
         for (MarketDataOrder order : event.getOrders()) {
             instrumentRefDataService.addInstrument(order.getInstrument());
             participantRefDataService.addParticipant(order.getParticipant());
@@ -46,7 +46,7 @@ public class RefDataService {
     }
 
     @EventListener
-    public void onOrderEvent(TradeEventBroadcast event) {
+    public void onTradeEvent(TradeEventBroadcast event) {
         for (MarketDataTrade trade : event.getTrades()) {
             portfolioRefDataService.updatePortfolioFromTrade(trade);
         }

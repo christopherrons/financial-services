@@ -1,20 +1,22 @@
 package com.christopherrons.common.broadcasts;
 
-import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
+import com.christopherrons.tradingengine.orderbook.model.OrderbookUpdate;
 import org.springframework.context.ApplicationEvent;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class OrderbookUpdateBroadcast extends ApplicationEvent {
 
-    private final List<MatchingEngineResult> matchingEngineResults;
+    private final Collection<OrderbookUpdate> orderbookUpdates;
 
-    public OrderbookUpdateBroadcast(Object source, List<MatchingEngineResult> matchingEngineResults) {
+    public OrderbookUpdateBroadcast(Object source, Collection<OrderbookUpdate> orderbookUpdates) {
         super(source);
-        this.matchingEngineResults = matchingEngineResults;
+        this.orderbookUpdates = orderbookUpdates;
     }
 
-    public List<MatchingEngineResult> getMatchingEngineResults() {
-        return matchingEngineResults;
+    public List<OrderbookUpdate> getOrderbookUpdates() {
+        return new ArrayList<>(orderbookUpdates);
     }
 }
