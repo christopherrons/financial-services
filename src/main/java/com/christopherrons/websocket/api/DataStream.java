@@ -4,4 +4,6 @@ import java.util.Collection;
 
 public interface DataStream {
 
+    boolean isEmpty();
+
 }

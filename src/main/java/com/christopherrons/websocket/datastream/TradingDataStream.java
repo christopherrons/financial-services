@@ -77,6 +77,8 @@ public class TradingDataStream {
     }
 
     private void pushData(final String endPoint, final DataStream dataStream) {
-        messagingTemplate.convertAndSend(endPoint, dataStream);
+        if (dataStream.isEmpty()) {
+            messagingTemplate.convertAndSend(endPoint, dataStream);
+        }
     }
 }
