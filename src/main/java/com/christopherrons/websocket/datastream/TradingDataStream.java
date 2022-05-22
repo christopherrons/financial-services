@@ -1,4 +1,4 @@
-package com.christopherrons.websocket;
+package com.christopherrons.websocket.datastream;
 
 import com.christopherrons.common.broadcasts.MatchingEngineBroadcast;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
@@ -7,10 +7,10 @@ import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.marketdata.common.enums.event.OrderTypeEnum;
 import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
 import com.christopherrons.websocket.api.DataStream;
-import com.christopherrons.websocket.model.OrderDataStream;
-import com.christopherrons.websocket.model.OrderDataStreamItem;
-import com.christopherrons.websocket.model.TradeDataStream;
-import com.christopherrons.websocket.model.TradeDataStreamItem;
+import com.christopherrons.websocket.datastream.model.OrderDataStream;
+import com.christopherrons.websocket.datastream.model.OrderDataStreamItem;
+import com.christopherrons.websocket.datastream.model.TradeDataStream;
+import com.christopherrons.websocket.datastream.model.TradeDataStreamItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -41,7 +41,11 @@ public class TradingDataStream {
         List<MarketDataOrder> orders = orderEventBroadcast.getOrders();
         List<OrderDataStreamItem> orderDataStreamItems = new ArrayList<>();
         for (MarketDataOrder order : orders) {
-            orderDataStreamItems.add(createOrderDataStreamItem(order.getPrice(), order.getCurrentVolume(), order.getOrderType()));
+            orderDataStreamItems.add(createOrderDataStreamItem(
+                    order.getPrice(),
+                    order.getCurrentVolume(),
+                    order.getOrderType())
+            );
         }
         pushData(ORDER_BOOK_ENDPOINT, new OrderDataStream(orderDataStreamItems));
     }

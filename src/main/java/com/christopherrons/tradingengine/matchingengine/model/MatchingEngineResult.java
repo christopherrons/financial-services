@@ -11,11 +11,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MatchingEngineResult {
 
     private final List<MarketDataTrade> trades = new ArrayList<>();
-    private final Set<MarketDataOrder> orders = ConcurrentHashMap.newKeySet();
+    private final Set<MarketDataOrder> effectedOrders = ConcurrentHashMap.newKeySet();
 
 
     public boolean isEmpty() {
-        return trades.isEmpty() && orders.isEmpty();
+        return trades.isEmpty() && effectedOrders.isEmpty();
     }
 
     public void addTrade(final MarketDataTrade trade) {
@@ -23,9 +23,9 @@ public class MatchingEngineResult {
     }
 
     public void addOrder(final MarketDataOrder order) {
-        if (!orders.add(order)) {
-            orders.remove(order);
-            orders.add(order);
+        if (!effectedOrders.add(order)) {
+            effectedOrders.remove(order);
+            effectedOrders.add(order);
         }
     }
 
@@ -33,7 +33,7 @@ public class MatchingEngineResult {
         return trades;
     }
 
-    public List<MarketDataOrder> getOrders() {
-        return new ArrayList<>(orders);
+    public List<MarketDataOrder> getEffectedOrders() {
+        return new ArrayList<>(effectedOrders);
     }
 }

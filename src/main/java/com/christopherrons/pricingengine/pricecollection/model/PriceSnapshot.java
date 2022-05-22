@@ -1,20 +1,18 @@
 package com.christopherrons.pricingengine.pricecollection.model;
 
-import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-
 public class PriceSnapshot {
 
-    private final TradingPairEnum tradingPairEnum;
+    private final long orderbookId;
     private double bidPrice;
     private double askPrice;
     private double lastPrice;
 
-    public PriceSnapshot(TradingPairEnum tradingPairEnum) {
-        this.tradingPairEnum = tradingPairEnum;
+    public PriceSnapshot(long orderbookId) {
+        this.orderbookId = orderbookId;
     }
 
-    public TradingPairEnum getTradingPairEnum() {
-        return tradingPairEnum;
+    public long getOrderbookId() {
+        return orderbookId;
     }
 
     public double getBidPrice() {

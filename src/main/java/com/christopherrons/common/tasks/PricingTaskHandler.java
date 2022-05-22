@@ -1,6 +1,6 @@
 package com.christopherrons.common.tasks;
 
-import com.christopherrons.pricingengine.PricingService;
+import com.christopherrons.pricingengine.PricingEngineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,18 +14,18 @@ import java.util.logging.Logger;
 public class PricingTaskHandler {
 
     private static final Logger LOGGER = Logger.getLogger(PricingTaskHandler.class.getName());
-    private final PricingService pricingService;
+    private final PricingEngineService pricingEngineService;
 
     @Autowired
-    public PricingTaskHandler(PricingService pricingService) {
-        this.pricingService = pricingService;
+    public PricingTaskHandler(PricingEngineService pricingEngineService) {
+        this.pricingEngineService = pricingEngineService;
     }
 
     public void scheduledPriceCollectionTask() {
         ScheduledExecutorService createPriceCollectionSchedules = Executors.newScheduledThreadPool(1);
         createPriceCollectionSchedules.scheduleAtFixedRate(() -> {
                     try {
-                        pricingService.createPriceCollection();
+                        pricingEngineService.createPriceCollection();
                     } catch (IOException e) {
                         LOGGER.warning("Could not create price collection: " + e);
                     }

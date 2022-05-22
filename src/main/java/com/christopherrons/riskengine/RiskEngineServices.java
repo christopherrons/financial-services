@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.logging.Logger;
 
 @Service
-public class RiskServices {
+public class RiskEngineServices {
 
-    private static final Logger LOGGER = Logger.getLogger(RiskServices.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RiskEngineServices.class.getName());
 
     @Autowired
     private RefDataService refDataService;

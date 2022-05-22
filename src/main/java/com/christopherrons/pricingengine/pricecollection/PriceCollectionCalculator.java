@@ -32,7 +32,7 @@ public class PriceCollectionCalculator {
 
     private PriceCollectionItem createPriceCollectionItem(final PriceSnapshot snapshot) {
         return new PriceCollectionItem(
-                snapshot.getTradingPairEnum(),
+                snapshot.getOrderbookId(),
                 calculateMarginPrice(snapshot)
         );
     }

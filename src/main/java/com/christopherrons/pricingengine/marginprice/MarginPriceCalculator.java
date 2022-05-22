@@ -14,18 +14,18 @@ public class MarginPriceCalculator {
 
 
     public MarginPrice calculateMarginPrice(final PriceSnapshot snapshot) {
-        TradingPairEnum tradingPairEnum = snapshot.getTradingPairEnum();
+        long orderbookId = snapshot.getOrderbookId();
 
-        Optional<MarginPrice> marginPrice = MarginPriceLastTraded.createMarginPriceLastTraded(tradingPairEnum, snapshot.getLastPrice());
+        Optional<MarginPrice> marginPrice = MarginPriceLastTraded.createMarginPriceLastTraded(orderbookId, snapshot.getLastPrice());
         if (marginPrice.isPresent()) {
             return marginPrice.get();
         }
 
-        marginPrice = createMarginPriceMidBidAsk(tradingPairEnum, snapshot.getAskPrice(), snapshot.getBidPrice());
+        marginPrice = createMarginPriceMidBidAsk(orderbookId, snapshot.getAskPrice(), snapshot.getBidPrice());
         //TODO: Add historical and theoretical
 
         return marginPrice.orElseGet(() -> new MarginPrice(
-                tradingPairEnum,
+                orderbookId,
                 0,
                 MarginPriceMethodEnum.NOT_SET));
 

@@ -201,7 +201,7 @@ class FifoOrderBookTest {
         assertEquals(101, fifoOrderBook.getBestAskPrice());
         assertEquals(0, fifoOrderBook.getBestBidPrice());
         assertEquals(2, matchingEngineResult.getTrades().size());
-        assertEquals(3, matchingEngineResult.getOrders().size());
+        assertEquals(3, matchingEngineResult.getEffectedOrders().size());
         assertNotEquals(matchingEngineResult.getTrades().get(0).getTradeId(), matchingEngineResult.getTrades().get(1).getTradeId());
     }
 

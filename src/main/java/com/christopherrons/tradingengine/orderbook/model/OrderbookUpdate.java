@@ -7,14 +7,13 @@ import java.util.List;
 
 public class OrderbookUpdate {
 
-    private final List<MatchingEngineResult> matchingEngineResults = new ArrayList<>();
     private double bestBid = 0;
     private double bestAsk = 0;
 
+    private long orderbookId;
 
-
-    public void addMatchingResult(final MatchingEngineResult matchingEngineResult) {
-        matchingEngineResults.add(matchingEngineResult);
+    public OrderbookUpdate(long orderbookId) {
+        this.orderbookId = orderbookId;
     }
 
     public void setBestBidPrice(double bestBid) {
@@ -23,5 +22,17 @@ public class OrderbookUpdate {
 
     public void setBestAskPrice(double bestAsk) {
         this.bestAsk = bestAsk;
+    }
+
+    public long getOrderbookId() {
+        return orderbookId;
+    }
+
+    public double getBestBid() {
+        return bestBid;
+    }
+
+    public double getBestAsk() {
+        return bestAsk;
     }
 }

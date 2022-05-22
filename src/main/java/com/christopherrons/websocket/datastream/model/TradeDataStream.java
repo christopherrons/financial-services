@@ -1,4 +1,4 @@
-package com.christopherrons.websocket.model;
+package com.christopherrons.websocket.datastream.model;
 
 import com.christopherrons.websocket.api.DataStream;
 
