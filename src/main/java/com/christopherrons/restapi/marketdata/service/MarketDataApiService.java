@@ -3,18 +3,19 @@ package com.christopherrons.restapi.marketdata.service;
 import com.christopherrons.marketdata.MarketDataService;
 import com.christopherrons.marketdata.api.MarketDataWebsocketClient;
 import com.christopherrons.marketdata.bitstamp.client.BitstampWebsocketClient;
-import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.SubscriptionOperation;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.common.model.ApiOrder;
+import com.christopherrons.marketdata.common.model.ApiTrade;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableChannelsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableMarketDataFeedDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableTradingPairsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiSubscriptionDto;
 import com.christopherrons.restapi.marketdata.requests.ApiOrderRequest;
 import com.christopherrons.restapi.marketdata.requests.ApiSubscriptionRequest;
-import com.christopherrons.restapi.marketdata.requests.utils.MarketDataRequestValidatorUtil;
+import com.christopherrons.restapi.marketdata.requests.ApiTradeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class MarketDataApiService {
 
     private static final Logger LOGGER = Logger.getLogger(MarketDataApiService.class.getName());
 
-    private final Map<MargetDataFeedEnum, MarketDataWebsocketClient> dataFeedToWebsocketClient = new ConcurrentHashMap<>();
+    private final Map<MarketDataFeedEnum, MarketDataWebsocketClient> dataFeedToWebsocketClient = new ConcurrentHashMap<>();
 
     @Autowired
     private MarketDataService marketDataService;
@@ -37,21 +38,19 @@ public class MarketDataApiService {
 
     @Autowired
     public MarketDataApiService(BitstampWebsocketClient bitstampWebsocketClient) {
-        dataFeedToWebsocketClient.putIfAbsent(MargetDataFeedEnum.BITSTAMP, bitstampWebsocketClient);
+        dataFeedToWebsocketClient.putIfAbsent(MarketDataFeedEnum.BITSTAMP, bitstampWebsocketClient);
     }
 
     public ApiAvailableMarketDataFeedDto getAvailableMarketDataFeed() {
-        return new ApiAvailableMarketDataFeedDto(MargetDataFeedEnum.getDataFeedNames());
+        return new ApiAvailableMarketDataFeedDto(MarketDataFeedEnum.getDataFeedNames());
     }
 
-    public ApiAvailableTradingPairsDto getAvailableTradingPairs(final String exchangeName) {
-        MargetDataFeedEnum margetDataFeedEnum = MarketDataRequestValidatorUtil.extractAndValidateMarketDataFeedName(exchangeName);
-        return new ApiAvailableTradingPairsDto(TradingPairEnum.getAvailableTradingPairsByDataFeed(margetDataFeedEnum));
+    public ApiAvailableTradingPairsDto getAvailableTradingPairs(final MarketDataFeedEnum marketDataFeedEnum) {
+        return new ApiAvailableTradingPairsDto(TradingPairEnum.getAvailableTradingPairsByDataFeed(marketDataFeedEnum));
     }
 
-    public ApiAvailableChannelsDto getAvailableChannels(final String exchangeName) {
-        MargetDataFeedEnum margetDataFeedEnum = MarketDataRequestValidatorUtil.extractAndValidateMarketDataFeedName(exchangeName);
-        return new ApiAvailableChannelsDto(ChannelEnum.getAvailableChannelNamesByDataFeed(margetDataFeedEnum));
+    public ApiAvailableChannelsDto getAvailableChannels(final MarketDataFeedEnum marketDataFeedEnum) {
+        return new ApiAvailableChannelsDto(ChannelEnum.getAvailableChannelNamesByDataFeed(marketDataFeedEnum));
     }
 
     public ApiSubscriptionDto subscribeRequest(final ApiSubscriptionRequest subscriptionRequest) throws DeploymentException, IOException, InterruptedException {
@@ -67,10 +66,8 @@ public class MarketDataApiService {
     }
 
     private ApiSubscriptionDto subscriptionRequest(final ApiSubscriptionRequest subscriptionRequest, final SubscriptionOperation subscriptionOperation) throws DeploymentException, IOException, InterruptedException {
-        MargetDataFeedEnum margetDataFeedEnum = MarketDataRequestValidatorUtil.extractAndValidateMarketDataFeedName(subscriptionRequest.getDataFeedName());
-        TradingPairEnum tradingPairEnum = MarketDataRequestValidatorUtil.extractAndValidateTradingPair(subscriptionRequest.getTradingPair(), margetDataFeedEnum);
-        ChannelEnum channelEnum = MarketDataRequestValidatorUtil.extractAndValidateChannelName(subscriptionRequest.getChannelName(), margetDataFeedEnum);
-        boolean isSubscribed = handleSubscription(dataFeedToWebsocketClient.get(margetDataFeedEnum), tradingPairEnum, channelEnum, subscriptionOperation);
+        boolean isSubscribed = handleSubscription(dataFeedToWebsocketClient.get(subscriptionRequest.getDataFeedName()),
+                subscriptionRequest.getTradingPair(), subscriptionRequest.getChannelName(), subscriptionOperation);
         return new ApiSubscriptionDto(isSubscribed);
     }
 
@@ -101,11 +98,10 @@ public class MarketDataApiService {
     }
 
     public void pushOrder(final ApiOrderRequest apiOrderRequest) {
-        marketDataService.handleEvent(new ApiOrder(
-                apiOrderRequest.getPrice(),
-                apiOrderRequest.getVolume(),
-                apiOrderRequest.getOrderType().getValue(),
-                apiOrderRequest.getOrderOperation()
-        ));
+        marketDataService.handleEvent(new ApiOrder(apiOrderRequest));
+    }
+
+    public void pushTrade(final ApiTradeRequest apiTradeRequest) {
+        marketDataService.handleEvent(new ApiTrade(apiTradeRequest));
     }
 }

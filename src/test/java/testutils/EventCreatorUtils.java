@@ -14,27 +14,27 @@ import static com.christopherrons.refdata.participant.utils.UserGeneratorUtils.g
 
 public class EventCreatorUtils {
 
-    public static MarketDataOrder buildMarketDataOrderCreate(MargetDataFeedEnum margetDataFeedEnum,
+    public static MarketDataOrder buildMarketDataOrderCreate(MarketDataFeedEnum marketDataFeedEnum,
                                                              long timeStampInMs,
                                                              double price,
                                                              double volume,
                                                              OrderTypeEnum orderTypeEnum,
                                                              long orderId) {
-        return buildMarketDataOrder(margetDataFeedEnum, OrderOperationEnum.CREATE, EventDescriptionEnum.ORDER_CREATED,
+        return buildMarketDataOrder(marketDataFeedEnum, OrderOperationEnum.CREATE, EventDescriptionEnum.ORDER_CREATED,
                 timeStampInMs, price, volume, orderTypeEnum, orderId);
     }
 
-    public static MarketDataOrder buildMarketDataOrderRemove(MargetDataFeedEnum margetDataFeedEnum,
+    public static MarketDataOrder buildMarketDataOrderRemove(MarketDataFeedEnum marketDataFeedEnum,
                                                              long timeStampInMs,
                                                              double price,
                                                              double volume,
                                                              OrderTypeEnum orderTypeEnum,
                                                              long orderId) {
-        return buildMarketDataOrder(margetDataFeedEnum, OrderOperationEnum.DELETE, EventDescriptionEnum.ORDER_DELETED,
+        return buildMarketDataOrder(marketDataFeedEnum, OrderOperationEnum.DELETE, EventDescriptionEnum.ORDER_DELETED,
                 timeStampInMs, price, volume, orderTypeEnum, orderId);
     }
 
-    public static MarketDataOrder buildMarketDataOrder(MargetDataFeedEnum margetDataFeedEnum,
+    public static MarketDataOrder buildMarketDataOrder(MarketDataFeedEnum marketDataFeedEnum,
                                                        OrderOperationEnum orderOperationEnum,
                                                        EventDescriptionEnum eventDescriptionEnum,
                                                        long timeStampInMs,
@@ -42,9 +42,9 @@ public class EventCreatorUtils {
                                                        double volume,
                                                        OrderTypeEnum orderTypeEnum,
                                                        long orderId) {
-        return new Order(margetDataFeedEnum,
+        return new Order(marketDataFeedEnum,
                 orderOperationEnum,
-                new Participant(new Member(margetDataFeedEnum.getName()), generateUser()),
+                new Participant(new Member(marketDataFeedEnum.getName()), generateUser()),
                 orderId,
                 orderTypeEnum.getValue(),
                 volume,

@@ -4,24 +4,24 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum EventDescriptionEnum {
-    INVALID_EVENT_DESCRIPTION(MargetDataFeedEnum.INVALID_DATA_FEED, "none"),
-    ORDER_CREATED(MargetDataFeedEnum.BITSTAMP, "order_created"),
-    ORDER_DELETED(MargetDataFeedEnum.BITSTAMP, "order_deleted"),
-    ORDER_UPDATED(MargetDataFeedEnum.BITSTAMP, "order_changed"),
-    TRADE(MargetDataFeedEnum.BITSTAMP, "trade"),
-    SUBSCRIPTION_SUCCEEDED(MargetDataFeedEnum.BITSTAMP, "bts:subscription_succeeded"),
-    FORCED_RECONNECT(MargetDataFeedEnum.BITSTAMP, "bts:request_reconnect");
+    INVALID_EVENT_DESCRIPTION(MarketDataFeedEnum.INVALID_DATA_FEED, "none"),
+    ORDER_CREATED(MarketDataFeedEnum.BITSTAMP, "order_created"),
+    ORDER_DELETED(MarketDataFeedEnum.BITSTAMP, "order_deleted"),
+    ORDER_UPDATED(MarketDataFeedEnum.BITSTAMP, "order_changed"),
+    TRADE(MarketDataFeedEnum.BITSTAMP, "trade"),
+    SUBSCRIPTION_SUCCEEDED(MarketDataFeedEnum.BITSTAMP, "bts:subscription_succeeded"),
+    FORCED_RECONNECT(MarketDataFeedEnum.BITSTAMP, "bts:request_reconnect");
 
-    private final MargetDataFeedEnum margetDataFeedEnum;
+    private final MarketDataFeedEnum marketDataFeedEnum;
     private final String eventDescription;
 
-    EventDescriptionEnum(MargetDataFeedEnum margetDataFeedEnum, String eventDescription) {
-        this.margetDataFeedEnum = margetDataFeedEnum;
+    EventDescriptionEnum(MarketDataFeedEnum marketDataFeedEnum, String eventDescription) {
+        this.marketDataFeedEnum = marketDataFeedEnum;
         this.eventDescription = eventDescription;
     }
 
-    public static EventDescriptionEnum inferEventDescriptionEnum(final String eventDescription, final MargetDataFeedEnum margetDataFeedEnum) {
-        for (EventDescriptionEnum eventDescriptionEnum : getAvailableExchangeEventDescriptionEnums(margetDataFeedEnum)) {
+    public static EventDescriptionEnum inferEventDescriptionEnum(final String eventDescription, final MarketDataFeedEnum marketDataFeedEnum) {
+        for (EventDescriptionEnum eventDescriptionEnum : getAvailableExchangeEventDescriptionEnums(marketDataFeedEnum)) {
             if (eventDescription.contains(eventDescriptionEnum.getEventDescription())) {
                 return eventDescriptionEnum;
             }
@@ -29,23 +29,23 @@ public enum EventDescriptionEnum {
         return INVALID_EVENT_DESCRIPTION;
     }
 
-    public static List<String> getAvailableExchangeEventDescriptions(final MargetDataFeedEnum margetDataFeedEnum) {
+    public static List<String> getAvailableExchangeEventDescriptions(final MarketDataFeedEnum marketDataFeedEnum) {
         return Arrays.stream(EventDescriptionEnum.values())
                 .filter(eventDescriptionEnum -> !eventDescriptionEnum.equals(EventDescriptionEnum.INVALID_EVENT_DESCRIPTION))
-                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataFeedEnum))
+                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(marketDataFeedEnum))
                 .map(EventDescriptionEnum::getEventDescription)
                 .toList();
     }
 
-    public static List<EventDescriptionEnum> getAvailableExchangeEventDescriptionEnums(final MargetDataFeedEnum margetDataFeedEnum) {
+    public static List<EventDescriptionEnum> getAvailableExchangeEventDescriptionEnums(final MarketDataFeedEnum marketDataFeedEnum) {
         return Arrays.stream(EventDescriptionEnum.values())
                 .filter(eventDescriptionEnum -> !eventDescriptionEnum.equals(EventDescriptionEnum.INVALID_EVENT_DESCRIPTION))
-                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(margetDataFeedEnum))
+                .filter(eventDescriptionEnum -> eventDescriptionEnum.getExchangeEnum().equals(marketDataFeedEnum))
                 .toList();
     }
 
-    public MargetDataFeedEnum getExchangeEnum() {
-        return margetDataFeedEnum;
+    public MarketDataFeedEnum getExchangeEnum() {
+        return marketDataFeedEnum;
     }
 
     public String getEventDescription() {

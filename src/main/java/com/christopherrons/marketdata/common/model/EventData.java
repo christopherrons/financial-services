@@ -3,13 +3,13 @@ package com.christopherrons.marketdata.common.model;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
-import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.refdata.instrument.api.Instrument;
 
 public class EventData implements MarketDataEvent {
-    private final MargetDataFeedEnum margetDataFeedEnum;
+    private final MarketDataFeedEnum marketDataFeedEnum;
     private final EventDescriptionEnum eventDescriptionEnum;
     private final ChannelEnum channelEnum;
     private final EventTypeEnum eventTypeEnum;
@@ -17,17 +17,17 @@ public class EventData implements MarketDataEvent {
     private final String orderbookId;
     private final Instrument instrument;
 
-    public EventData(MargetDataFeedEnum margetDataFeedEnum,
+    public EventData(MarketDataFeedEnum marketDataFeedEnum,
                      EventDescriptionEnum eventDescriptionEnum,
                      ChannelEnum channelEnum,
                      EventTypeEnum eventTypeEnum,
                      long timeStampInMs,
                      Instrument instrument) {
-        this.margetDataFeedEnum = margetDataFeedEnum;
+        this.marketDataFeedEnum = marketDataFeedEnum;
         this.eventDescriptionEnum = eventDescriptionEnum;
         this.channelEnum = channelEnum;
         this.eventTypeEnum = eventTypeEnum;
-        this.orderbookId = String.format("%s-%s", margetDataFeedEnum.getName(), instrument.getTradingPairEnum().getName()); //TODO: Not correct must be Feed-TradingPair-Type
+        this.orderbookId = String.format("%s-%s", marketDataFeedEnum.getName(), instrument.getTradingPairEnum().getName()); //TODO: Not correct must be Feed-TradingPair-Type
         this.timeStampInMs = timeStampInMs;
         this.instrument = instrument;
     }
@@ -43,8 +43,8 @@ public class EventData implements MarketDataEvent {
     }
 
     @Override
-    public MargetDataFeedEnum getMarketDataEnum() {
-        return margetDataFeedEnum;
+    public MarketDataFeedEnum getMarketDataEnum() {
+        return marketDataFeedEnum;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class EventData implements MarketDataEvent {
     @Override
     public String toString() {
         return "EventData{" +
-                "margetDataEnum=" + margetDataFeedEnum +
+                "margetDataEnum=" + marketDataFeedEnum +
                 ", eventDescriptionEnum=" + eventDescriptionEnum +
                 ", channelEnum=" + channelEnum +
                 ", eventTypeEnum=" + eventTypeEnum +

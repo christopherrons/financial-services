@@ -1,15 +1,17 @@
 package com.christopherrons.restapi.marketdata.controller;
 
+import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
 import com.christopherrons.marketdata.common.enums.event.OrderTypeEnum;
+import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
+import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
+import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableChannelsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableMarketDataFeedDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableTradingPairsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiSubscriptionDto;
-import com.christopherrons.restapi.marketdata.requests.ApiAvailableChannelRequest;
-import com.christopherrons.restapi.marketdata.requests.ApiAvailableTradingPairsRequest;
-import com.christopherrons.restapi.marketdata.requests.ApiOrderRequest;
-import com.christopherrons.restapi.marketdata.requests.ApiSubscriptionRequest;
+import com.christopherrons.restapi.marketdata.requests.*;
 import com.christopherrons.restapi.marketdata.service.MarketDataApiService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class MarketDataApiController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataFeedName", dataTypeClass = String.class, value = "The name of the data feed", example = "bitstamp", defaultValue = "Bitstamp", required = true),
+            @ApiImplicitParam(name = "dataFeedName", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
     })
     public ApiAvailableTradingPairsDto subscriptionTradingPairsRequestPost(final ApiAvailableTradingPairsRequest availableTradingPairsRequest) {
         LOGGER.info(String.format("Post request Available Trading Pairs received: %s.", availableTradingPairsRequest));
@@ -59,7 +61,7 @@ public class MarketDataApiController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataFeedName", dataTypeClass = String.class, value = "The name of the data feed", example = "bitstamp", defaultValue = "Bitstamp", required = true),
+            @ApiImplicitParam(name = "dataFeedName", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
     })
     public ApiAvailableChannelsDto postSubscriptionTradingPairsRequest(final ApiAvailableChannelRequest apiAvailableChannelRequest) {
         LOGGER.info(String.format("Post request Available Trading Pairs received: %s.", apiAvailableChannelRequest));
@@ -73,9 +75,9 @@ public class MarketDataApiController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataFeedName", value = "The name of the data feed", example = "bitstamp", defaultValue = "bitstamp", required = true, dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "tradingPair", value = "The name of trading pair", example = "xrpusd", defaultValue = "xrpusd", required = true, dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "channelName", value = "The name of channel", example = "live_orders", defaultValue = "live_orders", required = true, dataTypeClass = String.class, paramType = "query")
+            @ApiImplicitParam(name = "dataFeedName", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "tradingPair", required = true, dataTypeClass = TradingPairEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "channelName", required = true, dataTypeClass = ChannelEnum.class, paramType = "query")
     })
     public ApiSubscriptionDto postSubscribeToChannelRequest(final ApiSubscriptionRequest subscriptionRequest) throws DeploymentException, IOException, InterruptedException {
         LOGGER.info(String.format("Post request Subscribe To Channel received: %s.", subscriptionRequest.toString()));
@@ -89,9 +91,9 @@ public class MarketDataApiController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataFeedName", value = "The name of the data feed", example = "bitstamp", required = true, dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "tradingPair", value = "The name of trading pair", example = "xrpusd", required = true, dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "channelName", value = "The name of channel", example = "live_orders", defaultValue = "live_orders", required = true, dataTypeClass = String.class, paramType = "query")
+            @ApiImplicitParam(name = "dataFeedName", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "tradingPair", required = true, dataTypeClass = TradingPairEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "channelName", required = true, dataTypeClass = ChannelEnum.class, paramType = "query")
     })
     public ApiSubscriptionDto postUnsubscribeToChannelRequest(final ApiSubscriptionRequest subscriptionRequest) throws DeploymentException, IOException, InterruptedException {
         LOGGER.info(String.format("Post request Unsubscribe To Channel received: %s.", subscriptionRequest.toString()));
@@ -105,9 +107,9 @@ public class MarketDataApiController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataFeedName", value = "The name of the data ffed", example = "bitstamp", required = true, dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "tradingPair", value = "The name of trading pair", example = "xrpusd", required = true, dataTypeClass = String.class, paramType = "query"),
-            @ApiImplicitParam(name = "channelName", value = "The name of channel", example = "live_orders", defaultValue = "live_orders", required = true, dataTypeClass = String.class, paramType = "query")
+            @ApiImplicitParam(name = "dataFeedName", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "tradingPair", required = true, dataTypeClass = TradingPairEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "channelName", required = true, dataTypeClass = ChannelEnum.class, paramType = "query")
     })
     public ApiSubscriptionDto postIsSubscribedRequest(final ApiSubscriptionRequest subscriptionRequest) throws DeploymentException, IOException, InterruptedException {
         LOGGER.info(String.format("Post request is subscribed: %s.", subscriptionRequest.toString()));
@@ -116,7 +118,7 @@ public class MarketDataApiController {
 
 
     @PostMapping(value = "/createOrder")
-    @ApiOperation(value = "Send basic order",
+    @ApiOperation(value = "Send basic order.",
             notes = "This methods sends a order into the system.")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -124,13 +126,39 @@ public class MarketDataApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "price", value = "Price of the order", example = "100.05", required = true, dataTypeClass = Double.class, paramType = "query"),
             @ApiImplicitParam(name = "volume", value = "Volume of the order", example = "99.1", required = true, dataTypeClass = Double.class, paramType = "query"),
-            @ApiImplicitParam(name = "orderType", required = true, dataTypeClass = OrderTypeEnum.class, paramType = "query"),
-            @ApiImplicitParam(name = "orderOperation", required = true, dataTypeClass = OrderOperationEnum.class, paramType = "query")
-
+            @ApiImplicitParam(name = "orderType", defaultValue = "BUY", required = true, dataTypeClass = OrderTypeEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "orderOperation", defaultValue = "CREATE", required = true, dataTypeClass = OrderOperationEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "marketDataFeed", defaultValue = "BITSTAMP", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "tradingPair", defaultValue = "BTC_USD", required = true, dataTypeClass = TradingPairEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "channel", defaultValue = "LIVE_ORDERS", required = true, dataTypeClass = ChannelEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "eventDescription", defaultValue = "ORDER_CREATED", required = true, dataTypeClass = EventDescriptionEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "instrumentType", defaultValue = "STOCK", required = true, dataTypeClass = InstrumentTypeEnum.class, paramType = "query")
     })
     public ApiSubscriptionDto postOrder(final ApiOrderRequest orderRequest) {
         LOGGER.info(String.format("Post request order : %s.", orderRequest.toString()));
         marketDataApiService.pushOrder(orderRequest);
+        return null;
+    }
+
+    @PostMapping(value = "/createTrade")
+    @ApiOperation(value = "Send basic trade.",
+            notes = "This methods sends a trade into the system.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Bad Request"),
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "price", value = "Price of the order", example = "100.05", required = true, dataTypeClass = Double.class, paramType = "query"),
+            @ApiImplicitParam(name = "volume", value = "Volume of the order", example = "99.1", required = true, dataTypeClass = Double.class, paramType = "query"),
+            @ApiImplicitParam(name = "bidSideAggressor", defaultValue = "true", required = true, dataTypeClass = Boolean.class, paramType = "query"),
+            @ApiImplicitParam(name = "marketDataFeed", defaultValue = "BITSTAMP", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "tradingPair", defaultValue = "BTC_USD", required = true, dataTypeClass = TradingPairEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "channel", defaultValue = "LIVE_ORDERS", required = true, dataTypeClass = ChannelEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "eventDescription", defaultValue = "TRADE", required = true, dataTypeClass = EventDescriptionEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "instrumentType", defaultValue = "STOCK", required = true, dataTypeClass = InstrumentTypeEnum.class, paramType = "query")
+    })
+    public ApiSubscriptionDto postTrade(final ApiTradeRequest tradeRequest) {
+        LOGGER.info(String.format("Post request order : %s.", tradeRequest.toString()));
+        marketDataApiService.pushTrade(tradeRequest);
         return null;
     }
 }

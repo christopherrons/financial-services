@@ -23,8 +23,7 @@ public class RefDataApiService {
         return new ApiAvailableInstrumentTypesDto(InstrumentTypeEnum.getInstrumentType());
     }
 
-    public ApiAvailableInstrumentsByTypeDto getAvailableInstrumentsByType(final String instrumentTypeName) {
-        InstrumentTypeEnum instrumentTypeEnum = RefDataRequestValidatorUtil.extractAndValidateInstrumentType(instrumentTypeName);
+    public ApiAvailableInstrumentsByTypeDto getAvailableInstrumentsByType(final InstrumentTypeEnum instrumentTypeEnum) {
         return new ApiAvailableInstrumentsByTypeDto(refDataService.getInstrumentsByType(instrumentTypeEnum));
     }
 }

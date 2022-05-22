@@ -2,23 +2,20 @@ package com.christopherrons.restapi.marketdata.requests;
 
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
-import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
-import com.christopherrons.marketdata.common.enums.event.OrderTypeEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 
-public class ApiOrderRequest {
+public class ApiTradeRequest {
 
     private MarketDataFeedEnum marketDataFeed;
     private TradingPairEnum tradingPair;
     private double price;
     private double volume;
-    private OrderTypeEnum orderType;
-    private OrderOperationEnum orderOperation;
     private ChannelEnum channel;
     private EventDescriptionEnum eventDescription;
     private InstrumentTypeEnum instrumentType;
+    private boolean bidSideAggressor;
 
 
     public MarketDataFeedEnum getMarketDataFeed() {
@@ -53,22 +50,6 @@ public class ApiOrderRequest {
         this.volume = volume;
     }
 
-    public OrderTypeEnum getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(OrderTypeEnum orderType) {
-        this.orderType = orderType;
-    }
-
-    public OrderOperationEnum getOrderOperation() {
-        return orderOperation;
-    }
-
-    public void setOrderOperation(OrderOperationEnum orderOperation) {
-        this.orderOperation = orderOperation;
-    }
-
     public ChannelEnum getChannel() {
         return channel;
     }
@@ -91,5 +72,13 @@ public class ApiOrderRequest {
 
     public void setInstrumentType(InstrumentTypeEnum instrumentType) {
         this.instrumentType = instrumentType;
+    }
+
+    public boolean isBidSideAggressor() {
+        return bidSideAggressor;
+    }
+
+    public void setBidSideAggressor(boolean bidSideAggressor) {
+        this.bidSideAggressor = bidSideAggressor;
     }
 }

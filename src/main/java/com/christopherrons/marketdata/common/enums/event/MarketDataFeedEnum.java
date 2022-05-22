@@ -10,31 +10,31 @@ import static java.util.Arrays.stream;
 import static java.util.function.UnaryOperator.identity;
 import static java.util.stream.Collectors.toMap;
 
-public enum MargetDataFeedEnum {
+public enum MarketDataFeedEnum {
     INVALID_DATA_FEED("none", "none"),
     BITSTAMP("bitstamp", "wss://ws.bitstamp.net");
 
-    private static final Map<String, MargetDataFeedEnum> VALUES_BY_IDENTIFIER =
-            stream(MargetDataFeedEnum.values()).collect(toMap(MargetDataFeedEnum::getName, identity()));
+    private static final Map<String, MarketDataFeedEnum> VALUES_BY_IDENTIFIER =
+            stream(MarketDataFeedEnum.values()).collect(toMap(MarketDataFeedEnum::getName, identity()));
     private final String name;
     private final String uri;
 
-    MargetDataFeedEnum(String name, String uri) {
+    MarketDataFeedEnum(String name, String uri) {
         this.name = name;
         this.uri = uri;
     }
 
-    public static MargetDataFeedEnum fromName(String name) {
+    public static MarketDataFeedEnum fromName(String name) {
         return VALUES_BY_IDENTIFIER.getOrDefault(name.toLowerCase(), INVALID_DATA_FEED);
     }
 
     public static List<String> getDataFeedNames() {
         List<String> dataFeedNames = new ArrayList<>();
-        for (MargetDataFeedEnum margetDataFeedEnum : MargetDataFeedEnum.values()) {
-            if (margetDataFeedEnum.equals(MargetDataFeedEnum.INVALID_DATA_FEED)) {
+        for (MarketDataFeedEnum marketDataFeedEnum : MarketDataFeedEnum.values()) {
+            if (marketDataFeedEnum.equals(MarketDataFeedEnum.INVALID_DATA_FEED)) {
                 continue;
             }
-            dataFeedNames.add(margetDataFeedEnum.getName());
+            dataFeedNames.add(marketDataFeedEnum.getName());
         }
         return dataFeedNames;
     }

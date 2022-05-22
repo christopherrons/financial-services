@@ -4,6 +4,7 @@ import com.christopherrons.common.broadcasts.MatchingEngineBroadcast;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataTrade;
+import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
 import com.christopherrons.marketdata.common.enums.event.OrderTypeEnum;
 import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
 import com.christopherrons.websocket.api.DataStream;
@@ -44,7 +45,8 @@ public class TradingDataStream {
             orderDataStreamItems.add(createOrderDataStreamItem(
                     order.getPrice(),
                     order.getCurrentVolume(),
-                    order.getOrderType())
+                    order.getOrderType(),
+                    order.getOrderOperationEnum())
             );
         }
         pushData(ORDER_BOOK_ENDPOINT, new OrderDataStream(orderDataStreamItems));
@@ -69,7 +71,8 @@ public class TradingDataStream {
                                     final List<MarketDataTrade> trades) {
         for (MarketDataTrade trade : trades) {
             tradeDataStreamItems.add(createTradeDataStreamItem(trade.getPrice(), trade.getVolume(), trade.isBidSideAggressor()));
-            orderDataStreamItems.add(createOrderDataStreamItem(trade.getPrice(), -trade.getVolume(), OrderTypeEnum.INVALID_ORDER_TYPE.getValue()));
+            orderDataStreamItems.add(createOrderDataStreamItem(trade.getPrice(), trade.getVolume(),
+                    OrderTypeEnum.INVALID_ORDER_TYPE.getValue(), OrderOperationEnum.DELETE));
         }
     }
 

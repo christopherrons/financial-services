@@ -3,7 +3,7 @@ package com.christopherrons.marketdata.api;
 import com.christopherrons.common.api.HasTimeStamp;
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
-import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.refdata.instrument.api.Instrument;
@@ -16,7 +16,7 @@ public interface MarketDataEvent extends HasTimeStamp {
 
     ChannelEnum getChannelEnum();
 
-    MargetDataFeedEnum getMarketDataEnum();
+    MarketDataFeedEnum getMarketDataEnum();
 
     EventDescriptionEnum getEventDescriptionEnum();
 

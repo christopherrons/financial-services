@@ -3,7 +3,7 @@ package com.christopherrons.marketdata.common.model;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
-import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
@@ -24,7 +24,7 @@ public class Order implements MarketDataOrder {
     private final double price;
 
 
-    public Order(MargetDataFeedEnum margetDataFeedEnum,
+    public Order(MarketDataFeedEnum marketDataFeedEnum,
                  OrderOperationEnum orderOperationEnum,
                  Participant participant,
                  long orderId,
@@ -46,7 +46,7 @@ public class Order implements MarketDataOrder {
         this.price = price;
 
         this.eventData = new EventData(
-                margetDataFeedEnum,
+                marketDataFeedEnum,
                 eventDescriptionEnum,
                 channelEnum,
                 eventTypeEnum,
@@ -76,7 +76,7 @@ public class Order implements MarketDataOrder {
     }
 
     @Override
-    public MargetDataFeedEnum getMarketDataEnum() {
+    public MarketDataFeedEnum getMarketDataEnum() {
         return eventData.getMarketDataEnum();
     }
 

@@ -1,7 +1,7 @@
 package com.christopherrons.marketdata.common.cache;
 
 import com.christopherrons.marketdata.api.MarketDataSubscription;
-import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 
@@ -18,8 +18,8 @@ public class WebsocketSubscriptionCache {
 
     private final Map<CompositeKey, MarketDataSubscription> keyToSubscription = new ConcurrentHashMap<>();
 
-    public void addSubscription(final MargetDataFeedEnum margetDataFeedEnum, final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum, final MarketDataSubscription subscription) {
-        CompositeKey key = new CompositeKey(margetDataFeedEnum, tradingPairEnum, channelEnum);
+    public void addSubscription(final MarketDataFeedEnum marketDataFeedEnum, final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum, final MarketDataSubscription subscription) {
+        CompositeKey key = new CompositeKey(marketDataFeedEnum, tradingPairEnum, channelEnum);
         if (keyToSubscription.containsKey(key)) {
             LOGGER.info(String.format("Subscription %s_%s already added to cache.", channelEnum.getChannelName(), tradingPairEnum.getName()));
         } else {
@@ -28,13 +28,13 @@ public class WebsocketSubscriptionCache {
         }
     }
 
-    public Optional<MarketDataSubscription> getSubscription(final MargetDataFeedEnum margetDataFeedEnum, final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) {
-        CompositeKey key = new CompositeKey(margetDataFeedEnum, tradingPairEnum, channelEnum);
+    public Optional<MarketDataSubscription> getSubscription(final MarketDataFeedEnum marketDataFeedEnum, final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) {
+        CompositeKey key = new CompositeKey(marketDataFeedEnum, tradingPairEnum, channelEnum);
         LOGGER.info(String.format("Getting subscription %s_%s from cache.", channelEnum.getChannelName(), tradingPairEnum.getName()));
         return Optional.ofNullable(keyToSubscription.get(key));
     }
 
-    private record CompositeKey(MargetDataFeedEnum margetDataFeedEnum,
+    private record CompositeKey(MarketDataFeedEnum marketDataFeedEnum,
                                 TradingPairEnum tradingPairEnum,
                                 ChannelEnum channelEnum) {
 
@@ -42,12 +42,12 @@ public class WebsocketSubscriptionCache {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof CompositeKey that)) return false;
-            return margetDataFeedEnum == that.margetDataFeedEnum && tradingPairEnum == that.tradingPairEnum && channelEnum == that.channelEnum;
+            return marketDataFeedEnum == that.marketDataFeedEnum && tradingPairEnum == that.tradingPairEnum && channelEnum == that.channelEnum;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(margetDataFeedEnum, tradingPairEnum, channelEnum);
+            return Objects.hash(marketDataFeedEnum, tradingPairEnum, channelEnum);
         }
 
     }

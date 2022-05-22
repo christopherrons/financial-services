@@ -1,13 +1,15 @@
 package com.christopherrons.restapi.marketdata.requests;
 
-public class ApiAvailableChannelRequest {
-    private String dataFeedName;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 
-    public String getDataFeedName() {
+public class ApiAvailableChannelRequest {
+    private MarketDataFeedEnum dataFeedName;
+
+    public MarketDataFeedEnum getDataFeedName() {
         return dataFeedName;
     }
 
-    public void setDataFeedName(String dataFeedName) {
+    public void setDataFeedName(MarketDataFeedEnum dataFeedName) {
         this.dataFeedName = dataFeedName;
     }
 

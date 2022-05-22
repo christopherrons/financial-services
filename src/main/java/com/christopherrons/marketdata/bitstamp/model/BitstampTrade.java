@@ -2,7 +2,7 @@ package com.christopherrons.marketdata.bitstamp.model;
 
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
-import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.common.model.Trade;
@@ -41,9 +41,9 @@ public class BitstampTrade extends Trade {
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     BitstampTrade(@JsonProperty("data") Map<String, Object> data, @JsonProperty("channel") String channel, @JsonProperty("event") String event) {
-        super(MargetDataFeedEnum.BITSTAMP,
-                new Participant(new Member(MargetDataFeedEnum.BITSTAMP.getName()), generateUser()),
-                new Participant(new Member(MargetDataFeedEnum.BITSTAMP.getName()), generateUser()),
+        super(MarketDataFeedEnum.BITSTAMP,
+                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), generateUser()),
+                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), generateUser()),
                 !data.isEmpty() ? (int) data.get("id") : -1,
                 !data.isEmpty() ? (long) data.get("buy_order_id") : -1L,
                 !data.isEmpty() ? (long) data.get("sell_order_id") : -1L,
@@ -51,9 +51,9 @@ public class BitstampTrade extends Trade {
                 !data.isEmpty() ? Double.parseDouble((String) data.get("amount_str")) : -1.0,
                 !data.isEmpty() ? Double.parseDouble((String) data.get("price_str")) : -1.0,
                 !data.isEmpty() ? Long.parseLong((String) data.get("microtimestamp")) / 1000 : -1L,
-                Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.inferTradingPairEnum(channel, MargetDataFeedEnum.BITSTAMP)),
-                EventDescriptionEnum.inferEventDescriptionEnum(event, MargetDataFeedEnum.BITSTAMP),
-                ChannelEnum.inferChannelEnum(channel, MargetDataFeedEnum.BITSTAMP),
+                Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.inferTradingPairEnum(channel, MarketDataFeedEnum.BITSTAMP)),
+                EventDescriptionEnum.inferEventDescriptionEnum(event, MarketDataFeedEnum.BITSTAMP),
+                ChannelEnum.inferChannelEnum(channel, MarketDataFeedEnum.BITSTAMP),
                 EventTypeEnum.ORDER
         );
     }

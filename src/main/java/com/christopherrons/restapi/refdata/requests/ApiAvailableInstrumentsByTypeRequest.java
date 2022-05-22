@@ -1,14 +1,16 @@
 package com.christopherrons.restapi.refdata.requests;
 
+import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
+
 public class ApiAvailableInstrumentsByTypeRequest {
 
-    private String instrumentType;
+    private InstrumentTypeEnum instrumentType;
 
-    public String getInstrumentType() {
+    public InstrumentTypeEnum getInstrumentType() {
         return instrumentType;
     }
 
-    public void setInstrumentType(String instrumentType) {
+    public void setInstrumentType(InstrumentTypeEnum instrumentType) {
         this.instrumentType = instrumentType;
     }
 

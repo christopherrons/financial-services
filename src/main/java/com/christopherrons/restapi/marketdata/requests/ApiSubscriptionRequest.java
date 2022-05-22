@@ -1,31 +1,35 @@
 package com.christopherrons.restapi.marketdata.requests;
 
-public class ApiSubscriptionRequest {
-    private String dataFeedName;
-    private String tradingPair;
-    private String channelName;
+import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
+import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
+import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 
-    public String getChannelName() {
+public class ApiSubscriptionRequest {
+    private MarketDataFeedEnum dataFeedName;
+    private TradingPairEnum tradingPair;
+    private ChannelEnum channelName;
+
+    public ChannelEnum getChannelName() {
         return channelName;
     }
 
-    public void setChannelName(String channelName) {
+    public void setChannelName(ChannelEnum channelName) {
         this.channelName = channelName;
     }
 
-    public String getDataFeedName() {
+    public MarketDataFeedEnum getDataFeedName() {
         return dataFeedName;
     }
 
-    public void setDataFeedName(String dataFeedName) {
+    public void setDataFeedName(MarketDataFeedEnum dataFeedName) {
         this.dataFeedName = dataFeedName;
     }
 
-    public String getTradingPair() {
+    public TradingPairEnum getTradingPair() {
         return tradingPair;
     }
 
-    public void setTradingPair(String tradingPair) {
+    public void setTradingPair(TradingPairEnum tradingPair) {
         this.tradingPair = tradingPair;
     }
 
