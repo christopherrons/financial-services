@@ -47,7 +47,7 @@ public class MarketDataService {
         List<MarketDataTrade> trades = new ArrayList<>();
         for (MarketDataEvent event : events) {
             switch (event.getEventTypeEnum()) {
-                case ORDER -> orders.add((MarketDataOrder) event);
+                case ORDER -> orders.add((MarketDataOrder) event); //TODO: might be wierd with cancell as we do our own matching
                 case TRADE -> trades.add((MarketDataTrade) event);
             }
         }

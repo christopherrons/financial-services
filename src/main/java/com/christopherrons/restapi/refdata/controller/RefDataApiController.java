@@ -1,6 +1,6 @@
 package com.christopherrons.restapi.refdata.controller;
 
-import com.christopherrons.restapi.refdata.RefDataApiService;
+import com.christopherrons.restapi.refdata.service.RefDataApiService;
 import com.christopherrons.restapi.refdata.dto.ApiAvailableInstrumentTypesDto;
 import com.christopherrons.restapi.refdata.dto.ApiAvailableInstrumentsByTypeDto;
 import com.christopherrons.restapi.refdata.dto.ApiAvailableInstrumentsDto;

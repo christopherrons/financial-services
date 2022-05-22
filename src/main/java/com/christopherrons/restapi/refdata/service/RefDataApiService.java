@@ -1,4 +1,4 @@
-package com.christopherrons.restapi.refdata;
+package com.christopherrons.restapi.refdata.service;
 
 import com.christopherrons.refdata.RefDataService;
 import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;

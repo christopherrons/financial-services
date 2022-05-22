@@ -15,7 +15,7 @@ public class MatchingEngineResult {
 
 
     public boolean isEmpty() {
-        return false;
+        return trades.isEmpty() && orders.isEmpty();
     }
 
     public void addTrade(final MarketDataTrade trade) {
@@ -33,7 +33,7 @@ public class MatchingEngineResult {
         return trades;
     }
 
-    public Set<MarketDataOrder> getOrders() {
-        return orders;
+    public List<MarketDataOrder> getOrders() {
+        return new ArrayList<>(orders);
     }
 }

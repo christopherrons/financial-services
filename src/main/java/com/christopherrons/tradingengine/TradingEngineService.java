@@ -1,5 +1,6 @@
 package com.christopherrons.tradingengine;
 
+import com.christopherrons.common.broadcasts.MatchingEngineBroadcast;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
 import com.christopherrons.common.broadcasts.OrderbookUpdateBroadcast;
 import com.christopherrons.marketdata.api.MarketDataOrder;
@@ -12,7 +13,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,6 +31,7 @@ public class TradingEngineService {
     @EventListener
     public void onOrderEvent(OrderEventBroadcast event) {
         Map<String, OrderbookUpdate> orderbookIdToOrderbookUpdate = new ConcurrentHashMap<>();
+        List<MatchingEngineResult> matchingEngineResults = new ArrayList<>();
         for (MarketDataOrder order : event.getOrders()) {
             final Orderbook orderbook = orderbookService.updateAndGetOrderbook(order);
             OrderbookUpdate orderbookUpdate = orderbookIdToOrderbookUpdate.computeIfAbsent(order.getOrderbookId(),
@@ -35,17 +39,24 @@ public class TradingEngineService {
 
             MatchingEngineResult matchingEngineResult = orderbook.runMatchingEngine();
             if (!matchingEngineResult.isEmpty()) {
-                orderbookUpdate.addMatchingResult(matchingEngineResult);
+                matchingEngineResults.add(matchingEngineResult);
             }
 
             orderbookUpdate.setBestAskPrice(orderbook.getBestAskPrice());
             orderbookUpdate.setBestBidPrice(orderbook.getBestBidPrice());
         }
 
-        broadCastEvents(orderbookIdToOrderbookUpdate.values());
+        broadCastMatchingResults(matchingEngineResults);
+        broadCastOrderbookUpdates(orderbookIdToOrderbookUpdate.values());
     }
 
-    private void broadCastEvents(final Collection<OrderbookUpdate> orderbookUpdates) {
+    private void broadCastMatchingResults(final Collection<MatchingEngineResult> matchingEngineResults) {
+        if (!matchingEngineResults.isEmpty()) {
+            applicationEventPublisher.publishEvent(new MatchingEngineBroadcast(this, matchingEngineResults));
+        }
+    }
+
+    private void broadCastOrderbookUpdates(final Collection<OrderbookUpdate> orderbookUpdates) {
         if (!orderbookUpdates.isEmpty()) {
             applicationEventPublisher.publishEvent(new OrderbookUpdateBroadcast(this, orderbookUpdates));
         }

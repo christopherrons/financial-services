@@ -158,8 +158,8 @@ public class ActiveOrders {
 
     public void printOrderbook() {
         //TODO: For testing
-        System.out.println("Bid- " + bidPriceToPriceLevel.keySet().stream().map(String::valueOf).collect(Collectors.joining(" | ")));
-        System.out.println("Ask- " + askPriceToPriceLevel.keySet().stream().map(String::valueOf).collect(Collectors.joining(" | ")));
+        System.out.println("Bid: " + bidPriceToPriceLevel.keySet().stream().map(String::valueOf).collect(Collectors.joining(" | ")));
+        System.out.println("Ask: " + askPriceToPriceLevel.keySet().stream().map(String::valueOf).collect(Collectors.joining(" | ")));
         System.out.println("");
     }
 

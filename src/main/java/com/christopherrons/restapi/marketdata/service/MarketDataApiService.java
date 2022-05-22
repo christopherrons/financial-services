@@ -1,15 +1,18 @@
-package com.christopherrons.restapi.marketdata;
+package com.christopherrons.restapi.marketdata.service;
 
+import com.christopherrons.marketdata.MarketDataService;
 import com.christopherrons.marketdata.api.MarketDataWebsocketClient;
 import com.christopherrons.marketdata.bitstamp.client.BitstampWebsocketClient;
 import com.christopherrons.marketdata.common.enums.event.MargetDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.SubscriptionOperation;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
+import com.christopherrons.marketdata.common.model.ApiOrder;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableChannelsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableMarketDataFeedDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableTradingPairsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiSubscriptionDto;
+import com.christopherrons.restapi.marketdata.requests.ApiOrderRequest;
 import com.christopherrons.restapi.marketdata.requests.ApiSubscriptionRequest;
 import com.christopherrons.restapi.marketdata.requests.utils.MarketDataRequestValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,10 @@ public class MarketDataApiService {
     private static final Logger LOGGER = Logger.getLogger(MarketDataApiService.class.getName());
 
     private final Map<MargetDataFeedEnum, MarketDataWebsocketClient> dataFeedToWebsocketClient = new ConcurrentHashMap<>();
+
+    @Autowired
+    private MarketDataService marketDataService;
+
 
     @Autowired
     public MarketDataApiService(BitstampWebsocketClient bitstampWebsocketClient) {
@@ -91,5 +98,14 @@ public class MarketDataApiService {
             default:
                 return false;
         }
+    }
+
+    public void pushOrder(final ApiOrderRequest apiOrderRequest) {
+        marketDataService.handleEvent(new ApiOrder(
+                apiOrderRequest.getPrice(),
+                apiOrderRequest.getVolume(),
+                apiOrderRequest.getOrderType().getValue(),
+                apiOrderRequest.getOrderOperation()
+        ));
     }
 }
