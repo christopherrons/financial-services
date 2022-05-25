@@ -1,6 +1,6 @@
 package com.christopherrons.marketdata.bitstamp.client;
 
-import com.christopherrons.marketdata.MarketDataService;
+import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.api.MarketDataWebsocketClient;
 import com.christopherrons.marketdata.common.cache.WebsocketSubscriptionCache;
@@ -8,28 +8,25 @@ import com.christopherrons.marketdata.common.client.JsonMessageDecoder;
 import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
-@Component
 public class BitstampWebsocketClient implements MarketDataWebsocketClient {
 
     private static final Logger LOGGER = Logger.getLogger(BitstampWebsocketClient.class.getName());
     private final WebsocketSubscriptionCache websocketSubscriptionCache = new WebsocketSubscriptionCache();
 
-    @Autowired
-    private MarketDataService marketDataService;
 
-
-    public void subscribe(final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) throws DeploymentException, IOException {
+    public void subscribe(final TradingPairEnum tradingPairEnum,
+                          final ChannelEnum channelEnum,
+                          Consumer<MarketDataEvent> eventHandler) throws DeploymentException, IOException {
         BitstampSubscription subscription = new BitstampSubscription(
                 new JsonMessageDecoder(channelEnum.getDecodingClass()),
-                marketDataService,
+                eventHandler,
                 channelEnum,
                 tradingPairEnum
         );

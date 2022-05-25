@@ -1,7 +1,6 @@
 package com.christopherrons.marketdata.bitstamp.client;
 
 import com.christopherrons.common.misc.wrappers.ThreadWrapper;
-import com.christopherrons.marketdata.MarketDataService;
 import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.api.MarketDataSubscription;
 import com.christopherrons.marketdata.common.client.CustomClientEndpoint;
@@ -16,6 +15,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public class BitstampSubscription implements MarketDataSubscription {
@@ -29,14 +29,16 @@ public class BitstampSubscription implements MarketDataSubscription {
     private Session session;
     private boolean isSubscribed = false;
 
-    public BitstampSubscription(JsonMessageDecoder messageDecoder, MarketDataService marketDataService,
-                                ChannelEnum channelEnum, TradingPairEnum tradingPairEnum) throws DeploymentException, IOException {
+    public BitstampSubscription(JsonMessageDecoder messageDecoder,
+                                Consumer<MarketDataEvent> eventHandler,
+                                ChannelEnum channelEnum,
+                                TradingPairEnum tradingPairEnum) throws DeploymentException, IOException {
         this.channelEnum = channelEnum;
         this.tradingPairEnum = tradingPairEnum;
-        this.session = createSession(createMessageHandler(messageDecoder, marketDataService));
+        this.session = createSession(createMessageHandler(messageDecoder, eventHandler));
     }
 
-    private MessageHandler createMessageHandler(final JsonMessageDecoder messageDecoder, final MarketDataService marketDataService) {
+    private MessageHandler createMessageHandler(final JsonMessageDecoder messageDecoder, final Consumer<MarketDataEvent> eventHandler) {
         return new MessageHandler.Whole<String>() {
             @Override
             public void onMessage(String message) {
@@ -51,7 +53,7 @@ public class BitstampSubscription implements MarketDataSubscription {
                         isSubscribed = false;
                         subscribe();
                     }
-                    default -> marketDataService.handleEvent(event);
+                    default -> eventHandler.accept(event);
                 }
             }
         };

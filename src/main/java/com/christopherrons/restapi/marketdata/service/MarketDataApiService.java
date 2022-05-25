@@ -1,8 +1,7 @@
 package com.christopherrons.restapi.marketdata.service;
 
 import com.christopherrons.marketdata.MarketDataService;
-import com.christopherrons.marketdata.api.MarketDataWebsocketClient;
-import com.christopherrons.marketdata.bitstamp.client.BitstampWebsocketClient;
+import com.christopherrons.marketdata.common.EventHandler;
 import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.SubscriptionOperation;
@@ -21,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.websocket.DeploymentException;
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 @Service
@@ -30,16 +27,12 @@ public class MarketDataApiService {
 
     private static final Logger LOGGER = Logger.getLogger(MarketDataApiService.class.getName());
 
-    private final Map<MarketDataFeedEnum, MarketDataWebsocketClient> dataFeedToWebsocketClient = new ConcurrentHashMap<>();
-
     @Autowired
     private MarketDataService marketDataService;
 
-
     @Autowired
-    public MarketDataApiService(BitstampWebsocketClient bitstampWebsocketClient) {
-        dataFeedToWebsocketClient.putIfAbsent(MarketDataFeedEnum.BITSTAMP, bitstampWebsocketClient);
-    }
+    private EventHandler eventHandler;
+
 
     public ApiAvailableMarketDataFeedDto getAvailableMarketDataFeed() {
         return new ApiAvailableMarketDataFeedDto(MarketDataFeedEnum.getDataFeedNames());
@@ -66,42 +59,42 @@ public class MarketDataApiService {
     }
 
     private ApiSubscriptionDto subscriptionRequest(final ApiSubscriptionRequest subscriptionRequest, final SubscriptionOperation subscriptionOperation) throws DeploymentException, IOException, InterruptedException {
-        boolean isSubscribed = handleSubscription(dataFeedToWebsocketClient.get(subscriptionRequest.getDataFeedName()),
-                subscriptionRequest.getTradingPair(), subscriptionRequest.getChannelName(), subscriptionOperation);
+        boolean isSubscribed = handleSubscription(subscriptionRequest.getDataFeedName(), subscriptionRequest.getTradingPair(),
+                subscriptionRequest.getChannelName(), subscriptionOperation);
         return new ApiSubscriptionDto(isSubscribed);
     }
 
-    private boolean handleSubscription(final MarketDataWebsocketClient websocketClient, final TradingPairEnum tradingPairEnum,
+    private boolean handleSubscription(final MarketDataFeedEnum marketDataFeedEnum, final TradingPairEnum tradingPairEnum,
                                        final ChannelEnum channelEnum, final SubscriptionOperation subscriptionOperation) throws DeploymentException, IOException, InterruptedException {
         switch (subscriptionOperation) {
             case SUBSCRIBE:
-                websocketClient.subscribe(tradingPairEnum, channelEnum);
+                marketDataService.subscribe(marketDataFeedEnum, tradingPairEnum, channelEnum);
 
                 int maxTime = 30;
                 int interval = 2;
                 int totalTime = 0;
-                while (!websocketClient.isSubscribed(tradingPairEnum, channelEnum) && totalTime < maxTime) {
+                while (!marketDataService.isSubscribed(marketDataFeedEnum, tradingPairEnum, channelEnum) && totalTime < maxTime) {
                     Thread.sleep(interval * 1000);
                     totalTime = totalTime + interval;
                     LOGGER.info(String.format("Waited %ss for subscription to connect.", totalTime));
                 }
 
-                return websocketClient.isSubscribed(tradingPairEnum, channelEnum);
+                return marketDataService.isSubscribed(marketDataFeedEnum, tradingPairEnum, channelEnum);
             case UNSUBSCRIBE:
-                websocketClient.unsubscribe(tradingPairEnum, channelEnum);
-                return websocketClient.isSubscribed(tradingPairEnum, channelEnum);
+                marketDataService.unsubscribe(marketDataFeedEnum, tradingPairEnum, channelEnum);
+                return marketDataService.isSubscribed(marketDataFeedEnum, tradingPairEnum, channelEnum);
             case IS_SUBSCRIBED:
-                return websocketClient.isSubscribed(tradingPairEnum, channelEnum);
+                return marketDataService.isSubscribed(marketDataFeedEnum, tradingPairEnum, channelEnum);
             default:
                 return false;
         }
     }
 
     public void pushOrder(final ApiOrderRequest apiOrderRequest) {
-        marketDataService.handleEvent(new ApiOrder(apiOrderRequest));
+        eventHandler.handleEvent(new ApiOrder(apiOrderRequest));
     }
 
     public void pushTrade(final ApiTradeRequest apiTradeRequest) {
-        marketDataService.handleEvent(new ApiTrade(apiTradeRequest));
+        eventHandler.handleEvent(new ApiTrade(apiTradeRequest));
     }
 }
