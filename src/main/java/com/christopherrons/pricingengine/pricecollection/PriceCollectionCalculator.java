@@ -6,6 +6,7 @@ import com.christopherrons.pricingengine.pricecollection.model.PriceCollection;
 import com.christopherrons.pricingengine.pricecollection.model.PriceCollectionItem;
 import com.christopherrons.pricingengine.pricecollection.model.PriceSnapshot;
 import com.christopherrons.pricingengine.yieldcurve.YieldCurve;
+import com.christopherrons.refdata.historicalprices.model.HistoricalPrices;
 import com.christopherrons.refdata.yield.model.YieldRefData;
 
 import java.util.ArrayList;
@@ -15,25 +16,30 @@ public class PriceCollectionCalculator {
 
     private static final MarginPriceCalculator marginPriceCalculator = new MarginPriceCalculator();
 
-    public PriceCollection createPriceCollection(final List<PriceSnapshot> snapshots, final YieldRefData yieldRefData) {
+    public PriceCollection createPriceCollection(final List<PriceSnapshot> snapshots,
+                                                 final HistoricalPrices historicalPrices,
+                                                 final YieldRefData yieldRefData) {
         return new PriceCollection(
-                addPriceCollectionItems(snapshots),
+                addPriceCollectionItems(snapshots, historicalPrices),
                 new YieldCurve(yieldRefData)
         );
     }
 
-    private List<PriceCollectionItem> addPriceCollectionItems(final List<PriceSnapshot> snapshots) {
+    private List<PriceCollectionItem> addPriceCollectionItems(final List<PriceSnapshot> snapshots,
+                                                              final HistoricalPrices historicalPrices) {
         final List<PriceCollectionItem> priceCollectionItems = new ArrayList<>();
         for (PriceSnapshot snapshot : snapshots) {
-            priceCollectionItems.add(createPriceCollectionItem(snapshot));
+            priceCollectionItems.add(createPriceCollectionItem(snapshot,
+                    historicalPrices.getHistoricalClosingPrices(snapshot.getInstrumentId())));
         }
         return priceCollectionItems;
     }
 
-    private PriceCollectionItem createPriceCollectionItem(final PriceSnapshot snapshot) {
+    private PriceCollectionItem createPriceCollectionItem(final PriceSnapshot snapshot, final List<Double> historicalClosingPrices) {
         return new PriceCollectionItem(
-                snapshot.getOrderbookId(),
-                calculateMarginPrice(snapshot)
+                snapshot.getInstrumentId(),
+                calculateMarginPrice(snapshot),
+                historicalClosingPrices
         );
     }
 

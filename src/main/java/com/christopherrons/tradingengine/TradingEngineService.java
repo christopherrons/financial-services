@@ -34,8 +34,8 @@ public class TradingEngineService {
         List<MatchingEngineResult> matchingEngineResults = new ArrayList<>();
         for (MarketDataOrder order : event.getOrders()) {
             final Orderbook orderbook = orderbookService.updateAndGetOrderbook(order);
-            OrderbookUpdate orderbookUpdate = orderbookIdToOrderbookUpdate.computeIfAbsent(order.getOrderbookId(),
-                    key -> new OrderbookUpdate(order.getOrderId()));
+            OrderbookUpdate orderbookUpdate = orderbookIdToOrderbookUpdate.computeIfAbsent(orderbook.getOrderbookId(),
+                    key -> new OrderbookUpdate(orderbook.getOrderbookId(), order.getInstrument().getInstrumentId()));
 
             MatchingEngineResult matchingEngineResult = orderbook.runMatchingEngine();
             if (!matchingEngineResult.isEmpty()) {

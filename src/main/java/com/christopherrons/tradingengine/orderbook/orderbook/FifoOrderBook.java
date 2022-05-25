@@ -14,6 +14,12 @@ public class FifoOrderBook implements Orderbook {
     private final ActiveOrders activeOrders = new ActiveOrders(new FifoOrderBookComparator());
     private final MatchingAlgorithm matchingAlgorithm = new FifoMatchingAlgorithm(activeOrders);
 
+    private final String orderbookId;
+
+    public FifoOrderBook(String orderbookId) {
+        this.orderbookId = orderbookId;
+    }
+
     @Override
     public void updateOrder(final MarketDataOrder order) {
         activeOrders.updateOrder(order);
@@ -119,4 +125,7 @@ public class FifoOrderBook implements Orderbook {
         return MatchingAlgorithmEnum.FIFO;
     }
 
+    public String getOrderbookId() {
+        return orderbookId;
+    }
 }

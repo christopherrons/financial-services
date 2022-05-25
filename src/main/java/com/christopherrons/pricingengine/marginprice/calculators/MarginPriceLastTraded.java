@@ -11,12 +11,12 @@ public class MarginPriceLastTraded {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Optional<MarginPrice> createMarginPriceLastTraded(final long orderbookId, final double lastPrice) {
+    public static Optional<MarginPrice> createMarginPriceLastTraded(final String instrumentId, final double lastPrice) {
         if (lastPrice == 0) {
             return Optional.empty();
         }
         return Optional.of(new MarginPrice(
-                orderbookId,
+                instrumentId,
                 lastPrice,
                 MarginPriceMethodEnum.LAST_TRADED)
         );

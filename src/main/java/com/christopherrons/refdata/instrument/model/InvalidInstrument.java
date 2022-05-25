@@ -14,4 +14,9 @@ public record InvalidInstrument() implements Instrument {
     public TradingPairEnum getTradingPairEnum() {
         return TradingPairEnum.INVALID_TRADING_PAIR;
     }
+
+    @Override
+    public String getInstrumentId() {
+        return getTradingPairEnum().toString() + "-" + getInstrumentType().toString();
+    }
 }

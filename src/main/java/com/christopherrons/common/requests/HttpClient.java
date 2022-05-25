@@ -3,6 +3,7 @@ package com.christopherrons.common.requests;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -13,15 +14,17 @@ public class HttpClient {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String requestGET(final URL url) throws IOException {
+    public static String requestGET(final URL url, Map<String, String> headerToValue) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setDoOutput(true);
+        connection.setRequestProperty("accept", "application/json");
+        headerToValue.forEach(connection::setRequestProperty);
 
         try {
             return getResponse(connection);
         } catch (RuntimeException e) {
             LOGGER.warning(e.toString());
+        } finally {
+            connection.disconnect();
         }
 
         return "";
@@ -29,18 +32,8 @@ public class HttpClient {
 
     private static String getResponse(final HttpURLConnection connection) throws IOException {
         checkConnection(connection.getResponseCode());
-        return getResponse(connection.getURL());
-    }
-
-    private static void checkConnection(final int responseCode) {
-        if (responseCode != 200) {
-            throw new RuntimeException("HttpResponseCode: " + responseCode);
-        }
-    }
-
-    private static String getResponse(final URL url) throws IOException {
         StringBuilder responsePayload = new StringBuilder();
-        Scanner scanner = new Scanner(url.openStream());
+        Scanner scanner = new Scanner(connection.getInputStream());
 
         while (scanner.hasNext()) {
             responsePayload.append(scanner.nextLine());
@@ -48,5 +41,11 @@ public class HttpClient {
         scanner.close();
 
         return responsePayload.toString();
+    }
+
+    private static void checkConnection(final int responseCode) {
+        if (responseCode != 200) {
+            throw new RuntimeException("HttpResponseCode: " + responseCode);
+        }
     }
 }

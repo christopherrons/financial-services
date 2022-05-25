@@ -1,19 +1,16 @@
 package com.christopherrons.tradingengine.orderbook.model;
 
-import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class OrderbookUpdate {
 
     private double bestBid = 0;
     private double bestAsk = 0;
 
-    private long orderbookId;
+    private final String orderbookId;
+    private final String instrumentId;
 
-    public OrderbookUpdate(long orderbookId) {
+    public OrderbookUpdate(String orderbookId, String instrumentId) {
         this.orderbookId = orderbookId;
+        this.instrumentId = instrumentId;
     }
 
     public void setBestBidPrice(double bestBid) {
@@ -24,7 +21,7 @@ public class OrderbookUpdate {
         this.bestAsk = bestAsk;
     }
 
-    public long getOrderbookId() {
+    public String getOrderbookId() {
         return orderbookId;
     }
 
@@ -34,5 +31,9 @@ public class OrderbookUpdate {
 
     public double getBestAsk() {
         return bestAsk;
+    }
+
+    public String getInstrumentId() {
+        return instrumentId;
     }
 }

@@ -1,6 +1,5 @@
 package com.christopherrons.pricingengine.cache;
 
-import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.pricingengine.pricecollection.model.PriceSnapshot;
 
 import java.util.ArrayList;
@@ -11,14 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PricingCache {
 
-    private final Map<Long, PriceSnapshot> tradingPairToPriceSnapshot = new ConcurrentHashMap<>();
+    private final Map<String, PriceSnapshot> instrumentIdToPriceSnapshot = new ConcurrentHashMap<>();
 
-    public PriceSnapshot findOrCreateSnapshot(final long orderbookid) {
-        return tradingPairToPriceSnapshot.computeIfAbsent(orderbookid, PriceSnapshot::new);
+    public PriceSnapshot findOrCreateSnapshot(final String instrumentId) {
+        return instrumentIdToPriceSnapshot.computeIfAbsent(instrumentId, PriceSnapshot::new);
     }
 
     public List<PriceSnapshot> getAllPriceSnapshots() {
-        return !tradingPairToPriceSnapshot.values().isEmpty() ? new ArrayList<>(tradingPairToPriceSnapshot.values()) :
+        return !instrumentIdToPriceSnapshot.values().isEmpty() ? new ArrayList<>(instrumentIdToPriceSnapshot.values()) :
                 Collections.emptyList();
     }
 }

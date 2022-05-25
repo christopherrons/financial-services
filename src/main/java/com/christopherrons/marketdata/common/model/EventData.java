@@ -27,7 +27,7 @@ public class EventData implements MarketDataEvent {
         this.eventDescriptionEnum = eventDescriptionEnum;
         this.channelEnum = channelEnum;
         this.eventTypeEnum = eventTypeEnum;
-        this.orderbookId = String.format("%s-%s", marketDataFeedEnum.getName(), instrument.getTradingPairEnum().getName()); //TODO: Not correct must be Feed-TradingPair-Type
+        this.orderbookId = String.format("%s-%s", marketDataFeedEnum.getName(), instrument.getInstrumentId());
         this.timeStampInMs = timeStampInMs;
         this.instrument = instrument;
     }

@@ -1,9 +1,11 @@
 package com.christopherrons.refdata;
 
+import com.christopherrons.common.broadcasts.MatchingEngineBroadcast;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
-import com.christopherrons.common.broadcasts.TradeEventBroadcast;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataTrade;
+import com.christopherrons.refdata.historicalprices.HistoricalPriceService;
+import com.christopherrons.refdata.historicalprices.model.HistoricalPrices;
 import com.christopherrons.refdata.instrument.InstrumentRefDataService;
 import com.christopherrons.refdata.instrument.api.Instrument;
 import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
@@ -11,6 +13,7 @@ import com.christopherrons.refdata.participant.ParticipantRefDataService;
 import com.christopherrons.refdata.portfolio.PortfolioRefDataService;
 import com.christopherrons.refdata.yield.YieldRefDataService;
 import com.christopherrons.refdata.yield.model.YieldRefData;
+import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -26,15 +29,19 @@ public class RefDataService {
     private final PortfolioRefDataService portfolioRefDataService;
     private final YieldRefDataService yieldRefDataService;
 
+    private final HistoricalPriceService historicalPriceService;
+
     @Autowired
     public RefDataService(InstrumentRefDataService instrumentRefDataService,
                           ParticipantRefDataService participantRefDataService,
                           PortfolioRefDataService portfolioRefDataService,
-                          YieldRefDataService yieldRefDataService) {
+                          YieldRefDataService yieldRefDataService,
+                          HistoricalPriceService historicalPriceService) {
         this.instrumentRefDataService = instrumentRefDataService;
         this.participantRefDataService = participantRefDataService;
         this.portfolioRefDataService = portfolioRefDataService;
         this.yieldRefDataService = yieldRefDataService;
+        this.historicalPriceService = historicalPriceService;
     }
 
     @EventListener
@@ -46,9 +53,12 @@ public class RefDataService {
     }
 
     @EventListener
-    public void onTradeEvent(TradeEventBroadcast event) {
-        for (MarketDataTrade trade : event.getTrades()) {
-            portfolioRefDataService.updatePortfolioFromTrade(trade);
+    public void onMatchingEngineEvent(MatchingEngineBroadcast matchingEngineBroadcast) {
+        List<MatchingEngineResult> matchingEngineResult = matchingEngineBroadcast.getMatchingEngineResult();
+        for (MatchingEngineResult result : matchingEngineResult) {
+            for (MarketDataTrade trade : result.getTrades()) {
+                portfolioRefDataService.updatePortfolioFromTrade(trade);
+            }
         }
     }
 
@@ -66,5 +76,9 @@ public class RefDataService {
 
     public YieldRefData getYieldRefData() throws IOException {
         return yieldRefDataService.getYieldRefData();
+    }
+
+    public HistoricalPrices getHistoricalData() throws IOException {
+        return historicalPriceService.getHistoricalData();
     }
 }

@@ -2,6 +2,11 @@ package com.christopherrons.refdata.instrument.enums;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.stream;
+import static java.util.function.UnaryOperator.identity;
+import static java.util.stream.Collectors.toMap;
 
 public enum InstrumentTypeEnum {
     INVALID_INSTRUMENT("invalid_instrument_type"),
@@ -12,18 +17,15 @@ public enum InstrumentTypeEnum {
 
     private final String name;
 
+    private static final Map<String, InstrumentTypeEnum> VALUES_BY_IDENTIFIER =
+            stream(InstrumentTypeEnum.values()).collect(toMap(InstrumentTypeEnum::getName, identity()));
+
     InstrumentTypeEnum(String name) {
         this.name = name;
     }
 
     public static InstrumentTypeEnum fromName(final String instrumentTypeName) {
-        return switch (instrumentTypeName) {
-            case "stock" -> InstrumentTypeEnum.STOCK;
-            case "derivative" -> InstrumentTypeEnum.DERIVATIVE;
-            case "future" -> InstrumentTypeEnum.FUTURE;
-            case "option" -> InstrumentTypeEnum.OPTION;
-            default -> InstrumentTypeEnum.INVALID_INSTRUMENT;
-        };
+        return VALUES_BY_IDENTIFIER.getOrDefault(instrumentTypeName, InstrumentTypeEnum.INVALID_INSTRUMENT);
     }
 
     public static List<InstrumentTypeEnum> getInstrumentType() {

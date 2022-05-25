@@ -38,7 +38,7 @@ public class PricingEngineService {
     @EventListener
     public void onMatching(OrderbookUpdateBroadcast orderbookUpdateBroadcast) {
         for (OrderbookUpdate orderbookUpdate : orderbookUpdateBroadcast.getOrderbookUpdates()) {
-            PriceSnapshot priceSnapshot = pricingCache.findOrCreateSnapshot(orderbookUpdate.getOrderbookId());
+            PriceSnapshot priceSnapshot = pricingCache.findOrCreateSnapshot(orderbookUpdate.getInstrumentId());
             priceSnapshot.setBidPrice(orderbookUpdate.getBestBid());
             priceSnapshot.setAskPrice(orderbookUpdate.getBestAsk());
         }
@@ -48,7 +48,7 @@ public class PricingEngineService {
     public void onMatchingEngineEvent(MatchingEngineBroadcast matchingEngineBroadcast) {
         for (MatchingEngineResult result : matchingEngineBroadcast.getMatchingEngineResult()) {
             for (MarketDataTrade trade : result.getTrades()) {
-                pricingCache.findOrCreateSnapshot(trade.getTradeId())
+                pricingCache.findOrCreateSnapshot(trade.getInstrument().getInstrumentId())
                         .setLastPrice(trade.getPrice());
             }
         }
@@ -59,6 +59,7 @@ public class PricingEngineService {
 
         PriceCollection priceCollectionItems = priceCollectionCalculator.createPriceCollection(
                 pricingCache.getAllPriceSnapshots(),
+                refDataService.getHistoricalData(),
                 refDataService.getYieldRefData());
         broadcastPriceCollection(priceCollectionItems);
     }

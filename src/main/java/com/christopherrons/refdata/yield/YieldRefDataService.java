@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,7 +26,7 @@ public class YieldRefDataService {
     private static final int UPDATE_INTERVAL_IN_DAYS = 1;
     private static final ObjectMapper mapper = new ObjectMapper();
     private YieldRefData yieldRefData = null;
-    private LocalDate lastUpdateTime;
+    private LocalDate lastUpdateTime = LocalDate.now();
 
     public YieldRefData getYieldRefData() throws IOException {
         LocalDate currentTime = LocalDate.now();
@@ -43,7 +44,7 @@ public class YieldRefDataService {
 
     private YieldRefData getYield(final String requestDate) throws IOException {
         URL url = new URL(String.format("%s?start_date=%s?end_date=%s?api_key=%s", BASE_URL, requestDate, requestDate, API_KEY));
-        String jsonResponse = requestGET(url);
+        String jsonResponse = requestGET(url, new HashMap<>());
 
         JsonNode yieldJsonObject = mapper.readValue(jsonResponse, JsonNode.class).get("dataset");
         String newestDate = yieldJsonObject.get("newest_available_date").asText();

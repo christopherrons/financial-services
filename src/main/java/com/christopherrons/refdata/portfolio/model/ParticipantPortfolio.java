@@ -1,7 +1,6 @@
 package com.christopherrons.refdata.portfolio.model;
 
 import com.christopherrons.marketdata.api.MarketDataTrade;
-import com.christopherrons.refdata.instrument.api.Instrument;
 import com.christopherrons.refdata.participant.model.Participant;
 
 import java.util.Map;
@@ -9,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ParticipantPortfolio {
 
-    private final Map<Instrument, Position> instrumentToPosition = new ConcurrentHashMap<>();
+    private final Map<String, Position> instrumentIdToPosition = new ConcurrentHashMap<>();
     private final Participant participant;
 
     public ParticipantPortfolio(Participant participant) {
@@ -17,7 +16,7 @@ public class ParticipantPortfolio {
     }
 
     public void updatePortfolio(final MarketDataTrade trade) {
-        Position position = instrumentToPosition.computeIfAbsent(trade.getInstrument(),
+        Position position = instrumentIdToPosition.computeIfAbsent(trade.getInstrument().getInstrumentId(),
                 k -> new Position(trade.getInstrument(), trade.getVolume()));
 
         if (trade.getBidParticipant().equals(participant)) {

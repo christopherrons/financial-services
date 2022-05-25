@@ -11,8 +11,8 @@ public interface Instrument {
     static Instrument createInstrument(final InstrumentTypeEnum instrumentTypeEnum, final TradingPairEnum tradingPairEnum) {
         return switch (instrumentTypeEnum) {
             case STOCK -> new Stock(tradingPairEnum);
-            case FUTURE -> new Future(tradingPairEnum);
-            case OPTION -> new Option(tradingPairEnum);
+            case FUTURE -> new Future(tradingPairEnum, 0);
+            case OPTION -> new Option(tradingPairEnum, 0, 0);
             default -> new InvalidInstrument();
         };
     }
@@ -20,4 +20,6 @@ public interface Instrument {
     InstrumentTypeEnum getInstrumentType();
 
     TradingPairEnum getTradingPairEnum();
+
+    String getInstrumentId();
 }

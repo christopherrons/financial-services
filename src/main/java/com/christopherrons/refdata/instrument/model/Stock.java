@@ -8,9 +8,11 @@ import java.util.Objects;
 
 public record Stock(TradingPairEnum tradingPairEnum) implements Instrument {
 
+    private static final InstrumentTypeEnum INSTRUMENT_TYPE_ENUM = InstrumentTypeEnum.STOCK;
+
     @Override
     public InstrumentTypeEnum getInstrumentType() {
-        return InstrumentTypeEnum.STOCK;
+        return INSTRUMENT_TYPE_ENUM;
     }
 
     @Override
@@ -29,5 +31,10 @@ public record Stock(TradingPairEnum tradingPairEnum) implements Instrument {
     @Override
     public int hashCode() {
         return Objects.hash(tradingPairEnum);
+    }
+
+    @Override
+    public String getInstrumentId() {
+        return tradingPairEnum + "-" + INSTRUMENT_TYPE_ENUM;
     }
 }

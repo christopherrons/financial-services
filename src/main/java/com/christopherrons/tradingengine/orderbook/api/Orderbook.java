@@ -6,6 +6,8 @@ import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResu
 
 public interface Orderbook {
 
+    String getOrderbookId();
+
     MatchingAlgorithmEnum getMatchingAlgorithm();
 
     MatchingEngineResult runMatchingEngine();

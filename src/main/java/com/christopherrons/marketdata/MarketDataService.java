@@ -8,6 +8,7 @@ import com.christopherrons.marketdata.api.MarketDataEvent;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.marketdata.common.EventLogging;
+import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
 import com.christopherrons.refdata.instrument.api.Instrument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -47,7 +48,13 @@ public class MarketDataService {
         List<MarketDataTrade> trades = new ArrayList<>();
         for (MarketDataEvent event : events) {
             switch (event.getEventTypeEnum()) {
-                case ORDER -> orders.add((MarketDataOrder) event);
+                case ORDER -> {
+                    MarketDataOrder order = ((MarketDataOrder) event);
+                    if (order.getOrderOperationEnum() != OrderOperationEnum.DELETE) {
+                        // We skip cancel events as we built our own trading engine
+                        orders.add((MarketDataOrder) event);
+                    }
+                }
                 case TRADE -> trades.add((MarketDataTrade) event);
             }
         }

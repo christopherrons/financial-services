@@ -2,17 +2,17 @@ package com.christopherrons.pricingengine.pricecollection.model;
 
 public class PriceSnapshot {
 
-    private final long orderbookId;
+    private final String instrumentId;
     private double bidPrice;
     private double askPrice;
     private double lastPrice;
 
-    public PriceSnapshot(long orderbookId) {
-        this.orderbookId = orderbookId;
+    public PriceSnapshot(String instrumentId) {
+        this.instrumentId = instrumentId;
     }
 
-    public long getOrderbookId() {
-        return orderbookId;
+    public String getInstrumentId() {
+        return instrumentId;
     }
 
     public double getBidPrice() {

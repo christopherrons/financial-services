@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PortfolioCache {
 
-    private final Map<Participant, ParticipantPortfolio> participantToPortfolio = new ConcurrentHashMap<>();
+    private final Map<String, ParticipantPortfolio> participantToPortfolio = new ConcurrentHashMap<>();
 
     public ParticipantPortfolio findOrCreatePortfolio(final Participant participant) {
-        return participantToPortfolio.computeIfAbsent(participant, ParticipantPortfolio::new);
+        return participantToPortfolio.computeIfAbsent(participant.getParticipantId(), k -> new ParticipantPortfolio(participant));
     }
 }
