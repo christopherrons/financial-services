@@ -1,11 +1,17 @@
 package com.christopherrons.marketdata;
 
+import com.christopherrons.marketdata.api.MarketDataEvent;
+import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataWebsocketClient;
 import com.christopherrons.marketdata.bitstamp.client.BitstampWebsocketClient;
 import com.christopherrons.marketdata.common.EventHandler;
 import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
+import com.christopherrons.restapi.marketdata.model.ApiOrder;
+import com.christopherrons.restapi.marketdata.model.ApiTrade;
+import com.christopherrons.restapi.marketdata.requests.ApiOrderRequest;
+import com.christopherrons.restapi.marketdata.requests.ApiTradeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +45,10 @@ public class MarketDataService {
                                 final TradingPairEnum tradingPairEnum,
                                 final ChannelEnum channelEnum) {
         return dataFeedToWebsocketClient.get(marketDataFeedEnum).isSubscribed(tradingPairEnum, channelEnum);
+    }
+
+    public void pushEvent(final MarketDataEvent event) {
+        eventHandler.handleEvent(event);
     }
 
 

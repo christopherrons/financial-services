@@ -1,10 +1,11 @@
-package com.christopherrons.marketdata.common.model;
+package com.christopherrons.restapi.marketdata.model;
 
 import com.christopherrons.marketdata.common.enums.event.EventDescriptionEnum;
 import com.christopherrons.marketdata.common.enums.event.EventTypeEnum;
 import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
+import com.christopherrons.marketdata.common.model.Trade;
 import com.christopherrons.refdata.instrument.api.Instrument;
 import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 import com.christopherrons.refdata.participant.model.Member;

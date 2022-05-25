@@ -1,17 +1,16 @@
 package com.christopherrons.restapi.marketdata.service;
 
 import com.christopherrons.marketdata.MarketDataService;
-import com.christopherrons.marketdata.common.EventHandler;
 import com.christopherrons.marketdata.common.enums.event.MarketDataFeedEnum;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.SubscriptionOperation;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import com.christopherrons.marketdata.common.model.ApiOrder;
-import com.christopherrons.marketdata.common.model.ApiTrade;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableChannelsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableMarketDataFeedDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableTradingPairsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiSubscriptionDto;
+import com.christopherrons.restapi.marketdata.model.ApiOrder;
+import com.christopherrons.restapi.marketdata.model.ApiTrade;
 import com.christopherrons.restapi.marketdata.requests.ApiOrderRequest;
 import com.christopherrons.restapi.marketdata.requests.ApiSubscriptionRequest;
 import com.christopherrons.restapi.marketdata.requests.ApiTradeRequest;
@@ -29,9 +28,6 @@ public class MarketDataApiService {
 
     @Autowired
     private MarketDataService marketDataService;
-
-    @Autowired
-    private EventHandler eventHandler;
 
 
     public ApiAvailableMarketDataFeedDto getAvailableMarketDataFeed() {
@@ -91,10 +87,10 @@ public class MarketDataApiService {
     }
 
     public void pushOrder(final ApiOrderRequest apiOrderRequest) {
-        eventHandler.handleEvent(new ApiOrder(apiOrderRequest));
+        marketDataService.pushEvent(new ApiOrder(apiOrderRequest));
     }
 
     public void pushTrade(final ApiTradeRequest apiTradeRequest) {
-        eventHandler.handleEvent(new ApiTrade(apiTradeRequest));
+        marketDataService.pushEvent(new ApiTrade(apiTradeRequest));
     }
 }
