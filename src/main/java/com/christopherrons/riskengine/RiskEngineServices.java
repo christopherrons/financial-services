@@ -1,11 +1,15 @@
 package com.christopherrons.riskengine;
 
 import com.christopherrons.common.broadcasts.PriceCollectionsEventBroadcast;
+import com.christopherrons.pricingengine.pricecollection.model.PriceCollection;
 import com.christopherrons.refdata.RefDataService;
+import com.christopherrons.riskengine.riskcalculations.RiskCalculator;
+import com.christopherrons.riskengine.riskcalculations.model.RiskCalculationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -18,10 +22,12 @@ public class RiskEngineServices {
 
     @EventListener
     public void onPriceCollectionsEvent(PriceCollectionsEventBroadcast priceCollectionsEventBroadcast) {
-        runMarginCalculations();
+        runMarginCalculations(priceCollectionsEventBroadcast.getPriceCollection());
     }
 
-    private void runMarginCalculations() {
+    private void runMarginCalculations(final PriceCollection priceCollection) {
         LOGGER.info("Run Margin Calculations.");
+        RiskCalculator riskCalculator = new RiskCalculator(refDataService.getPortfolios(), priceCollection);
+        List<RiskCalculationResult> riskCalculationResults = riskCalculator.calculate();
     }
 }

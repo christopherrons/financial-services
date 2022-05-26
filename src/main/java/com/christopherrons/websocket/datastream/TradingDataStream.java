@@ -63,7 +63,6 @@ public class TradingDataStream {
 
         pushData(ORDER_BOOK_ENDPOINT, new OrderDataStream(orderDataStreamItems));
         pushData(TRADE_ENDPOINT, new TradeDataStream(tradeDataStreamItems));
-
     }
 
     private void addDataStreamItems(final List<TradeDataStreamItem> tradeDataStreamItems,

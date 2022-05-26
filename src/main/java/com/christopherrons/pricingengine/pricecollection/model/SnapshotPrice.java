@@ -1,13 +1,13 @@
 package com.christopherrons.pricingengine.pricecollection.model;
 
-public class PriceSnapshot {
+public class SnapshotPrice {
 
     private final String instrumentId;
     private double bidPrice;
     private double askPrice;
     private double lastPrice;
 
-    public PriceSnapshot(String instrumentId) {
+    public SnapshotPrice(String instrumentId) {
         this.instrumentId = instrumentId;
     }
 

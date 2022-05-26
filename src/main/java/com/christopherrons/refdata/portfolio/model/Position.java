@@ -1,15 +1,12 @@
 package com.christopherrons.refdata.portfolio.model;
 
-import com.christopherrons.refdata.instrument.api.Instrument;
-
 public class Position {
 
-    private final Instrument instrument;
+    private final String instrumentId;
     private double volume;
 
-    public Position(Instrument instrument, double volume) {
-        this.instrument = instrument;
-        this.volume = volume;
+    public Position(String instrumentId) {
+        this.instrumentId = instrumentId;
     }
 
     public void increasePosition(final double volume) {
@@ -20,8 +17,8 @@ public class Position {
         this.volume = this.volume - volume;
     }
 
-    public Instrument getInstrument() {
-        return instrument;
+    public String getInstrumentId() {
+        return instrumentId;
     }
 
     public double getVolume() {

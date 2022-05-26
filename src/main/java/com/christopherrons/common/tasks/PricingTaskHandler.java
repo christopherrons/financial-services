@@ -26,7 +26,7 @@ public class PricingTaskHandler {
         createPriceCollectionSchedules.scheduleAtFixedRate(() -> {
                     try {
                         pricingEngineService.createPriceCollection();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         LOGGER.warning("Could not create price collection: " + e);
                     }
                 },

@@ -33,7 +33,7 @@ public class YieldRefDataService {
         if (updateYield(currentTime)) {
             LOGGER.info("Updating Yield Ref Data: Previous updated on: " + lastUpdateTime.toString());
             lastUpdateTime = currentTime;
-            return getYield(lastUpdateTime.toString());
+            yieldRefData = getYield(lastUpdateTime.toString());
         }
         return yieldRefData;
     }

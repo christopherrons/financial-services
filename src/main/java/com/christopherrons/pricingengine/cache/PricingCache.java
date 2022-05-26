@@ -1,6 +1,6 @@
 package com.christopherrons.pricingengine.cache;
 
-import com.christopherrons.pricingengine.pricecollection.model.PriceSnapshot;
+import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,13 +10,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PricingCache {
 
-    private final Map<String, PriceSnapshot> instrumentIdToPriceSnapshot = new ConcurrentHashMap<>();
+    private final Map<String, SnapshotPrice> instrumentIdToPriceSnapshot = new ConcurrentHashMap<>();
 
-    public PriceSnapshot findOrCreateSnapshot(final String instrumentId) {
-        return instrumentIdToPriceSnapshot.computeIfAbsent(instrumentId, PriceSnapshot::new);
+    public SnapshotPrice findOrCreateSnapshot(final String instrumentId) {
+        return instrumentIdToPriceSnapshot.computeIfAbsent(instrumentId, SnapshotPrice::new);
     }
 
-    public List<PriceSnapshot> getAllPriceSnapshots() {
+    public List<SnapshotPrice> getAllPriceSnapshots() {
         return !instrumentIdToPriceSnapshot.values().isEmpty() ? new ArrayList<>(instrumentIdToPriceSnapshot.values()) :
                 Collections.emptyList();
     }

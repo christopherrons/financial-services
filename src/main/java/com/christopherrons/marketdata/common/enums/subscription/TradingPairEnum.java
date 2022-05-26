@@ -7,6 +7,7 @@ import java.util.List;
 
 public enum TradingPairEnum {
     INVALID_TRADING_PAIR(MarketDataFeedEnum.INVALID_DATA_FEED, "Invalid Trading Pair", CashCurrencyEnum.INVALID_CASH_CURRENCY, CryptoCurrency.INVALID_CASH_CURRENCY),
+    XRP_USD(MarketDataFeedEnum.BITSTAMP, "xrpusd", CashCurrencyEnum.USD, CryptoCurrency.XRP),
     BTC_USD(MarketDataFeedEnum.BITSTAMP, "btcusd", CashCurrencyEnum.USD, CryptoCurrency.BTC);
 
     private final MarketDataFeedEnum marketDataFeedEnum;

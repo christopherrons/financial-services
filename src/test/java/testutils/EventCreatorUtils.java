@@ -1,10 +1,12 @@
 package testutils;
 
 import com.christopherrons.marketdata.api.MarketDataOrder;
+import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.marketdata.common.enums.event.*;
 import com.christopherrons.marketdata.common.enums.subscription.ChannelEnum;
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
 import com.christopherrons.marketdata.common.model.Order;
+import com.christopherrons.marketdata.common.model.Trade;
 import com.christopherrons.refdata.instrument.api.Instrument;
 import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 import com.christopherrons.refdata.participant.model.Member;
@@ -51,9 +53,34 @@ public class EventCreatorUtils {
                 volume,
                 price,
                 timeStampInMs,
-                Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.XRP_USD),
+                Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.BTC_USD),
                 eventDescriptionEnum,
                 ChannelEnum.LIVE_ORDERS,
                 EventTypeEnum.ORDER);
+    }
+
+    public static MarketDataTrade buildMarketDataTrade(MarketDataFeedEnum marketDataFeedEnum,
+                                                       long timeStampInMs,
+                                                       double price,
+                                                       double volume,
+                                                       boolean isBidSideAggressor,
+                                                       long tradeId,
+                                                       Instrument instrument,
+                                                       Participant bidParticipant,
+                                                       Participant askParticipant) {
+        return new Trade(marketDataFeedEnum,
+                bidParticipant,
+                askParticipant,
+                tradeId,
+                tradeId,
+                tradeId,
+                isBidSideAggressor,
+                volume,
+                price,
+                timeStampInMs,
+                instrument,
+                EventDescriptionEnum.TRADE,
+                ChannelEnum.LIVE_TRADES,
+                EventTypeEnum.TRADE);
     }
 }

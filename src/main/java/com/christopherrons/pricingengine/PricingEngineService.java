@@ -7,7 +7,7 @@ import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.pricingengine.cache.PricingCache;
 import com.christopherrons.pricingengine.pricecollection.PriceCollectionCalculator;
 import com.christopherrons.pricingengine.pricecollection.model.PriceCollection;
-import com.christopherrons.pricingengine.pricecollection.model.PriceSnapshot;
+import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
 import com.christopherrons.refdata.RefDataService;
 import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
 import com.christopherrons.tradingengine.orderbook.model.OrderbookUpdate;
@@ -38,9 +38,9 @@ public class PricingEngineService {
     @EventListener
     public void onMatching(OrderbookUpdateBroadcast orderbookUpdateBroadcast) {
         for (OrderbookUpdate orderbookUpdate : orderbookUpdateBroadcast.getOrderbookUpdates()) {
-            PriceSnapshot priceSnapshot = pricingCache.findOrCreateSnapshot(orderbookUpdate.getInstrumentId());
-            priceSnapshot.setBidPrice(orderbookUpdate.getBestBid());
-            priceSnapshot.setAskPrice(orderbookUpdate.getBestAsk());
+            SnapshotPrice snapshotPrice = pricingCache.findOrCreateSnapshot(orderbookUpdate.getInstrumentId());
+            snapshotPrice.setBidPrice(orderbookUpdate.getBestBid());
+            snapshotPrice.setAskPrice(orderbookUpdate.getBestAsk());
         }
     }
 

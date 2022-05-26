@@ -1,8 +1,8 @@
 package com.christopherrons.refdata.historicalprices;
 
 import com.christopherrons.marketdata.common.enums.subscription.TradingPairEnum;
-import com.christopherrons.refdata.historicalprices.model.HistoricalPrices;
-import com.christopherrons.refdata.historicalprices.model.HistoricalPriceItem;
+import com.christopherrons.refdata.historicalprices.model.HistoricalPrice;
+import com.christopherrons.refdata.historicalprices.model.HistoricalPriceCollection;
 import com.christopherrons.refdata.instrument.api.Instrument;
 import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,11 +30,13 @@ public class HistoricalPriceService {
     private static final Map<String, String> headerToValue = Map.of("X-API-KEY", "WTYBCiVjhh6zZlqjlhuBx3RTpCwZkv7W99FCYyNo");
     private static final int UPDATE_INTERVAL_IN_DAYS = 1;
     private static final ObjectMapper mapper = new ObjectMapper();
-    private HistoricalPrices historicalPrices = null;
+    private HistoricalPriceCollection historicalPriceCollection = null;
     private LocalDate lastUpdateTime = LocalDate.now();
 
     private enum ApiSymbolEnum {
-        BTC_USD("BTC-USD", Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.BTC_USD).getInstrumentId());
+        BTC_USD("BTC-USD", Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.BTC_USD).getInstrumentId()),
+        XRP_USD("XRP-USD", Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.XRP_USD).getInstrumentId());
+
         private final String apiSymbolName;
         private final String instrumentId;
 
@@ -45,43 +47,38 @@ public class HistoricalPriceService {
 
     }
 
-    public HistoricalPrices getHistoricalData() throws IOException {
+    public HistoricalPriceCollection getHistoricalData() throws IOException {
         LocalDate currentTime = LocalDate.now();
         if (updateHistoricalData(currentTime)) {
             LOGGER.info("Updating Historical Ref Data: Previous updated on: " + lastUpdateTime.toString());
             lastUpdateTime = currentTime;
-            return requestHistoricalData();
+            historicalPriceCollection = requestHistoricalData();
         }
-        return historicalPrices;
+        return historicalPriceCollection;
     }
 
     private boolean updateHistoricalData(final LocalDate currentTime) {
-        return historicalPrices == null || DAYS.between(lastUpdateTime, currentTime) >= UPDATE_INTERVAL_IN_DAYS;
+        return historicalPriceCollection == null || DAYS.between(lastUpdateTime, currentTime) >= UPDATE_INTERVAL_IN_DAYS;
     }
 
-    private HistoricalPrices requestHistoricalData() throws IOException {
-        Map<String, HistoricalPriceItem> instrumentIdToHistoricalDataItem = new ConcurrentHashMap<>();
+    private HistoricalPriceCollection requestHistoricalData() throws IOException {
+        Map<String, HistoricalPrice> instrumentIdToHistoricalDataItem = new ConcurrentHashMap<>();
         for (ApiSymbolEnum apiSymbolEnum : ApiSymbolEnum.values()) {
-            URL url = new URL(String.format("%s?interval=%s&range=%s&symbols=%s", BASE_URL, "1d", "1y", apiSymbolEnum.apiSymbolName));
+            URL url = new URL(String.format("%s?interval=%s&range=%s&symbols=%s", BASE_URL, "1d", "5y", apiSymbolEnum.apiSymbolName));
             String jsonResponse = requestGET(url, headerToValue);
-            HistoricalPriceItem historicalPriceItem = createHistoricalDataItem(jsonResponse, apiSymbolEnum.apiSymbolName);
-            instrumentIdToHistoricalDataItem.put(apiSymbolEnum.instrumentId, historicalPriceItem);
+            HistoricalPrice historicalPrice = createHistoricalDataItem(jsonResponse, apiSymbolEnum.apiSymbolName);
+            instrumentIdToHistoricalDataItem.put(apiSymbolEnum.instrumentId, historicalPrice);
         }
 
-        return new HistoricalPrices(instrumentIdToHistoricalDataItem);
+        return new HistoricalPriceCollection(instrumentIdToHistoricalDataItem);
     }
 
-    private HistoricalPriceItem createHistoricalDataItem(String jsonResponse, String symbol) throws JsonProcessingException {
-        String closingPricesString = mapper.readValue(jsonResponse, JsonNode.class).get(symbol).get("closingPrices").toString();
+    private HistoricalPrice createHistoricalDataItem(String jsonResponse, String symbol) throws JsonProcessingException {
+        String closingPricesString = mapper.readValue(jsonResponse, JsonNode.class).get(symbol).get("close").toString();
         List<Double> closingPrices = Arrays.stream(closingPricesString.replace("[", "").replace("]", "").split(","))
                 .map(Double::valueOf)
                 .toList();
-        return new HistoricalPriceItem(closingPrices);
+        return new HistoricalPrice(closingPrices); //TODO: Check order of closing prices ascending/descending
     }
-
-    public static void main(String[] args) throws IOException {
-        var t = new HistoricalPriceService();
-        t.getHistoricalData();
-    }
-
+    
 }

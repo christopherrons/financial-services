@@ -1,9 +1,9 @@
 package com.christopherrons.pricingengine.pricecollection.model;
 
 import com.christopherrons.pricingengine.marginprice.model.MarginPrice;
+import com.christopherrons.refdata.historicalprices.model.HistoricalPrice;
 
-import java.util.List;
-
-public record PriceCollectionItem(String instrumentId, MarginPrice marginPrice, List<Double> historicalClosingPrices) {
+public record PriceCollectionItem(String instrumentId, MarginPrice marginPrice,
+                                  HistoricalPrice historicalPrice) {
 }
 

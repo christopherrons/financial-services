@@ -116,7 +116,7 @@ public class FifoOrderBook implements Orderbook {
 
     @Override
     public MatchingEngineResult runMatchingEngine() {
-        activeOrders.printOrderbook();
+        //activeOrders.printOrderbook();
         return matchingAlgorithm.runMatchingAlgorithm();
     }
 

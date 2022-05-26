@@ -75,9 +75,9 @@ public class MarketDataApiController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dataFeedName", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
-            @ApiImplicitParam(name = "tradingPair", required = true, dataTypeClass = TradingPairEnum.class, paramType = "query"),
-            @ApiImplicitParam(name = "channelName", required = true, dataTypeClass = ChannelEnum.class, paramType = "query")
+            @ApiImplicitParam(name = "dataFeedName", defaultValue = "BITSTAMP", required = true, dataTypeClass = MarketDataFeedEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "tradingPair", defaultValue = "BTC_USD", required = true, dataTypeClass = TradingPairEnum.class, paramType = "query"),
+            @ApiImplicitParam(name = "channelName", defaultValue = "LIVE_ORDERS", required = true, dataTypeClass = ChannelEnum.class, paramType = "query")
     })
     public ApiSubscriptionDto postSubscribeToChannelRequest(final ApiSubscriptionRequest subscriptionRequest) throws DeploymentException, IOException, InterruptedException {
         LOGGER.info(String.format("Post request Subscribe To Channel received: %s.", subscriptionRequest.toString()));
