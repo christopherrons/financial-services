@@ -1,5 +1,6 @@
 package com.christopherrons.common.math.probability;
 
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.linear.RealVector;
 
 import java.util.List;
@@ -53,4 +54,8 @@ public class ProbabilityCalculationUtils {
         return values.stream().mapToDouble(value -> value).sum() / values.size();
     }
 
+
+    public static MultivariateNormalDistribution createMultivariateNormalDistribution(final double[] means, double[][] covariance) {
+        return new MultivariateNormalDistribution(means, covariance);
+    }
 }

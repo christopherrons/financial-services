@@ -1,9 +1,9 @@
 package com.christopherrons.riskengine.riskcalculations.enums;
 
-public enum RiskCalculationEnum {
+public enum ValueAtRiskCalculationEnum {
 
     HISTORICAL_CVAR,
     PARAMETRIC_CVAR,
-    MONTE_CARLO_VAR
+    MONTE_CARLO_CVAR
 
 }

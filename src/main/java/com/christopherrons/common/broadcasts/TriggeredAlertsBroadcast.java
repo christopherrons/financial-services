@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationEvent;
 import java.util.List;
 
 public class TriggeredAlertsBroadcast extends ApplicationEvent {
-    private final List<Alert> alerts;
+    private final transient  List<Alert> alerts;
 
     public TriggeredAlertsBroadcast(Object source, List<Alert> alerts) {
         super(source);

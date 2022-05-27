@@ -45,7 +45,7 @@ public class RefDataApiController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "instrumentType", dataTypeClass = InstrumentTypeEnum.class, required = true),
+            @ApiImplicitParam(name = "instrumentType", defaultValue = "STOCK", dataTypeClass = InstrumentTypeEnum.class, required = true),
     })
     public ApiAvailableInstrumentsByTypeDto subscriptionTradingPairsRequest(final ApiAvailableInstrumentsByTypeRequest availableInstrumentsByTypeRequest) {
         LOGGER.info(String.format("Post request available instruments by type received: %s.", availableInstrumentsByTypeRequest));

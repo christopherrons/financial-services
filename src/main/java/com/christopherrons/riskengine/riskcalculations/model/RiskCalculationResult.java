@@ -2,5 +2,7 @@ package com.christopherrons.riskengine.riskcalculations.model;
 
 import com.christopherrons.refdata.participant.model.Participant;
 
-public record RiskCalculationResult(Participant participant, double valueAtRiskDecimal, double confidenceLevel) {
+import java.util.List;
+
+public record RiskCalculationResult(Participant participant, List<ValueAtRiskModelResult> valueAtRiskModelResults) {
 }

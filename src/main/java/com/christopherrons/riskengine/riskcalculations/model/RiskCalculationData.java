@@ -4,6 +4,7 @@ import com.christopherrons.pricingengine.pricecollection.model.PriceCollectionIt
 import com.christopherrons.refdata.participant.model.Participant;
 import com.christopherrons.refdata.portfolio.model.Portfolio;
 import com.christopherrons.refdata.portfolio.model.Position;
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.calculateCovariance;
+import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.createMultivariateNormalDistribution;
 
 public class RiskCalculationData {
 
@@ -30,6 +32,7 @@ public class RiskCalculationData {
     private final RealVector positionReturnVariance;
 
     private final RealMatrix positionReturnCovarianceMatrix;
+    private final MultivariateNormalDistribution returnDistribution;
 
 
     public RiskCalculationData(Portfolio portfolio, Map<String, PriceCollectionItem> instrumentIdToPriceCollectionItem) {
@@ -42,7 +45,8 @@ public class RiskCalculationData {
         this.positionReturnMeans = buildPositionMeanVector();
         this.positionReturnVariance = buildPositionVarianceVector();
         this.relativeReturnsMatrix = buildRelativeReturnMatrix(new ArrayList<>(instrumentIdToPosition.values()));
-        this.positionReturnCovarianceMatrix = buildPositionCovarianceMatrix(); //TODO: SHould this be weighted?
+        this.positionReturnCovarianceMatrix = buildPositionCovarianceMatrix();
+        this.returnDistribution = createMultivariateNormalDistribution(positionReturnMeans.toArray(), positionReturnCovarianceMatrix.getData());
     }
 
     private double calculatePortfolioValue() {
@@ -162,5 +166,17 @@ public class RiskCalculationData {
 
     public RealMatrix getPositionReturnCovarianceMatrix() {
         return positionReturnCovarianceMatrix;
+    }
+
+    public MultivariateNormalDistribution getReturnDistribution() {
+        return returnDistribution;
+    }
+
+    public RealVector getPositionReturnStd() {
+        return new ArrayRealVector(returnDistribution.getStandardDeviations());
+    }
+
+    public int getNumberOfSamples() {
+        return relativeReturnsMatrix.getRowDimension();
     }
 }

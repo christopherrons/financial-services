@@ -9,7 +9,7 @@ import java.util.List;
 
 public class OrderbookUpdateBroadcast extends ApplicationEvent {
 
-    private final Collection<OrderbookUpdate> orderbookUpdates;
+    private final transient Collection<OrderbookUpdate> orderbookUpdates;
 
     public OrderbookUpdateBroadcast(Object source, Collection<OrderbookUpdate> orderbookUpdates) {
         super(source);

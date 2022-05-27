@@ -1,7 +1,7 @@
 package com.christopherrons.refdata.portfolio.model;
 
 import com.christopherrons.refdata.participant.model.Participant;
-import com.christopherrons.riskengine.riskcalculations.enums.RiskCalculationEnum;
+import com.christopherrons.riskengine.riskcalculations.enums.ValueAtRiskCalculationEnum;
 
 import java.util.Collection;
 import java.util.Map;
@@ -12,7 +12,7 @@ public class Portfolio {
 
     private final Map<String, Position> instrumentIdToPosition = new TreeMap<>();
     private final Participant participant;
-    private final RiskCalculationEnum riskCalculationEnum = RiskCalculationEnum.HISTORICAL_CVAR;
+    private final ValueAtRiskCalculationEnum valueAtRiskCalculationEnum = ValueAtRiskCalculationEnum.HISTORICAL_CVAR;
 
     public Portfolio(Participant participant) {
         this.participant = participant;
@@ -32,8 +32,8 @@ public class Portfolio {
         }
     }
 
-    public RiskCalculationEnum getMarginCalculationEnum() {
-        return riskCalculationEnum;
+    public ValueAtRiskCalculationEnum getMarginCalculationEnum() {
+        return valueAtRiskCalculationEnum;
     }
 
     public Set<String> getInstrumentIds() {

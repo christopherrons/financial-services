@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class PriceCollectionsEventBroadcast extends ApplicationEvent {
 
-    private final PriceCollection priceCollection;
+    private final transient PriceCollection priceCollection;
 
     public PriceCollectionsEventBroadcast(Object source, PriceCollection priceCollection) {
         super(source);

@@ -5,10 +5,8 @@ import com.christopherrons.common.broadcasts.TradeEventBroadcast;
 import com.christopherrons.common.broadcasts.TriggeredAlertsBroadcast;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataTrade;
-import com.christopherrons.refdata.statistics.StatisticsService;
 import com.christopherrons.surveillanceengine.alert.AlertRuleService;
 import com.christopherrons.surveillanceengine.alert.model.Alert;
-import com.christopherrons.tradingengine.orderbook.OrderbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -24,7 +22,6 @@ public class SurveillanceEngineService {
     private AlertRuleService alertRuleService;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-
 
     @EventListener
     public void onOrderEvent(OrderEventBroadcast event) {

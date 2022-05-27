@@ -1,6 +1,5 @@
 package com.christopherrons.surveillanceengine.alert;
 
-import com.christopherrons.marketdata.MarketDataService;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.refdata.statistics.StatisticsService;
@@ -17,7 +16,7 @@ import java.util.logging.Logger;
 
 @Service
 public class AlertRuleService {
-    private static final Logger LOGGER = Logger.getLogger(MarketDataService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AlertRuleService.class.getName());
 
     @Autowired
     private StatisticsService statisticsService;

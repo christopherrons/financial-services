@@ -2,7 +2,7 @@ package com.christopherrons.common.math.probability;
 
 public enum ConfidenceLevelEnum {
 
-    NINTY_FIVE(0.95, 2.33);
+    NINTY_FIVE(0.95, 1.96);
 
     private final double confidenceLevel;
     private final double zscore;

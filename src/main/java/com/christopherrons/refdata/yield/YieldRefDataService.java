@@ -33,7 +33,12 @@ public class YieldRefDataService {
         if (updateYield(currentTime)) {
             LOGGER.info("Updating Yield Ref Data: Previous updated on: " + lastUpdateTime.toString());
             lastUpdateTime = currentTime;
-            yieldRefData = getYield(lastUpdateTime.toString());
+            try {
+                yieldRefData = getYield(lastUpdateTime.toString());
+            } catch (Exception e) {
+                LOGGER.warning("Fetching yield data failed: " + e);
+                yieldRefData = new YieldRefData(lastUpdateTime, List.of(lastUpdateTime), new double[]{0});
+            }
         }
         return yieldRefData;
     }

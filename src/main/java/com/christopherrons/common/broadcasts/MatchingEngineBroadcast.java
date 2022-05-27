@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MatchingEngineBroadcast extends ApplicationEvent {
 
-    private final Collection<MatchingEngineResult> matchingEngineResults;
+    private final transient Collection<MatchingEngineResult> matchingEngineResults;
 
     public MatchingEngineBroadcast(Object source, Collection<MatchingEngineResult> matchingEngineResults) {
         super(source);
