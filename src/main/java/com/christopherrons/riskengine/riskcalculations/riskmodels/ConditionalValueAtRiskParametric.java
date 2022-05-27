@@ -11,7 +11,6 @@ public class ConditionalValueAtRiskParametric implements ValueAtRiskModel {
 
     private static final ConfidenceLevelEnum CONFIDENCE_LEVEL = ConfidenceLevelEnum.NINTY_FIVE;
     private static final ValueAtRiskCalculationEnum VALUE_AT_RISK_CALCULATION_ENUM = ValueAtRiskCalculationEnum.PARAMETRIC_CVAR;
-
     @Override
     public ValueAtRiskModelResult calculate(final RiskCalculationData riskCalculationData) {
         double scalars = CONFIDENCE_LEVEL.getZscore() / Math.sqrt(riskCalculationData.getNumberOfSamples());

@@ -37,7 +37,7 @@ public class YieldRefDataService {
                 yieldRefData = getYield(lastUpdateTime.toString());
             } catch (Exception e) {
                 LOGGER.warning("Fetching yield data failed: " + e);
-                yieldRefData = new YieldRefData(lastUpdateTime, List.of(lastUpdateTime), new double[]{0});
+                yieldRefData = new YieldRefData(lastUpdateTime, List.of(lastUpdateTime.minusDays(1)), new double[]{0});
             }
         }
         return yieldRefData;

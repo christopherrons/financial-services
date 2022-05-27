@@ -27,7 +27,7 @@ import static testutils.TestAssertionUtils.*;
 
 class RiskCalculationDataTest {
     private static final MarketDataFeedEnum MARKET_DATA_FEED_ENUM = MarketDataFeedEnum.BITSTAMP;
-    private static final double DELTA = 0.000000001;
+    private static final double DELTA = 0.000001;
     private static final Participant PARTICIPANT_1 = new Participant(new Member("MEMBER"), new User("ONE", "LAST"));
     private static final Participant PARTICIPANT_2 = new Participant(new Member("MEMBER"), new User("TWO", "LAST"));
     private static final Instrument INSTRUMENT_1 = Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.XRP_USD);
@@ -106,9 +106,9 @@ class RiskCalculationDataTest {
     void testPositionReturnCovariance() {
         var matrix = new Array2DRowRealMatrix(2, 2);
         matrix.addToEntry(0, 0, 0.00296332215163384);
-        matrix.addToEntry(1, 0, 0.0037487792790823096);
+        matrix.addToEntry(1, 0, 0.005623168918623463);
 
-        matrix.addToEntry(0, 1, 0.0037487792790823096);
+        matrix.addToEntry(0, 1, 0.005623168918623463);
         matrix.addToEntry(1, 1, 0.010675696357514537);
         assertDouble(riskCalculationData.getPositionReturnVariance(INSTRUMENT_2.getInstrumentId()),
                 riskCalculationData.getPositionReturnCovarianceMatrix().getEntry(0, 0),
@@ -128,6 +128,18 @@ class RiskCalculationDataTest {
         assertDoubleMatrix(matrix,
                 riskCalculationData.getPositionReturnCovarianceMatrix(),
                 DELTA);
+    }
+
+    @Test
+    void testPositionReturnCorrelation() {
+        var matrix = new Array2DRowRealMatrix(2, 2);
+        matrix.addToEntry(0, 0, 1);
+        matrix.addToEntry(1, 0, 0.9997550312906545);
+
+        matrix.addToEntry(0, 1, 0.9997550312906545);
+        matrix.addToEntry(1, 1, 1);
+        assertDoubleMatrix(matrix, riskCalculationData.getPositionReturnCorrelationMatrix(), DELTA);
+
     }
 
 }

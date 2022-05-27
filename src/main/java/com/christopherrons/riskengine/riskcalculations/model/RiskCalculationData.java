@@ -15,8 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.calculateCovariance;
-import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.createMultivariateNormalDistribution;
+import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.*;
 
 public class RiskCalculationData {
 
@@ -32,6 +31,8 @@ public class RiskCalculationData {
     private final RealVector positionReturnVariance;
 
     private final RealMatrix positionReturnCovarianceMatrix;
+    private final RealMatrix positionReturnCorrelationMatrix;
+
     private final MultivariateNormalDistribution returnDistribution;
 
 
@@ -46,7 +47,9 @@ public class RiskCalculationData {
         this.positionReturnVariance = buildPositionVarianceVector();
         this.relativeReturnsMatrix = buildRelativeReturnMatrix(new ArrayList<>(instrumentIdToPosition.values()));
         this.positionReturnCovarianceMatrix = buildPositionCovarianceMatrix();
+        this.positionReturnCorrelationMatrix = buildPositionCorrelationMatrix();
         this.returnDistribution = createMultivariateNormalDistribution(positionReturnMeans.toArray(), positionReturnCovarianceMatrix.getData());
+
     }
 
     private double calculatePortfolioValue() {
@@ -96,9 +99,25 @@ public class RiskCalculationData {
             for (int row = column + 1; row < numberOfPositions; row++) {
                 RealVector relativeReturnsSecondPosition = relativeReturnsMatrix.getColumnVector(row);
                 double covariance = calculateCovariance(relativeReturnsFirstPosition, relativeReturnsSecondPosition,
-                        positionReturnMeans.getEntry(column), positionReturnMeans.getEntry(column));
+                        positionReturnMeans.getEntry(column), positionReturnMeans.getEntry(row));
                 matrix.addToEntry(row, column, covariance);
                 matrix.addToEntry(column, row, covariance);
+            }
+        }
+        return matrix;
+    }
+
+    private RealMatrix buildPositionCorrelationMatrix() {
+        RealMatrix matrix = new Array2DRowRealMatrix(numberOfPositions, numberOfPositions);
+        for (int column = 0; column < numberOfPositions; column++) {
+            double correlation = calculateCorrelation(positionReturnCovarianceMatrix.getEntry(column, column),
+                    positionReturnVariance.getEntry(column), positionReturnVariance.getEntry(column));
+            matrix.addToEntry(column, column, correlation);
+            for (int row = column + 1; row < numberOfPositions; row++) {
+                correlation = calculateCorrelation(positionReturnCovarianceMatrix.getEntry(row, column),
+                        positionReturnVariance.getEntry(column), positionReturnVariance.getEntry(row));
+                matrix.addToEntry(row, column, correlation);
+                matrix.addToEntry(column, row, correlation);
             }
         }
         return matrix;
@@ -178,5 +197,9 @@ public class RiskCalculationData {
 
     public int getNumberOfSamples() {
         return relativeReturnsMatrix.getRowDimension();
+    }
+
+    public RealMatrix getPositionReturnCorrelationMatrix() {
+        return positionReturnCorrelationMatrix;
     }
 }

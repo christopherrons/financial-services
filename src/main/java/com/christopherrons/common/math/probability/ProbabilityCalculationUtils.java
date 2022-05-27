@@ -47,7 +47,13 @@ public class ProbabilityCalculationUtils {
                                              final RealVector secondValues,
                                              final double meanFirstValues,
                                              final double meanSecondValues) {
-        return firstValues.mapSubtract(meanFirstValues).dotProduct(secondValues.mapSubtract(meanSecondValues)) / firstValues.getDimension();
+        return firstValues.mapSubtract(meanFirstValues).dotProduct(secondValues.mapSubtract(meanSecondValues)) / (firstValues.getDimension() - 1);
+    }
+
+    public static double calculateCorrelation(final double covariance,
+                                              final double firstVariance,
+                                              final double secondVariance) {
+        return covariance / Math.sqrt(firstVariance * secondVariance);
     }
 
     public static double calculateMean(final List<Double> values) {
