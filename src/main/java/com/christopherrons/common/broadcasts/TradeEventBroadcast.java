@@ -7,6 +7,7 @@ import java.util.List;
 
 public class TradeEventBroadcast extends ApplicationEvent {
 
+    //TODO: Are the trades in the correct order timewise, might need to be sorted
     private final List<MarketDataTrade> trades;
 
     public TradeEventBroadcast(Object source, List<MarketDataTrade> trades) {

@@ -1,15 +1,14 @@
 package com.christopherrons.pricingengine;
 
-import com.christopherrons.common.broadcasts.MatchingEngineBroadcast;
 import com.christopherrons.common.broadcasts.OrderbookUpdateBroadcast;
 import com.christopherrons.common.broadcasts.PriceCollectionsEventBroadcast;
+import com.christopherrons.common.broadcasts.TradeEventBroadcast;
 import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.pricingengine.cache.PricingCache;
 import com.christopherrons.pricingengine.pricecollection.PriceCollectionCalculator;
 import com.christopherrons.pricingengine.pricecollection.model.PriceCollection;
 import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
 import com.christopherrons.refdata.RefDataService;
-import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
 import com.christopherrons.tradingengine.orderbook.model.OrderbookUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -45,12 +44,10 @@ public class PricingEngineService {
     }
 
     @EventListener
-    public void onMatchingEngineEvent(MatchingEngineBroadcast matchingEngineBroadcast) {
-        for (MatchingEngineResult result : matchingEngineBroadcast.getMatchingEngineResult()) {
-            for (MarketDataTrade trade : result.getTrades()) {
-                pricingCache.findOrCreateSnapshot(trade.getInstrument().getInstrumentId())
-                        .setLastPrice(trade.getPrice());
-            }
+    public void onTradeEvent(TradeEventBroadcast tradeEventBroadcast) {
+        for (MarketDataTrade trade : tradeEventBroadcast.getTrades()) {
+            pricingCache.findOrCreateSnapshot(trade.getInstrument().getInstrumentId())
+                    .setLastPrice(trade.getPrice());
         }
     }
 

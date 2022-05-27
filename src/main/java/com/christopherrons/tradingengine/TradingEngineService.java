@@ -1,9 +1,10 @@
 package com.christopherrons.tradingengine;
 
-import com.christopherrons.common.broadcasts.MatchingEngineBroadcast;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
 import com.christopherrons.common.broadcasts.OrderbookUpdateBroadcast;
+import com.christopherrons.common.broadcasts.TradeEventBroadcast;
 import com.christopherrons.marketdata.api.MarketDataOrder;
+import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
 import com.christopherrons.tradingengine.orderbook.OrderbookService;
 import com.christopherrons.tradingengine.orderbook.api.Orderbook;
@@ -46,13 +47,13 @@ public class TradingEngineService {
             orderbookUpdate.setBestBidPrice(orderbook.getBestBidPrice());
         }
 
-        broadCastMatchingResults(matchingEngineResults);
+        broadCastTrades(matchingEngineResults.stream().flatMap(matchingEngineResult -> matchingEngineResult.getTrades().stream()).toList());
         broadCastOrderbookUpdates(orderbookIdToOrderbookUpdate.values());
     }
 
-    private void broadCastMatchingResults(final Collection<MatchingEngineResult> matchingEngineResults) {
-        if (!matchingEngineResults.isEmpty()) {
-            applicationEventPublisher.publishEvent(new MatchingEngineBroadcast(this, matchingEngineResults));
+    private void broadCastTrades(final List<MarketDataTrade> trades) {
+        if (!trades.isEmpty()) {
+            applicationEventPublisher.publishEvent(new TradeEventBroadcast(this, trades));
         }
     }
 

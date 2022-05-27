@@ -51,4 +51,8 @@ public class Portfolio {
     public Map<String, Position> getInstrumentIdToPosition() {
         return instrumentIdToPosition;
     }
+
+    public boolean isLiquidated() {
+        return instrumentIdToPosition.isEmpty();
+    }
 }

@@ -135,6 +135,11 @@ public class Order implements MarketDataOrder {
     }
 
     @Override
+    public double getOrderValue() {
+        return price * initialVolume;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order order)) return false;

@@ -3,9 +3,9 @@ package com.christopherrons.riskengine.riskcalculations;
 import com.christopherrons.pricingengine.pricecollection.model.PriceCollection;
 import com.christopherrons.pricingengine.pricecollection.model.PriceCollectionItem;
 import com.christopherrons.refdata.portfolio.model.Portfolio;
-import com.christopherrons.riskengine.riskcalculations.riskmodels.ConditionalValueAtRiskHistorical;
-import com.christopherrons.riskengine.riskcalculations.model.RiskCalculationResult;
 import com.christopherrons.riskengine.riskcalculations.model.RiskCalculationData;
+import com.christopherrons.riskengine.riskcalculations.model.RiskCalculationResult;
+import com.christopherrons.riskengine.riskcalculations.riskmodels.ConditionalValueAtRiskHistorical;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,9 @@ public class RiskCalculator {
         List<RiskCalculationResult> riskCalculationResults = new ArrayList<>();
         RiskCalculationResult result;
         for (Portfolio portfolio : portfolios) {
+            if (portfolio.isLiquidated()) {
+                continue;
+            }
             var riskPortfolio = new RiskCalculationData(portfolio, getInstrumentsInPortfolio(portfolio));
             switch (portfolio.getMarginCalculationEnum()) {
                 case HISTORICAL_CVAR:

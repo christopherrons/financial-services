@@ -1,12 +1,11 @@
 package com.christopherrons.websocket.datastream;
 
-import com.christopherrons.common.broadcasts.MatchingEngineBroadcast;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
+import com.christopherrons.common.broadcasts.TradeEventBroadcast;
 import com.christopherrons.marketdata.api.MarketDataOrder;
 import com.christopherrons.marketdata.api.MarketDataTrade;
 import com.christopherrons.marketdata.common.enums.event.OrderOperationEnum;
 import com.christopherrons.marketdata.common.enums.event.OrderTypeEnum;
-import com.christopherrons.tradingengine.matchingengine.model.MatchingEngineResult;
 import com.christopherrons.websocket.api.DataStream;
 import com.christopherrons.websocket.datastream.model.OrderDataStream;
 import com.christopherrons.websocket.datastream.model.OrderDataStreamItem;
@@ -53,14 +52,10 @@ public class TradingDataStream {
     }
 
     @EventListener
-    public void onMatchingEngineEvent(MatchingEngineBroadcast matchingEngineBroadcast) {
-        List<MatchingEngineResult> matchingEngineResult = matchingEngineBroadcast.getMatchingEngineResult();
+    public void onTradeEvent(TradeEventBroadcast tradeEventBroadcast) {
         List<OrderDataStreamItem> orderDataStreamItems = new ArrayList<>();
         List<TradeDataStreamItem> tradeDataStreamItems = new ArrayList<>();
-        for (MatchingEngineResult result : matchingEngineResult) {
-            addDataStreamItems(tradeDataStreamItems, orderDataStreamItems, result.getTrades());
-        }
-
+        addDataStreamItems(tradeDataStreamItems, orderDataStreamItems, tradeEventBroadcast.getTrades());
         pushData(ORDER_BOOK_ENDPOINT, new OrderDataStream(orderDataStreamItems));
         pushData(TRADE_ENDPOINT, new TradeDataStream(tradeDataStreamItems));
     }

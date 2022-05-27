@@ -26,8 +26,13 @@ public class RiskEngineServices {
     }
 
     private void runMarginCalculations(final PriceCollection priceCollection) {
-        LOGGER.info("Run Margin Calculations.");
-        RiskCalculator riskCalculator = new RiskCalculator(refDataService.getPortfolios(), priceCollection);
-        List<RiskCalculationResult> riskCalculationResults = riskCalculator.calculate();
+        try {
+            LOGGER.info("Run margin calculations.");
+            RiskCalculator riskCalculator = new RiskCalculator(refDataService.getPortfolios(), priceCollection);
+            List<RiskCalculationResult> riskCalculationResults = riskCalculator.calculate();
+        } catch (Exception e) {
+            LOGGER.warning("Could not run margin calculations: " + e);
+        }
+
     }
 }

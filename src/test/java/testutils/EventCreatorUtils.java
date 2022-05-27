@@ -12,7 +12,7 @@ import com.christopherrons.refdata.instrument.enums.InstrumentTypeEnum;
 import com.christopherrons.refdata.participant.model.Member;
 import com.christopherrons.refdata.participant.model.Participant;
 
-import static com.christopherrons.refdata.participant.utils.UserGeneratorUtils.generateUser;
+import static com.christopherrons.refdata.participant.utils.ParticipantGeneratorUtils.generateUser;
 
 public class EventCreatorUtils {
 

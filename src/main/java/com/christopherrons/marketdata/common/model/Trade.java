@@ -141,6 +141,11 @@ public class Trade implements MarketDataTrade {
     }
 
     @Override
+    public double getTurnover() {
+        return volume * price;
+    }
+
+    @Override
     public String toString() {
         return eventData + "-" +"Trade{" +
                 "askParticipant=" + askParticipant +

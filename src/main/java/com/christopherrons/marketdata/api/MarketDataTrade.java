@@ -22,4 +22,6 @@ public interface MarketDataTrade extends MarketDataEvent {
     Participant getAskParticipant();
 
     Participant getBidParticipant();
+
+    double getTurnover();
 }

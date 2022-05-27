@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-import static com.christopherrons.refdata.participant.utils.UserGeneratorUtils.generateUser;
+import static com.christopherrons.refdata.participant.utils.ParticipantGeneratorUtils.generateUser;
 
 public class BitstampTrade extends Trade {
 

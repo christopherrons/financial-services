@@ -21,4 +21,6 @@ public interface MarketDataOrder extends MarketDataEvent {
 
     boolean isFilled();
 
+    double getOrderValue();
+
 }
