@@ -17,7 +17,7 @@ tasks.test {
     useJUnitPlatform()
 }
 
-group = "com.christopherrons.shadoworderbook"
+group = "com.christopherrons.financial-services"
 version = "0.0.1-SNAPSHOT"
 if (project.hasProperty("releaseVersion")) {
     val releaseVersion: String by project

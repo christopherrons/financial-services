@@ -19,10 +19,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                git branch: 'main', url: 'https://github.com/christopherrons/shadow-orderbook.git'
+                git branch: 'main', url: 'https://github.com/christopherrons/financial-services.git'
                 sh "./gradlew build -PreleaseVersion=${releaseVersion}"
                 sh "./gradlew packageRelease -PreleaseVersion=${releaseVersion}"
-                archiveArtifacts artifacts: "shadoworderbook/build/releases/shadow-orderbook-${releaseVersion}.tar.gz", followSymlinks: false
+                archiveArtifacts artifacts: "financial-services/build/releases/shadow-orderbook-${releaseVersion}.tar.gz", followSymlinks: false
             }
         }
 

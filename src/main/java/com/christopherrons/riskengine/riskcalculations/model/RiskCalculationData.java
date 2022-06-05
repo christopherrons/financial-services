@@ -49,7 +49,6 @@ public class RiskCalculationData {
         this.positionReturnCovarianceMatrix = buildPositionCovarianceMatrix();
         this.positionReturnCorrelationMatrix = buildPositionCorrelationMatrix();
         this.returnDistribution = createMultivariateNormalDistribution(positionReturnMeans.toArray(), positionReturnCovarianceMatrix.getData());
-
     }
 
     private double calculatePortfolioValue() {
