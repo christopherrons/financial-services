@@ -4,7 +4,7 @@ This application takes live market data from e.g. Bitstamp and feeds it through 
 pricing-and risk engine. The backend pushed data through websockets and can be queried by the frontend through a REST
 api documented using Swagger.
 
-## Table of content
+## Table of Content
 
 * [Tech Stack](#tech-stack): The tech stack of the project.
 * [Service](#services): High level overview of the application.
@@ -77,6 +77,6 @@ then `/gradlew packageRelease -PreleaseVersion=<release-version>` to bundle the 
 scripts..
 
 ### Deploying the Application
-See [](deploy/scripts/scripts.md). 
+See [deploy readme](deploy/deploy.md). 
 
 

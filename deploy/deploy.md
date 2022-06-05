@@ -16,7 +16,7 @@ Common variables used by the scripts are set in:
 
 * Has to be run from the deploy folder on the application node
 
-## #Description
+## Description
 
 Takes a user input to start a version of the application, if there is no user input the application uses the current
 version. Creates a file with the current version running, with the name being set by
