@@ -18,9 +18,9 @@ fi
 
 # Persist version running
 verifyDirectory
-versionFile=$commonVersionFile
-touch $versionFile
-echo "$version" > $versionFile
+versionFile="$commonVersionFile"
+touch "$versionFile"
+echo "$version" > "$versionFile"
 
 # Start the application with specified version
 echo "Starting Application: $version"
