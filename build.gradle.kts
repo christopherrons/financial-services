@@ -45,3 +45,9 @@ tasks.register<Tar>("packageRelease") {
     from(layout.buildDirectory.file("libs/${rootProject.name}-${archiveVersion}.jar"))
 }
 
+tasks.register<tasks.FirstTask>("first") {
+    doLast {
+        // do something
+    }
+}
+
