@@ -3,11 +3,11 @@ dependencies {
     implementation(project(":financial-services-rest-api"))
     implementation(project(":financial-services-risk-engine"))
     implementation(project(":financial-services-surveillance-engine"))
-    implementation(project(":financial-services-refdata-engine"))
+    implementation(project(":financial-services-refdata-service"))
     implementation(project(":financial-services-pricing-engine"))
     implementation(project(":financial-services-websocket"))
     implementation(project(":financial-services-common"))
-    implementation(project(":financial-services-marketdata-engine"))
+    implementation(project(":financial-services-marketdata-service"))
     implementation(project(":financial-services-trading-engine"))
 
     // External Libs

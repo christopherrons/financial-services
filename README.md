@@ -1,8 +1,8 @@
 # Financial Services
 
-This application takes live market data from e.g. Bitstamp and feeds it through a refdata-, trading-, surveillance-,
+This application consumes live market data from e.g. Bitstamp through it market data service and feeds it through a trading-, surveillance-,
 pricing-and risk engine. The backend pushed data through websockets and can be queried by the frontend through a REST
-api documented using Swagger.
+api which documented using Swagger and Spring Doc.
 
 ## Table of Content
 
