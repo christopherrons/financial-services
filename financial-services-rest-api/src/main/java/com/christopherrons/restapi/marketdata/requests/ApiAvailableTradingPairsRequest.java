@@ -3,20 +3,20 @@ package com.christopherrons.restapi.marketdata.requests;
 import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
 
 public class ApiAvailableTradingPairsRequest {
-    private MarketDataFeedEnum marketDataFeedEnum;
+    private MarketDataFeedEnum marketDataFeed;
 
     public MarketDataFeedEnum getDataFeedName() {
-        return marketDataFeedEnum;
+        return marketDataFeed;
     }
 
-    public void setMarketDataFeedEnum(MarketDataFeedEnum dataFeedName) {
-        this.marketDataFeedEnum = dataFeedName;
+    public void setMarketDataFeed(MarketDataFeedEnum dataFeedName) {
+        this.marketDataFeed = dataFeedName;
     }
 
     @Override
     public String toString() {
         return "AvailableTradingPairsRequest{" +
-                "marketDataFeedEnum='" + marketDataFeedEnum + '\'' +
+                "marketDataFeedEnum='" + marketDataFeed + '\'' +
                 '}';
     }
 }

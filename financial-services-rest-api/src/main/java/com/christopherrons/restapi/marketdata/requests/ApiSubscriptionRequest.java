@@ -5,7 +5,7 @@ import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
 import com.christopherrons.common.enums.marketdata.TradingPairEnum;
 
 public class ApiSubscriptionRequest {
-    private MarketDataFeedEnum dataFeedName;
+    private MarketDataFeedEnum marketDataFeed;
     private TradingPairEnum tradingPair;
     private ChannelEnum channelName;
 
@@ -17,12 +17,12 @@ public class ApiSubscriptionRequest {
         this.channelName = channelName;
     }
 
-    public MarketDataFeedEnum getDataFeedName() {
-        return dataFeedName;
+    public MarketDataFeedEnum getMarketDataFeed() {
+        return marketDataFeed;
     }
 
-    public void setDataFeedName(MarketDataFeedEnum dataFeedName) {
-        this.dataFeedName = dataFeedName;
+    public void setMarketDataFeed(MarketDataFeedEnum marketDataFeed) {
+        this.marketDataFeed = marketDataFeed;
     }
 
     public TradingPairEnum getTradingPair() {
@@ -36,7 +36,7 @@ public class ApiSubscriptionRequest {
     @Override
     public String toString() {
         return "ApiSubscriptionRequest{" +
-                "dataFeedName='" + dataFeedName + '\'' +
+                "dataFeedName='" + marketDataFeed + '\'' +
                 ", tradingPair='" + tradingPair + '\'' +
                 ", channelName='" + channelName + '\'' +
                 '}';

@@ -6,13 +6,12 @@ import com.christopherrons.common.enums.refdata.InstrumentTypeEnum;
 import com.christopherrons.common.model.marketdata.Order;
 import com.christopherrons.common.model.refdata.Member;
 import com.christopherrons.common.model.refdata.Participant;
-import com.christopherrons.marketdataengine.common.enums.ChannelEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-import static com.christopherrons.common.utils.ParticipantGeneratorUtils.generateUser;
+import static com.christopherrons.common.utils.ParticipantGeneratorUtils.getUserFromPool;
 
 public class BitstampOrder extends Order {
 
@@ -37,7 +36,7 @@ public class BitstampOrder extends Order {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     BitstampOrder(@JsonProperty("data") Map<String, Object> data, @JsonProperty("channel") String channel, @JsonProperty("event") String event) {
         super(MarketDataFeedEnum.BITSTAMP, OrderOperationEnum.extractValue(event),
-                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), generateUser()),
+                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), getUserFromPool()),
                 !data.isEmpty() ? Long.parseLong((String) data.get("id_str")) : -1L,
                 !data.isEmpty() ? (int) data.get("order_type") : -1,
                 !data.isEmpty() ? Double.parseDouble((String) data.get("amount_str")) : -1.0,

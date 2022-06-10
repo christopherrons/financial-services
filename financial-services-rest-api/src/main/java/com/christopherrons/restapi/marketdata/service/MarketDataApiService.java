@@ -55,7 +55,7 @@ public class MarketDataApiService {
     }
 
     private ApiSubscriptionDto subscriptionRequest(final ApiSubscriptionRequest subscriptionRequest, final SubscriptionOperation subscriptionOperation) throws DeploymentException, IOException, InterruptedException {
-        boolean isSubscribed = handleSubscription(subscriptionRequest.getDataFeedName(), subscriptionRequest.getTradingPair(),
+        boolean isSubscribed = handleSubscription(subscriptionRequest.getMarketDataFeed(), subscriptionRequest.getTradingPair(),
                 subscriptionRequest.getChannelName(), subscriptionOperation);
         return new ApiSubscriptionDto(isSubscribed);
     }

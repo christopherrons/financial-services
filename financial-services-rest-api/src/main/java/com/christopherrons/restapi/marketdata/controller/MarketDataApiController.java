@@ -69,7 +69,7 @@ public class MarketDataApiController {
     })
     public ApiAvailableChannelsDto postSubscriptionTradingPairsRequest(final ApiAvailableChannelRequest apiAvailableChannelRequest) {
         LOGGER.info(String.format("Post request Available Trading Pairs received: %s.", apiAvailableChannelRequest));
-        return marketDataApiService.getAvailableChannels(apiAvailableChannelRequest.getDataFeedName());
+        return marketDataApiService.getAvailableChannels(apiAvailableChannelRequest.getMarketDataFeed());
     }
 
     @PostMapping(value = "/subscribeToChannel")

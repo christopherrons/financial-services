@@ -10,7 +10,7 @@ import com.christopherrons.common.model.marketdata.Trade;
 import com.christopherrons.common.model.refdata.Member;
 import com.christopherrons.common.model.refdata.Participant;
 
-import static com.christopherrons.common.utils.ParticipantGeneratorUtils.generateUser;
+import static com.christopherrons.common.utils.ParticipantGeneratorUtils.getUserFromPool;
 
 public class EventCreatorUtils {
 
@@ -44,7 +44,7 @@ public class EventCreatorUtils {
                                                        long orderId) {
         return new Order(marketDataFeedEnum,
                 orderOperationEnum,
-                new Participant(new Member(marketDataFeedEnum.getName()), generateUser()),
+                new Participant(new Member(marketDataFeedEnum.getName()), getUserFromPool()),
                 orderId,
                 orderTypeEnum.getValue(),
                 volume,

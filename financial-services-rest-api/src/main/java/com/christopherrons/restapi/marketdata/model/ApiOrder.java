@@ -11,7 +11,7 @@ import com.christopherrons.restapi.marketdata.requests.ApiOrderRequest;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.christopherrons.common.utils.ParticipantGeneratorUtils.generateUser;
+import static com.christopherrons.common.utils.ParticipantGeneratorUtils.getUserFromPool;
 
 public class ApiOrder extends Order {
     private static final AtomicLong CURRENT_ORDER_ID = new AtomicLong(1);
@@ -38,7 +38,7 @@ public class ApiOrder extends Order {
                     InstrumentTypeEnum instrumentTypeEnum) {
         super(marketDataFeedEnum,
                 orderOperationEnum,
-                new Participant(new Member(marketDataFeedEnum.getName()), generateUser()),
+                new Participant(new Member(marketDataFeedEnum.getName()), getUserFromPool()),
                 CURRENT_ORDER_ID.getAndIncrement(),
                 orderType,
                 volume,

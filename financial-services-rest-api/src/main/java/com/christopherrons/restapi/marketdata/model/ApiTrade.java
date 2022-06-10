@@ -14,7 +14,7 @@ import com.christopherrons.restapi.marketdata.requests.ApiTradeRequest;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.christopherrons.common.utils.ParticipantGeneratorUtils.generateUser;
+import static com.christopherrons.common.utils.ParticipantGeneratorUtils.getUserFromPool;
 
 public class ApiTrade extends Trade {
 
@@ -38,8 +38,8 @@ public class ApiTrade extends Trade {
                     InstrumentTypeEnum instrumentTypeEnum,
                     boolean isBidSideAggressor) {
         super(marketDataFeedEnum,
-                new Participant(new Member(marketDataFeedEnum.getName()), generateUser()),
-                new Participant(new Member(marketDataFeedEnum.getName()), generateUser()),
+                new Participant(new Member(marketDataFeedEnum.getName()), getUserFromPool()),
+                new Participant(new Member(marketDataFeedEnum.getName()), getUserFromPool()),
                 TRADE_ORDER_ID.getAndIncrement(),
                 TRADE_ORDER_ID.get() + 1,
                 TRADE_ORDER_ID.get() + 2,

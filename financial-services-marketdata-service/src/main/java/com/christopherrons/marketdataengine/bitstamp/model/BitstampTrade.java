@@ -6,13 +6,12 @@ import com.christopherrons.common.enums.refdata.InstrumentTypeEnum;
 import com.christopherrons.common.model.marketdata.Trade;
 import com.christopherrons.common.model.refdata.Member;
 import com.christopherrons.common.model.refdata.Participant;
-import com.christopherrons.marketdataengine.common.enums.ChannelEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-import static com.christopherrons.common.utils.ParticipantGeneratorUtils.generateUser;
+import static com.christopherrons.common.utils.ParticipantGeneratorUtils.getUserFromPool;
 
 public class BitstampTrade extends Trade {
 
@@ -39,8 +38,8 @@ public class BitstampTrade extends Trade {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     BitstampTrade(@JsonProperty("data") Map<String, Object> data, @JsonProperty("channel") String channel, @JsonProperty("event") String event) {
         super(MarketDataFeedEnum.BITSTAMP,
-                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), generateUser()),
-                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), generateUser()),
+                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), getUserFromPool()),
+                new Participant(new Member(MarketDataFeedEnum.BITSTAMP.getName()), getUserFromPool()),
                 !data.isEmpty() ? (int) data.get("id") : -1,
                 !data.isEmpty() ? (long) data.get("buy_order_id") : -1L,
                 !data.isEmpty() ? (long) data.get("sell_order_id") : -1L,
