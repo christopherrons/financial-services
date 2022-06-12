@@ -31,18 +31,6 @@ pipeline {
                 cleanWs()
             }
         }
-
-        /* stage('Update repo') {
-             steps {
-                 git tag -a ${releaseVersion} -m "Gradle Release Build ${releaseVersion}"
-                 git push-- tags
-                 sed - i "s/1.0.0/${releaseVersion}-SNAPSHOT/g" shadow -orderbook/build.gradle.kts
-                 git add shadow -orderbook/build.gradle.kts
-                 git commit - m "Gradle Release next development"
-                 git push
-             }
-
-         }*/
     }
 }
 

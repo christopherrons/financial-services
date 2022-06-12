@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.*;
 
+
 public class RiskCalculationData {
 
     private final Participant participant;
@@ -46,8 +47,8 @@ public class RiskCalculationData {
         this.positionReturnMeans = buildPositionMeanVector();
         this.positionReturnVariance = buildPositionVarianceVector();
         this.relativeReturnsMatrix = buildRelativeReturnMatrix(new ArrayList<>(instrumentIdToPosition.values()));
-        this.positionReturnCovarianceMatrix = buildPositionCovarianceMatrix();
-        this.positionReturnCorrelationMatrix = buildPositionCorrelationMatrix();
+        this.positionReturnCovarianceMatrix = createCovarianceMatrix(relativeReturnsMatrix);
+        this.positionReturnCorrelationMatrix = createCorrelationMatrix(positionReturnCovarianceMatrix);
         this.returnDistribution = createMultivariateNormalDistribution(positionReturnMeans.toArray(), positionReturnCovarianceMatrix.getData());
     }
 
@@ -85,38 +86,6 @@ public class RiskCalculationData {
             List<Double> relativeReturns = getPositionRelativeReturns(positions.get(column).getInstrumentId());
             for (int row = 0; row < relativeReturns.size(); row++) {
                 matrix.addToEntry(row, column, relativeReturns.get(row));
-            }
-        }
-        return matrix;
-    }
-
-    private RealMatrix buildPositionCovarianceMatrix() {
-        RealMatrix matrix = new Array2DRowRealMatrix(numberOfPositions, numberOfPositions);
-        for (int column = 0; column < numberOfPositions; column++) {
-            RealVector relativeReturnsFirstPosition = relativeReturnsMatrix.getColumnVector(column);
-            matrix.addToEntry(column, column, positionReturnVariance.getEntry(column));
-            for (int row = column + 1; row < numberOfPositions; row++) {
-                RealVector relativeReturnsSecondPosition = relativeReturnsMatrix.getColumnVector(row);
-                double covariance = calculateCovariance(relativeReturnsFirstPosition, relativeReturnsSecondPosition,
-                        positionReturnMeans.getEntry(column), positionReturnMeans.getEntry(row));
-                matrix.addToEntry(row, column, covariance);
-                matrix.addToEntry(column, row, covariance);
-            }
-        }
-        return matrix;
-    }
-
-    private RealMatrix buildPositionCorrelationMatrix() {
-        RealMatrix matrix = new Array2DRowRealMatrix(numberOfPositions, numberOfPositions);
-        for (int column = 0; column < numberOfPositions; column++) {
-            double correlation = calculateCorrelation(positionReturnCovarianceMatrix.getEntry(column, column),
-                    positionReturnVariance.getEntry(column), positionReturnVariance.getEntry(column));
-            matrix.addToEntry(column, column, correlation);
-            for (int row = column + 1; row < numberOfPositions; row++) {
-                correlation = calculateCorrelation(positionReturnCovarianceMatrix.getEntry(row, column),
-                        positionReturnVariance.getEntry(column), positionReturnVariance.getEntry(row));
-                matrix.addToEntry(row, column, correlation);
-                matrix.addToEntry(column, row, correlation);
             }
         }
         return matrix;

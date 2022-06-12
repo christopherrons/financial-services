@@ -1,11 +1,27 @@
 #!/bin/bash
-source setenviroment_app.sh
+source setenv.sh
 
 function verifyDirectory() {
-  deployDirectory="/home/ubuntu/deploy"
+  deployDirectory="/home/$LXC_USER/deploy"
   if [ "$PWD" != "$deployDirectory" ]; then
     echo "Aborted: File has to be run from $deployDirectory but was run from $PWD"
     exit
+  fi
+}
+
+function setNohupFileName() {
+  nohupFile="/home/$LXC_USER/deploy/nohup.out"
+  if test -f "$nohupFile"; then
+      echo "Rename previous nohup"
+      mv nohup.out nohup_"$(date +'%Y-%m-%d_%H:%M:%S')".out
+  fi
+}
+
+function checkIfRunning() {
+  versionFile="/home/$LXC_USER/deploy/$COMMON_VERSION_FILE"
+  if test -f "$versionFile"; then
+      echo "Application running aborting..."
+      exit
   fi
 }
 
@@ -18,13 +34,15 @@ fi
 
 # Persist version running
 verifyDirectory
-versionFile="$commonVersionFile"
+checkIfRunning
+versionFile="$COMMON_VERSION_FILE"
 touch "$versionFile"
 echo "$version" > "$versionFile"
 
 # Start the application with specified version
+setNohupFileName
 echo "Starting Application: $version"
-java -jar "$version"
+nohup java -jar "$JVM_OPTS" "$version" &
 
 
 

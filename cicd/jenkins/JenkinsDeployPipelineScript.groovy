@@ -39,12 +39,12 @@ pipeline {
                                             description: 'The host name',
                                             name: 'Host Name'),
                             ])
-                    def deployDir = "/home/ubuntu/deploy"
-                    sh "rsync ${'/var/lib/jenkins/jobs/shadoworderbook-release'}/${fileNameMap[pickedReleaseVersion]} ubuntu@${host}:${deployDir}"
-                    sh "ssh ubuntu@${host} 'tar -xf ${deployDir}/${pickedReleaseVersion} --directory ${deployDir}'"
-                    sh "ssh ubuntu@${host} 'rm ${deployDir}/${pickedReleaseVersion}'"
+                    def deployDir = "/home/herron/deploy"
+                    sh "rsync ${'/var/lib/jenkins/jobs/shadoworderbook-release'}/${fileNameMap[pickedReleaseVersion]} herron@${host}:${deployDir}"
+                    sh "ssh herron@${host} 'tar -xf ${deployDir}/${pickedReleaseVersion} --directory ${deployDir}'"
+                    sh "ssh herron@${host} 'rm ${deployDir}/${pickedReleaseVersion}'"
 
-                    sh "ssh ubuntu@${host} 'cd ${deployDir} && bash bootstrap.sh'"
+                    sh "ssh herron@${host} 'cd ${deployDir} && bash bootstrap.sh'"
                 }
             }
         }

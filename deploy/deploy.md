@@ -6,31 +6,16 @@ Once the application is deploy script are used for starting, monitoring and stop
 
 Common variables used by the scripts are set in:
 
-* `setenviroment_app.sh`
+* [setenv.sh](scripts/setenv.sh)
+
+## Bootstrap script
+
+The [bootstrap.sh](scripts/bootstrap.sh) is used to init and maintain the deploy directory.
 
 ## Start Script
 
-`start.sh`
-
-### Requirements
-
-* Has to be run from the deploy folder on the application node
-
-## Description
-
-Takes a user input to start a version of the application, if there is no user input the application uses the current
-version. Creates a file with the current version running, with the name being set by
-commonVersionFile `setenviroment_app.sh`, which can be used by other scripts.
+Start the application by running [start.sh](scripts/start.sh).
 
 ## Shutdown Script
 
-`shutdown.sh`
-
-### Requirements
-
-* Has to be run from the deploy folder on the application node
-
-### Description
-
-The script shuts down the application based on the version specified in the commonVersionFile named
-in `setenviroment_app.sh`.
+Shutdown the application by running [start.sh](scripts/start.sh).

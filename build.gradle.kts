@@ -42,7 +42,7 @@ tasks.register<Tar>("packageRelease") {
     from(layout.projectDirectory.dir("deploy/scripts")) {
         exclude("**/*.md")
     }
-    from(layout.buildDirectory.file("libs/${rootProject.name}-${archiveVersion}.jar"))
+    from(layout.buildDirectory.file("libs/${rootProject.name}-${version}.jar"))
 }
 
 tasks.register<tasks.FirstTask>("first") {

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 public class RiskEngineServices {
 
     private static final Logger LOGGER = Logger.getLogger(RiskEngineServices.class.getName());
-
     @Autowired
     private RefDataService refDataService;
     @Autowired

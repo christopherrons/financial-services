@@ -1,7 +1,10 @@
 package com.christopherrons.common.math.probability;
 
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.stat.correlation.Covariance;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 
 import java.util.List;
 
@@ -63,5 +66,13 @@ public class ProbabilityCalculationUtils {
 
     public static MultivariateNormalDistribution createMultivariateNormalDistribution(final double[] means, double[][] covariance) {
         return new MultivariateNormalDistribution(means, covariance);
+    }
+
+    public static RealMatrix createCovarianceMatrix(final RealMatrix data) {
+        return new Covariance(data).getCovarianceMatrix();
+    }
+
+    public static RealMatrix createCorrelationMatrix(final RealMatrix data) {
+        return new PearsonsCorrelation(data).getCorrelationMatrix();
     }
 }

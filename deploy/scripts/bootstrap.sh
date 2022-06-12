@@ -1,8 +1,8 @@
 #!/bin/bash
-source setenviroment_app.sh
+source setenv.sh
 
 function verifyDirectory() {
-  deployDirectory="/home/ubuntu/deploy"
+  deployDirectory="/home/$LXC_USER/deploy"
   if [ "$PWD" != "$deployDirectory" ]; then
     echo "Aborted: File has to be run from $deployDirectory but was run from $PWD"
     exit
@@ -10,14 +10,14 @@ function verifyDirectory() {
 }
 
 function init() {
-  mkdir -p "$releaseDir"
+  mkdir -p "$RELEASE_DIR"
 }
 
 function saveRelease() {
   nrOfJar="$(ls -t *.jar | wc -l)"
   if (("$nrOfJar" > 2)); then
     previousRelease="$(readlink -f previous)"
-    mv "$previousRelease" "$releaseDir"
+    mv "$previousRelease" "$RELEASE_DIR"
   fi
 }
 
@@ -35,12 +35,12 @@ function updateVersion() {
 }
 
 function cleanOldReleases() {
-  nrOldReleases="$(ls -l "$releaseDir" | wc -l)"
+  nrOldReleases="$(ls -l "$RELEASE_DIR" | wc -l)"
   while ((nrOldReleases > 5)); do
-    oldestRelease=$(ls -lt "$releaseDir" | tail -1)
+    oldestRelease=$(ls -lt "RELEASE_DIR" | tail -1)
     rm "$oldestRelease"
     echo "Deleting release: $oldestRelease"
-    nrOldReleases="$(ls -l "$releaseDir" | wc -l)"
+    nrOldReleases="$(ls -l "RELEASE_DIR" | wc -l)"
   done
 }
 

@@ -1,8 +1,8 @@
 #!/bin/bash
-source setenviroment_app.sh
+source setenv.sh
 
 function verifyDirectory() {
-  deployDirectory="/home/ubuntu/deploy"
+  deployDirectory="/home/$LXC_USER/deploy"
   if [ "$PWD" != "$deployDirectory" ]; then
     echo "Aborted: File has to be run from $deployDirectory but was run from $PWD"
     exit
@@ -48,7 +48,7 @@ function isProcessRunning() {
 
 # Procedure
 verifyDirectory
-versionFile=$commonVersionFile
+versionFile="$COMMON_VERSION_FILE"
 pid=$(getPid "$versionFile")
 killProcess "$pid"
 rm "$versionFile"

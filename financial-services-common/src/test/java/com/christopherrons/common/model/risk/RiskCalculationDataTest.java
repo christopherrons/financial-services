@@ -130,9 +130,9 @@ class RiskCalculationDataTest {
     void testPositionReturnCorrelation() {
         var matrix = new Array2DRowRealMatrix(2, 2);
         matrix.addToEntry(0, 0, 1);
-        matrix.addToEntry(1, 0, 0.9997550312906545);
+        matrix.addToEntry(1, 0, 0.9999999999999999);
 
-        matrix.addToEntry(0, 1, 0.9997550312906545);
+        matrix.addToEntry(0, 1, 0.9999999999999999);
         matrix.addToEntry(1, 1, 1);
         assertDoubleMatrix(matrix, riskCalculationData.getPositionReturnCorrelationMatrix(), DELTA);
 

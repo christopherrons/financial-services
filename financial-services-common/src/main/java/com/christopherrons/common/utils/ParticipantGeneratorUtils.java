@@ -10,13 +10,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.toList;
-
 public class ParticipantGeneratorUtils {
 
     private static final Faker NAME_FAKER = new Faker();
     private static final Random RANDOM_UNIFORM = new Random();
     private static final List<User> USER_POOL = IntStream.of(0, 2000).mapToObj(k -> generateUser()).toList();
+
+    private ParticipantGeneratorUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static User generateUser() {
         return new User(NAME_FAKER.funnyName().name(), NAME_FAKER.name().lastName());
