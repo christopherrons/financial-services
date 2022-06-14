@@ -3,8 +3,7 @@ def fileNameMap = [:]
 def pickedReleaseVersion
 def releaseDir = '/var/lib/jenkins/jobs/financial-services-release'
 
-node {
-    agent { label 'master' }
+node('master') {
     dir(releaseDir) {
         def files = findFiles(glob: '**/*.tar.gz')
         echo "${files}"
