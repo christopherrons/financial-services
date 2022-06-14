@@ -1,7 +1,7 @@
 def releaseVersions = []
 def fileNameMap = [:]
 def pickedReleaseVersion
-def releaseDir = '/var/lib/jenkins/jobs/shadoworderbook-release'
+def releaseDir = '/var/lib/jenkins/jobs/financial-services-release'
 
 node {
     dir(releaseDir) {
@@ -40,7 +40,7 @@ pipeline {
                                             name: 'Host Name'),
                             ])
                     def deployDir = "/home/herron/deploy"
-                    sh "rsync ${'/var/lib/jenkins/jobs/shadoworderbook-release'}/${fileNameMap[pickedReleaseVersion]} herron@${host}:${deployDir}"
+                    sh "rsync ${'/var/lib/jenkins/jobs/financial-services-release'}/${fileNameMap[pickedReleaseVersion]} herron@${host}:${deployDir}"
                     sh "ssh herron@${host} 'tar -xf ${deployDir}/${pickedReleaseVersion} --directory ${deployDir}'"
                     sh "ssh herron@${host} 'rm ${deployDir}/${pickedReleaseVersion}'"
 
