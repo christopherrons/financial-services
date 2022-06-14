@@ -8,10 +8,13 @@ pipeline {
     stages {
         stage("Env Variables"){
             steps{
-                env.JAVA_HOME="${tool 'jdk-17'}"
-                env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+                script {
+                    env.JAVA_HOME = "${tool 'jdk-17'}"
+                    env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+                }
             }
         }
+
         stage('Add release version') {
             steps {
                 script {
