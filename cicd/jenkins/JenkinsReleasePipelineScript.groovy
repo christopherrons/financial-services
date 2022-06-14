@@ -34,7 +34,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/christopherrons/financial-services.git'
                 sh "./gradlew build -PreleaseVersion=${releaseVersion}"
                 sh "./gradlew packageRelease -PreleaseVersion=${releaseVersion}"
-                archiveArtifacts artifacts: "financial-services/build/releases/financial-services-${releaseVersion}.tar.gz", followSymlinks: false
+                archiveArtifacts artifacts: "/build/releases/financial-services-${releaseVersion}.tar.gz", followSymlinks: false
             }
         }
 
