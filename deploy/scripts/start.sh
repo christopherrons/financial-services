@@ -13,7 +13,8 @@ function setNohupFileName() {
   nohupFile="/home/$LXC_USER/deploy/nohup.out"
   if test -f "$nohupFile"; then
       echo "Rename previous nohup"
-      mv nohup.out nohup_"$(date +'%Y-%m-%d_%H:%M:%S')".out
+      mkdir -p old_nohup
+      mv nohup.out old_nohup/nohup_"$(date +'%Y-%m-%d_%H:%M:%S')".out
   fi
 }
 
