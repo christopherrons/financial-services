@@ -4,6 +4,7 @@ def pickedReleaseVersion
 def releaseDir = '/var/lib/jenkins/jobs/financial-services-release'
 
 node {
+    agent { label 'master' }
     dir(releaseDir) {
         def files = findFiles(glob: '**/*.tar.gz')
         echo "${files}"
@@ -15,7 +16,7 @@ node {
 }
 
 pipeline {
-    agent any
+    agent { label 'master' }
     stages {
         stage("Choose Release") {
             steps {

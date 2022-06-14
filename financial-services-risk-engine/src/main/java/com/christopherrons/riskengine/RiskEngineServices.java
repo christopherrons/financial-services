@@ -4,7 +4,7 @@ import com.christopherrons.common.broadcasts.PriceCollectionsEventBroadcast;
 import com.christopherrons.common.broadcasts.RiskCalculationResultsBroadCast;
 import com.christopherrons.common.model.pricing.PriceCollection;
 import com.christopherrons.common.model.risk.RiskCalculationResult;
-import com.christopherrons.refdataengine.RefDataService;
+import com.christopherrons.refdataservice.RefDataService;
 import com.christopherrons.riskengine.riskcalculations.RiskCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;

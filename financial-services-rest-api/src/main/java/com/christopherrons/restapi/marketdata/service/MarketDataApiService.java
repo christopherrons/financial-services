@@ -1,10 +1,10 @@
 package com.christopherrons.restapi.marketdata.service;
 
-import com.christopherrons.marketdataengine.common.enums.ChannelEnum;
+import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
 import com.christopherrons.common.enums.marketdata.SubscriptionOperation;
 import com.christopherrons.common.enums.marketdata.TradingPairEnum;
-import com.christopherrons.marketdataengine.MarketDataService;
+import com.christopherrons.marketdataservice.MarketDataService;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableChannelsDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableMarketDataFeedDto;
 import com.christopherrons.restapi.marketdata.dto.ApiAvailableTradingPairsDto;

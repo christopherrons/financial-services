@@ -2,7 +2,7 @@ package com.christopherrons.restapi.marketdata.requests;
 
 import com.christopherrons.common.enums.marketdata.*;
 import com.christopherrons.common.enums.refdata.InstrumentTypeEnum;
-import com.christopherrons.marketdataengine.common.enums.ChannelEnum;
+import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 
 public class ApiOrderRequest {
 

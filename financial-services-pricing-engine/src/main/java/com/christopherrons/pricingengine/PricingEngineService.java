@@ -10,7 +10,7 @@ import com.christopherrons.common.model.trading.OrderbookUpdate;
 import com.christopherrons.pricingengine.cache.PricingCache;
 import com.christopherrons.pricingengine.pricecollection.PriceCollectionCalculator;
 import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
-import com.christopherrons.refdataengine.RefDataService;
+import com.christopherrons.refdataservice.RefDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;

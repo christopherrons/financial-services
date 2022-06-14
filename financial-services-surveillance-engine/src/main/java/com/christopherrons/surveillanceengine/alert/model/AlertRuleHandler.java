@@ -1,6 +1,6 @@
 package com.christopherrons.surveillanceengine.alert.model;
 
-import com.christopherrons.refdataengine.statistics.StatisticsService;
+import com.christopherrons.refdataservice.statistics.StatisticsService;
 import com.christopherrons.surveillanceengine.alert.alertrules.LargeOrderValueAlertRule;
 import com.christopherrons.surveillanceengine.alert.alertrules.LargeTradeTurnoverAlertRule;
 import com.christopherrons.surveillanceengine.api.AlertRule;

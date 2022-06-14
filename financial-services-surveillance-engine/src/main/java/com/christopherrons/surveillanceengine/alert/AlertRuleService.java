@@ -3,7 +3,7 @@ package com.christopherrons.surveillanceengine.alert;
 import com.christopherrons.common.api.marketdata.MarketDataOrder;
 import com.christopherrons.common.api.marketdata.MarketDataTrade;
 import com.christopherrons.common.model.surveillance.Alert;
-import com.christopherrons.refdataengine.statistics.StatisticsService;
+import com.christopherrons.refdataservice.statistics.StatisticsService;
 import com.christopherrons.surveillanceengine.alert.cache.AlertRuleHandlerCache;
 import com.christopherrons.surveillanceengine.api.AlertRule;
 import com.christopherrons.tradingengine.orderbook.OrderbookService;

@@ -2,7 +2,6 @@ rootProject.name = "financial-services"
 rootProject.buildFileName = "build.gradle.kts"
 
 include("financial-services-common")
-include("financial-services-test")
 include("financial-services-pricing-engine")
 include("financial-services-refdata-service")
 include("financial-services-marketdata-service")

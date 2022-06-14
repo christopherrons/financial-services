@@ -1,6 +1,6 @@
 package com.christopherrons.restapi.marketdata.requests.utils;
 
-import com.christopherrons.marketdataengine.common.enums.ChannelEnum;
+import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
 import com.christopherrons.common.enums.marketdata.TradingPairEnum;
 import com.christopherrons.restapi.marketdata.exceptions.ApiChannelRequestException;

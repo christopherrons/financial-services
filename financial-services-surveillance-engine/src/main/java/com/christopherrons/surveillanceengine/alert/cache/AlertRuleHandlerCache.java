@@ -1,6 +1,6 @@
 package com.christopherrons.surveillanceengine.alert.cache;
 
-import com.christopherrons.refdataengine.statistics.StatisticsService;
+import com.christopherrons.refdataservice.statistics.StatisticsService;
 import com.christopherrons.surveillanceengine.alert.model.AlertRuleHandler;
 import com.christopherrons.tradingengine.orderbook.OrderbookService;
 
