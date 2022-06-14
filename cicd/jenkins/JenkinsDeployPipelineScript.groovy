@@ -43,7 +43,6 @@ pipeline {
                     sh "rsync ${'/var/lib/jenkins/jobs/financial-services-release'}/${fileNameMap[pickedReleaseVersion]} herron@${host}:${deployDir}"
                     sh "ssh herron@${host} 'tar -xf ${deployDir}/${pickedReleaseVersion} --directory ${deployDir}'"
                     sh "ssh herron@${host} 'rm ${deployDir}/${pickedReleaseVersion}'"
-
                     sh "ssh herron@${host} 'cd ${deployDir} && bash bootstrap.sh'"
                 }
             }

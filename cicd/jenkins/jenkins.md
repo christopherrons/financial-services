@@ -9,13 +9,10 @@ The work tool Jenkins is used to compile, release and deploy the application.
 
 ## Release Pipeline
 
-### Requirements
-
-* Jenkins has to have access to repository with the script and be configured to find the file.
-
 ### Description
 
-The script `JenkinsReleasePipelineScript` builds a release and sets the version as specified by the user. The jar file
+The [JenkinsReleasePipelineScript.groovy](JenkinsReleasePipelineScript.groovy) script builds a release and sets the
+version as specified by the user. The jar file
 is archived and stored under `/var/lib/jenkins/jobs/shadoworderbook-release/builds/<build>/archive`.
 
 ## Deploy Pipeline
