@@ -2,6 +2,7 @@ plugins {
     id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("java")
+    `kotlin-dsl`
 }
 
 allprojects {
@@ -43,6 +44,12 @@ tasks.register<Tar>("packageRelease") {
         exclude("**/*.md")
     }
     from(layout.buildDirectory.file("libs/${rootProject.name}-${version}.jar"))
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 tasks.register<tasks.FirstTask>("first") {
