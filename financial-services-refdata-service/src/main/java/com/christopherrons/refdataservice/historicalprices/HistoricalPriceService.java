@@ -28,8 +28,8 @@ public class HistoricalPriceService {
 
     private static final Logger LOGGER = Logger.getLogger(HistoricalPriceService.class.getName());
     private static final String BASE_URL = "https://yfapi.net/v8/finance/spark";
-    private static final Map<String, String> headerToValue = Map.of("X-API-KEY", "zs3wSXrfkK3sQ0GkMEA2o3CyhaWwEqKa3JiPtj5b");
-    private static final int UPDATE_INTERVAL_IN_DAYS = 1;
+    private static final Map<String, String> headerToValue = Map.of("X-API-KEY", "zAXILAd1bX7UzfaqN3gpda4Fe0iOSwBGakmvZDfd");
+    private static final int UPDATE_INTERVAL_IN_DAYS = 365;
     private static final ObjectMapper mapper = new ObjectMapper();
     private HistoricalPriceCollection historicalPriceCollection = null;
     private LocalDate lastUpdateTime = LocalDate.now();

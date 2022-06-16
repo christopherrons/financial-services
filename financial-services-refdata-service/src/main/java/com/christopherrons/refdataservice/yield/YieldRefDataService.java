@@ -22,8 +22,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class YieldRefDataService {
     private static final Logger LOGGER = Logger.getLogger(YieldRefDataService.class.getName());
     private static final String BASE_URL = "https://data.nasdaq.com/api/v3/datasets/USTREASURY/YIELD.json/";
-    private static final String API_KEY = "bG3_NQF6ohqTN2PVTFgy";
-    private static final int UPDATE_INTERVAL_IN_DAYS = 1;
+    private static final String API_KEY = "Fm1uExMDkQBg8HKVwCDz";
+    private static final int UPDATE_INTERVAL_IN_DAYS = 365;
     private static final ObjectMapper mapper = new ObjectMapper();
     private YieldRefData yieldRefData = null;
     private LocalDate lastUpdateTime = LocalDate.now();

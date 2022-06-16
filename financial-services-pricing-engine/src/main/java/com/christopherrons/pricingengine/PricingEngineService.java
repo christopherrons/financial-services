@@ -59,7 +59,7 @@ public class PricingEngineService {
         PriceCollection priceCollectionItems = priceCollectionCalculator.createPriceCollection(
                 pricingCache.getAllPriceSnapshots(),
                 refDataService.getHistoricalData(),
-                refDataService.getYieldRefData());
+               null); // refDataService.getYieldRefData()); //TODO: Fix
         broadcastPriceCollection(priceCollectionItems);
     }
 

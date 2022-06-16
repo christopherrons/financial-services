@@ -23,7 +23,7 @@ public class PriceCollectionCalculator {
                                                  final YieldRefData yieldRefData) {
         return new PriceCollection(
                 addPriceCollectionItems(snapshots, historicalPriceCollection),
-                new YieldCurve(yieldRefData)
+                null //new YieldCurve(yieldRefData) //TODO: Fix
         );
     }
 
