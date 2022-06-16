@@ -32,8 +32,7 @@ pipeline {
         stage('Build') {
             steps {
                 git branch: 'main', url: 'https://github.com/christopherrons/financial-services.git'
-                sh "./gradlew build -PreleaseVersion=${releaseVersion}"
-                sh "./gradlew packageRelease -PreleaseVersion=${releaseVersion}"
+                sh "./gradlew buildAndPackage -PreleaseVersion=${releaseVersion}"
                 archiveArtifacts artifacts: "build/releases/financial-services-${releaseVersion}.tar.gz", followSymlinks: false
             }
         }
