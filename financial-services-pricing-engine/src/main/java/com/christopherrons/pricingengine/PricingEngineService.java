@@ -16,7 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 
@@ -53,13 +53,13 @@ public class PricingEngineService {
     }
 
     @EventListener
-    public void onTriggerPriceCollectionBroadCast(TriggerPriceCollectionBroadcast triggerPriceCollectionBroadcast) throws IOException {
+    public void onTriggerPriceCollectionBroadCast(TriggerPriceCollectionBroadcast triggerPriceCollectionBroadcast) throws URISyntaxException {
         LOGGER.info("Create Price Collections");
 
         PriceCollection priceCollectionItems = priceCollectionCalculator.createPriceCollection(
                 pricingCache.getAllPriceSnapshots(),
                 refDataService.getHistoricalData(),
-               null); // refDataService.getYieldRefData()); //TODO: Fix
+                null); // refDataService.getYieldRefData()); //TODO: Fix
         broadcastPriceCollection(priceCollectionItems);
     }
 

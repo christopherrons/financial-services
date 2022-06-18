@@ -6,13 +6,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonMessageDecoder {
-
     private final Class<? extends MarketDataEvent> classToBeDecoded;
 
     public JsonMessageDecoder(Class<? extends MarketDataEvent> classToBeDecoded) {
         this.classToBeDecoded = classToBeDecoded;
     }
-
     public MarketDataEvent decodeMessage(final String message) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

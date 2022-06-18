@@ -20,6 +20,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Service
@@ -77,7 +78,7 @@ public class RefDataService {
         return yieldRefDataService.getYieldRefData();
     }
 
-    public HistoricalPriceCollection getHistoricalData() throws IOException {
+    public HistoricalPriceCollection getHistoricalData() throws URISyntaxException, IOException {
         return historicalPriceService.getHistoricalData();
     }
 

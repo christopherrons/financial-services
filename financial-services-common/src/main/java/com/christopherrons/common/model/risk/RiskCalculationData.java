@@ -79,7 +79,7 @@ public class RiskCalculationData {
         return new ArrayRealVector(variance);
     }
 
-    private RealMatrix buildRelativeReturnMatrix(List<Position> positions) {
+    private RealMatrix buildRelativeReturnMatrix(List<Position> positions) { //TODO: Not garanteed to match in size
         int numberOfReturns = getPositionRelativeReturns(positions.get(0).getInstrumentId()).size();
         RealMatrix matrix = new Array2DRowRealMatrix(numberOfReturns, numberOfPositions);
         for (int column = 0; column < numberOfPositions; column++) {
