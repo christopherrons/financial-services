@@ -74,11 +74,11 @@ public class RefDataService {
         return instrumentRefDataService.getInstrumentTypes();
     }
 
-    public YieldRefData getYieldRefData() throws IOException {
+    public YieldRefData getYieldRefData() {
         return yieldRefDataService.getYieldRefData();
     }
 
-    public HistoricalPriceCollection getHistoricalData() throws URISyntaxException, IOException {
+    public HistoricalPriceCollection getHistoricalData() throws IOException {
         return historicalPriceService.getHistoricalData();
     }
 
@@ -89,4 +89,5 @@ public class RefDataService {
     public OrderbookStatistics getOrderbookStatistics(final String orderbookId) {
         return statisticsService.getOrderbookStatistics(orderbookId);
     }
+
 }

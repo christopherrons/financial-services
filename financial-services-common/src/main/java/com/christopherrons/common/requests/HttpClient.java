@@ -30,12 +30,10 @@ public class HttpClient {
         try {
             return getResponse(connection);
         } catch (RuntimeException e) {
-            LOGGER.warning(e.toString());
+            throw new RuntimeException(e);
         } finally {
             connection.disconnect();
         }
-
-        return "";
     }
 
     private static String getResponse(final HttpURLConnection connection) throws IOException {

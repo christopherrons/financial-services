@@ -45,6 +45,7 @@ public class HistoricalPriceService {
             try {
                 historicalPriceCollection = requestHistoricalData();
             } catch (Exception e) {
+                LOGGER.warning("Fetching historical data failed. Using backup!" + e);
                 var backupFile = new File("/home/christopher/versioned/financial-services/financial-services-refdata-service/src/main/resources/backup_historical_prices.json");
                 var backupResponse = mapper.readValue(backupFile, YahooHistoricalPrices.class);
                 historicalPriceCollection = createHistoricalPriceCollection(backupResponse);

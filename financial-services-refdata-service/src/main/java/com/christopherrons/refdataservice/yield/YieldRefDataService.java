@@ -7,11 +7,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 import static com.christopherrons.common.requests.HttpClient.requestGET;
@@ -28,7 +30,7 @@ public class YieldRefDataService {
     private YieldRefData yieldRefData = null;
     private LocalDate lastUpdateTime = LocalDate.now();
 
-    public YieldRefData getYieldRefData() throws IOException {
+    public YieldRefData getYieldRefData() {
         LocalDate currentTime = LocalDate.now();
         if (updateYield(currentTime)) {
             LOGGER.info("Updating Yield Ref Data: Previous updated on: " + lastUpdateTime.toString());
@@ -36,8 +38,7 @@ public class YieldRefDataService {
             try {
                 yieldRefData = getYield(lastUpdateTime.toString());
             } catch (Exception e) {
-                LOGGER.warning("Fetching yield data failed: " + e);
-                yieldRefData = new YieldRefData(lastUpdateTime, List.of(lastUpdateTime.minusDays(1)), new double[]{0});
+                LOGGER.warning("Fetching yield data failed!");
             }
         }
         return yieldRefData;
@@ -49,8 +50,22 @@ public class YieldRefDataService {
 
     private YieldRefData getYield(final String requestDate) throws IOException {
         URL url = new URL(String.format("%s?start_date=%s?end_date=%s?api_key=%s", BASE_URL, requestDate, requestDate, API_KEY));
-        String jsonResponse = requestGET(url, new HashMap<>());
+        try {
+            String jsonResponse = requestGET(url, new HashMap<>());
+            return getYield(requestDate, jsonResponse);
+        } catch (RuntimeException e) {
+            LOGGER.warning("Fetching yield data failed. Using backup!");
+            StringBuilder backupFile = new StringBuilder();
+            Scanner in = new Scanner(new FileReader("/home/christopher/versioned/financial-services/financial-services-refdata-service/src/main/resources/backup_yield_data.json"));
+            while (in.hasNext()) {
+                backupFile.append(in.next());
+            }
+            in.close();
+            return getYield("2022-02-04", backupFile.toString());
+        }
+    }
 
+    private YieldRefData getYield(final String requestDate, final String jsonResponse) throws IOException {
         JsonNode yieldJsonObject = mapper.readValue(jsonResponse, JsonNode.class).get("dataset");
         String newestDate = yieldJsonObject.get("newest_available_date").asText();
         if (newestDate.equals(requestDate)) {
@@ -82,8 +97,7 @@ public class YieldRefDataService {
         List<String> maturitiesAsString = mapper.readValue(maturitiesJsonString, TypeFactory.defaultInstance().constructCollectionType(List.class, String.class));
         maturitiesAsString.set(0, startDate);
         return maturitiesAsString.stream()
-                .map(maturityString -> createMaturityDate(LocalDate.parse(startDate), maturityString))
+                .map(maturityString -> createMaturityDate(LocalDate.parse(startDate), maturityString.replace(" ", "")))
                 .toList();
     }
-
 }

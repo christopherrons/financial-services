@@ -1,14 +1,14 @@
 package com.christopherrons.pricingengine.pricecollection;
 
-import com.christopherrons.pricingengine.marginprice.MarginPriceCalculator;
 import com.christopherrons.common.model.pricing.MarginPrice;
 import com.christopherrons.common.model.pricing.PriceCollection;
 import com.christopherrons.common.model.pricing.PriceCollectionItem;
-import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
 import com.christopherrons.common.model.pricing.YieldCurve;
 import com.christopherrons.common.model.refdata.HistoricalPrice;
 import com.christopherrons.common.model.refdata.HistoricalPriceCollection;
 import com.christopherrons.common.model.refdata.YieldRefData;
+import com.christopherrons.pricingengine.marginprice.MarginPriceCalculator;
+import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ public class PriceCollectionCalculator {
                                                  final YieldRefData yieldRefData) {
         return new PriceCollection(
                 addPriceCollectionItems(snapshots, historicalPriceCollection),
-                null //new YieldCurve(yieldRefData) //TODO: Fix
+                new YieldCurve(yieldRefData)
         );
     }
 
