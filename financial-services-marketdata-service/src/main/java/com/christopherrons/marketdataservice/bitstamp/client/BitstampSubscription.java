@@ -18,10 +18,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BitstampSubscription implements MarketDataSubscription {
-    private static final Logger LOGGER = Logger.getLogger(BitstampSubscription.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(BitstampSubscription.class);
     private static final URI websocketURI = MarketDataFeedEnum.BITSTAMP.getUri();
     private static final String SUBSCRIBE = "bts:subscribe";
     private static final String UNSUBSCRIBE = "bts:unsubscribe";
@@ -67,18 +68,18 @@ public class BitstampSubscription implements MarketDataSubscription {
                     LOGGER.info(String.format("Heatbeat successful." +
                             " Session status: %s, isSubscribed status: %s.", session.isOpen(), isSubscribed));
                 } else {
-                    LOGGER.warning(String.format("Heatbeat NOT successful. Event: %" +
+                    LOGGER.warn(String.format("Heatbeat NOT successful. Event: %" +
                             " Session status: %s, isSubscribed status: %s.", event, session.isOpen(), isSubscribed));
                 }
             }
             case FORCED_RECONNECT -> {
-                LOGGER.warning("Forced reconnect received!");
+                LOGGER.warn("Forced reconnect received!");
                 isSubscribed = false;
                 subscribe();
             }
             case ORDER_CREATED, ORDER_DELETED, ORDER_UPDATED -> eventHandler.accept(event.getOrder());
             case TRADE -> eventHandler.accept(event.getTrade());
-            default -> LOGGER.warning(String.format("Unhandled Bitstamp event received %s: ", event));
+            default -> LOGGER.warn(String.format("Unhandled Bitstamp event received %s: ", event));
         }
     }
 
@@ -141,7 +142,7 @@ public class BitstampSubscription implements MarketDataSubscription {
                     try {
                         basicRemoteEndpoint.sendObject(createHeartBeatJson());
                     } catch (Exception e) {
-                        LOGGER.warning("Could not run heartbeat");
+                        LOGGER.warn("Could not run heartbeat");
                     }
                 },
                 0, 30, TimeUnit.SECONDS);

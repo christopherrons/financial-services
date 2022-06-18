@@ -1,12 +1,13 @@
 package com.christopherrons.marketdataservice.common.client;
 
 import javax.websocket.*;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @ClientEndpoint
 public final class CustomClientEndpoint extends Endpoint {
-    private static final Logger LOGGER = Logger.getLogger(CustomClientEndpoint.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomClientEndpoint.class);
     private final MessageHandler messageHandler;
 
     public CustomClientEndpoint(MessageHandler messageHandler) {

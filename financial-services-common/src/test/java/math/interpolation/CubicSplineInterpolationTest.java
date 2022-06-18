@@ -6,8 +6,6 @@ import testutils.TestAssertionUtils;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static testutils.TestAssertionUtils.assertDouble;
-
 class CubicSplineInterpolationTest {
 
     @Test

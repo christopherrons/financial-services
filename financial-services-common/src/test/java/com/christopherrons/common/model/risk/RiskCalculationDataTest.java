@@ -28,14 +28,12 @@ class RiskCalculationDataTest {
     private static final Participant PARTICIPANT_2 = new Participant(new Member("MEMBER"), new User("TWO", "LAST"));
     private static final Instrument INSTRUMENT_1 = Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.XRP_USD);
     private static final Instrument INSTRUMENT_2 = Instrument.createInstrument(InstrumentTypeEnum.STOCK, TradingPairEnum.BTC_USD);
-    private Portfolio portfolio = new Portfolio(PARTICIPANT_1);
-    private Map<String, PriceCollectionItem> instrumentIdToPriceCollectionItem = new HashMap<>();
-
     private static final MarginPrice MARGIN_PRICE_1 = new MarginPrice(INSTRUMENT_1.getInstrumentId(), 10, MarginPriceMethodEnum.LAST_TRADED);
     private static final MarginPrice MARGIN_PRICE_2 = new MarginPrice(INSTRUMENT_2.getInstrumentId(), 20, MarginPriceMethodEnum.LAST_TRADED);
     private static final HistoricalPrice PRICE_HISTORICAL_1 = new HistoricalPrice(List.of(10.0, 11.0, 12.0, 11.0));
     private static final HistoricalPrice PRICE_HISTORICAL_2 = new HistoricalPrice(List.of(20.0, 21.0, 22.0, 21.0));
-
+    private Portfolio portfolio = new Portfolio(PARTICIPANT_1);
+    private Map<String, PriceCollectionItem> instrumentIdToPriceCollectionItem = new HashMap<>();
     private RiskCalculationData riskCalculationData;
 
 

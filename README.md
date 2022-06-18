@@ -1,6 +1,7 @@
 # Financial Services
 
-This application consumes live market data from e.g. Bitstamp through it market data service and feeds it through a trading-, surveillance-,
+This application consumes live market data from e.g. Bitstamp through it market data service and feeds it through a
+trading-, surveillance-,
 pricing-and risk engine. The backend pushed data through websockets and can be queried by the frontend through a REST
 api which documented using Swagger and Spring Doc.
 
@@ -26,14 +27,14 @@ api which documented using Swagger and Spring Doc.
 
 ### Backend
 
-* `Market Data Engine`
+* `Market Data Service`
     * Listen to and parses market data from e.g. Bitstamp and broadcast order events.
 * `Trading Engine`
     * Listens to order broadcasts and maintains and matches an orderbook, broadcasting trades when order are matched.
 * `Surveillance Engine`
     * Listens to orders and trade broadcast and run the through the algorithmic and statistics based alerts. Broad
       triggered alert broadcasts.
-* `Refdata Engine`
+* `Refdata Service`
     * Listen to orders and trades broadcasts, created statistics, updates portfolios, participant and instruments.
       Queries for historical prices and yields using open API`s at NASDAQ and Yahoo.
 * `Pricing Engine`
@@ -72,11 +73,11 @@ Start the application from the root folder by running`./gradlew bootRun`.
 
 ### Building the Application
 
-Build the application from the root folder by running `./gradlew build -PreleaseVersion=<release-version>`
-then `/gradlew packageRelease -PreleaseVersion=<release-version>` to bundle the application jar and relevant deploy
-scripts..
+Build the application from the root folder by running`/gradlew packageRelease -PreleaseVersion=<release-version>` to build and bundle the application jar and relevant deploy
+scripts.
 
 ### Deploying the Application
-See [deploy readme](deploy/deploy.md). 
+
+See [deploy.md](deploy/deploy.md) and [jenkins.md](cicd/jenkins/jenkins.md)
 
 

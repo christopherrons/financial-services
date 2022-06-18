@@ -1,8 +1,8 @@
 package com.christopherrons.common.model.refdata;
 
 import com.christopherrons.common.api.refdata.Instrument;
-import com.christopherrons.common.enums.refdata.InstrumentTypeEnum;
 import com.christopherrons.common.enums.marketdata.TradingPairEnum;
+import com.christopherrons.common.enums.refdata.InstrumentTypeEnum;
 
 import java.util.Objects;
 

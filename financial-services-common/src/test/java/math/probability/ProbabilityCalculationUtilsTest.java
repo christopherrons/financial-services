@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.*;
-import static testutils.TestAssertionUtils.assertDouble;
 
 class ProbabilityCalculationUtilsTest {
 

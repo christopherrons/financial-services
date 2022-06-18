@@ -6,18 +6,19 @@ import com.christopherrons.common.model.pricing.PriceCollection;
 import com.christopherrons.common.model.risk.RiskCalculationResult;
 import com.christopherrons.refdataservice.RefDataService;
 import com.christopherrons.riskengine.riskcalculations.RiskCalculator;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 @Service
 public class RiskEngineServices {
 
-    private static final Logger LOGGER = Logger.getLogger(RiskEngineServices.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(RiskEngineServices.class);
     @Autowired
     private RefDataService refDataService;
     @Autowired
@@ -35,7 +36,7 @@ public class RiskEngineServices {
             List<RiskCalculationResult> riskCalculationResults = riskCalculator.calculate();
             broadCastMarginCalculationResult(riskCalculationResults);
         } catch (Exception e) {
-            LOGGER.warning("Could not run margin calculations: " + e);
+            LOGGER.warn("Could not run margin calculations: " + e);
         }
     }
 

@@ -7,25 +7,28 @@ import com.christopherrons.refdataservice.historicalprices.enums.YahooApiSymbolE
 import com.christopherrons.refdataservice.historicalprices.model.HistoricalPriceResponse;
 import com.christopherrons.refdataservice.historicalprices.model.YahooHistoricalPrices;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 import static com.christopherrons.common.requests.HttpClient.getRequestToEntity;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class HistoricalPriceService {
-    private static final Logger LOGGER = Logger.getLogger(HistoricalPriceService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(HistoricalPriceService.class);
     private static final String BASE_URL = "https://yfapi.net/v8/finance/spark";
     private static final HttpHeaders HEADERS = new HttpHeaders();
     private static final int UPDATE_INTERVAL_IN_DAYS = 365;
@@ -45,9 +48,15 @@ public class HistoricalPriceService {
             try {
                 historicalPriceCollection = requestHistoricalData();
             } catch (Exception e) {
-                LOGGER.warning("Fetching historical data failed. Using backup!" + e);
-                var backupFile = new File("/home/christopher/versioned/financial-services/financial-services-refdata-service/src/main/resources/backup_historical_prices.json");
-                var backupResponse = mapper.readValue(backupFile, YahooHistoricalPrices.class);
+                LOGGER.warn("Fetching historical data failed. Using backup!" + e);
+                StringBuilder backupFile = new StringBuilder();
+                Resource resource = new ClassPathResource("backup_historical_prices.json");
+                Scanner in = new Scanner(resource.getInputStream());
+                while (in.hasNext()) {
+                    backupFile.append(in.next());
+                }
+                in.close();
+                var backupResponse = mapper.readValue(backupFile.toString(), YahooHistoricalPrices.class);
                 historicalPriceCollection = createHistoricalPriceCollection(backupResponse);
             }
         }

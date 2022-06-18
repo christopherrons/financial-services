@@ -7,17 +7,18 @@ import com.christopherrons.marketdataservice.common.EventHandler;
 import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
 import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 import com.christopherrons.common.enums.marketdata.TradingPairEnum;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 @Service
 public class MarketDataService {
-    private static final Logger LOGGER = Logger.getLogger(MarketDataService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(MarketDataService.class);
     private final Map<MarketDataFeedEnum, MarketDataWebsocketClient> dataFeedToWebsocketClient = Map.of(MarketDataFeedEnum.BITSTAMP, new BitstampWebsocketClient());
     @Autowired
     private EventHandler eventHandler;

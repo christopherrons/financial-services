@@ -2,7 +2,10 @@ package com.christopherrons.common.model.marketdata;
 
 import com.christopherrons.common.api.marketdata.MarketDataEvent;
 import com.christopherrons.common.api.refdata.Instrument;
-import com.christopherrons.common.enums.marketdata.*;
+import com.christopherrons.common.enums.marketdata.EventDescriptionEnum;
+import com.christopherrons.common.enums.marketdata.EventTypeEnum;
+import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
+import com.christopherrons.common.enums.marketdata.TradingPairEnum;
 import com.christopherrons.common.model.refdata.InvalidInstrument;
 
 public class InvalidEvent implements MarketDataEvent {

@@ -12,9 +12,9 @@ public enum OrderTypeEnum {
     BUY(0),
     SELL(1);
 
-    private final int value;
     private static final Map<Integer, OrderTypeEnum> VALUES_BY_IDENTIFIER =
             stream(OrderTypeEnum.values()).collect(toMap(OrderTypeEnum::getValue, identity()));
+    private final int value;
 
     OrderTypeEnum(int value) {
         this.value = value;

@@ -14,17 +14,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/referenceData")
 public class RefDataApiController {
 
-    private static final Logger LOGGER = Logger.getLogger(RefDataApiController.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(RefDataApiController.class);
 
     @Autowired
     private RefDataApiService refDataApiService;

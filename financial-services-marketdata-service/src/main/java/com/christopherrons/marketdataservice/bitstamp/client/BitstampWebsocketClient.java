@@ -13,11 +13,12 @@ import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BitstampWebsocketClient implements MarketDataWebsocketClient {
 
-    private static final Logger LOGGER = Logger.getLogger(BitstampWebsocketClient.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(BitstampWebsocketClient.class);
     private final WebsocketSubscriptionCache websocketSubscriptionCache = new WebsocketSubscriptionCache();
 
 

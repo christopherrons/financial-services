@@ -2,11 +2,10 @@ package com.christopherrons.common.model.trading;
 
 public class OrderbookUpdate {
 
-    private double bestBid = 0;
-    private double bestAsk = 0;
-
     private final String orderbookId;
     private final String instrumentId;
+    private double bestBid = 0;
+    private double bestAsk = 0;
 
     public OrderbookUpdate(String orderbookId, String instrumentId) {
         this.orderbookId = orderbookId;

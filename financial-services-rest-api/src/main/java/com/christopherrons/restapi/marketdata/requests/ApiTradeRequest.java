@@ -1,10 +1,10 @@
 package com.christopherrons.restapi.marketdata.requests;
 
-import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 import com.christopherrons.common.enums.marketdata.EventDescriptionEnum;
 import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
 import com.christopherrons.common.enums.marketdata.TradingPairEnum;
 import com.christopherrons.common.enums.refdata.InstrumentTypeEnum;
+import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 
 public class ApiTradeRequest {
 

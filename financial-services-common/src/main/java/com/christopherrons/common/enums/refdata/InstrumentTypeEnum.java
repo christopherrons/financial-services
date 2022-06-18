@@ -15,10 +15,9 @@ public enum InstrumentTypeEnum {
     FUTURE("future"),
     OPTION("option");
 
-    private final String name;
-
     private static final Map<String, InstrumentTypeEnum> VALUES_BY_IDENTIFIER =
             stream(InstrumentTypeEnum.values()).collect(toMap(InstrumentTypeEnum::getName, identity()));
+    private final String name;
 
     InstrumentTypeEnum(String name) {
         this.name = name;

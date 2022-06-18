@@ -12,8 +12,8 @@ allprojects {
     }
 
     apply(plugin = "java")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "java-library")
+    // apply(plugin = "io.spring.dependency-management")
+    // apply(plugin = "java-library")
 
     group = "com.christopherrons.financial-services"
     version = "0.0.1-SNAPSHOT"
@@ -75,13 +75,6 @@ tasks.register("buildPackageDeploy") {
                 execute("cd /home/herron/deploy/ && bash /home/herron/deploy/bootstrap.sh")
             })
         })
-    }
-}
-
-
-tasks.register<tasks.FirstTask>("first") {
-    doLast {
-        // do something
     }
 }
 

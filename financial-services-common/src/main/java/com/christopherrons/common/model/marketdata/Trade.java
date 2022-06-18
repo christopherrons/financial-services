@@ -1,8 +1,11 @@
 package com.christopherrons.common.model.marketdata;
 
-import com.christopherrons.common.api.refdata.Instrument;
 import com.christopherrons.common.api.marketdata.MarketDataTrade;
-import com.christopherrons.common.enums.marketdata.*;
+import com.christopherrons.common.api.refdata.Instrument;
+import com.christopherrons.common.enums.marketdata.EventDescriptionEnum;
+import com.christopherrons.common.enums.marketdata.EventTypeEnum;
+import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
+import com.christopherrons.common.enums.marketdata.TradingPairEnum;
 import com.christopherrons.common.model.refdata.Participant;
 import com.christopherrons.common.model.refdata.User;
 
@@ -136,7 +139,7 @@ public class Trade implements MarketDataTrade {
 
     @Override
     public String toString() {
-        return eventData + "-" +"Trade{" +
+        return eventData + "-" + "Trade{" +
                 "askParticipant=" + askParticipant +
                 ", bidParticipant=" + bidParticipant +
                 ", eventData=" + eventData +

@@ -1,9 +1,10 @@
 package com.christopherrons.common.requests;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -12,10 +13,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class HttpClient {
-    private static final Logger LOGGER = Logger.getLogger(HttpClient.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClient.class);
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     private HttpClient() {

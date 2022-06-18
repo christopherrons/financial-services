@@ -11,19 +11,20 @@ import com.christopherrons.pricingengine.cache.PricingCache;
 import com.christopherrons.pricingengine.pricecollection.PriceCollectionCalculator;
 import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
 import com.christopherrons.refdataservice.RefDataService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 
 @Service
 public class PricingEngineService {
 
-    private static final Logger LOGGER = Logger.getLogger(PricingEngineService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PricingEngineService.class);
     private static final PriceCollectionCalculator priceCollectionCalculator = new PriceCollectionCalculator();
     private final ApplicationEventPublisher applicationEventPublisher;
     private final RefDataService refDataService;

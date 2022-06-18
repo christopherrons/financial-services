@@ -7,16 +7,17 @@ import com.christopherrons.refdataservice.statistics.StatisticsService;
 import com.christopherrons.surveillanceengine.alert.cache.AlertRuleHandlerCache;
 import com.christopherrons.surveillanceengine.api.AlertRule;
 import com.christopherrons.tradingengine.orderbook.OrderbookService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 @Service
 public class AlertRuleService {
-    private static final Logger LOGGER = Logger.getLogger(AlertRuleService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlertRuleService.class);
 
     @Autowired
     private StatisticsService statisticsService;

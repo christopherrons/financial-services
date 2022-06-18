@@ -5,16 +5,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 import static com.christopherrons.common.requests.HttpClient.requestGET;
 import static com.christopherrons.refdataservice.yield.enums.NasdaqDataLinkMaturityDatesEnum.createMaturityDate;
@@ -22,7 +24,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class YieldRefDataService {
-    private static final Logger LOGGER = Logger.getLogger(YieldRefDataService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(YieldRefDataService.class);
     private static final String BASE_URL = "https://data.nasdaq.com/api/v3/datasets/USTREASURY/YIELD.json/";
     private static final String API_KEY = "Fm1uExMDkQBg8HKVwCDz";
     private static final int UPDATE_INTERVAL_IN_DAYS = 365;
@@ -38,7 +40,7 @@ public class YieldRefDataService {
             try {
                 yieldRefData = getYield(lastUpdateTime.toString());
             } catch (Exception e) {
-                LOGGER.warning("Fetching yield data failed!");
+                LOGGER.warn("Fetching yield data failed!");
             }
         }
         return yieldRefData;
@@ -54,9 +56,10 @@ public class YieldRefDataService {
             String jsonResponse = requestGET(url, new HashMap<>());
             return getYield(requestDate, jsonResponse);
         } catch (RuntimeException e) {
-            LOGGER.warning("Fetching yield data failed. Using backup!");
+            LOGGER.warn("Fetching yield data failed. Using backup!");
             StringBuilder backupFile = new StringBuilder();
-            Scanner in = new Scanner(new FileReader("/home/christopher/versioned/financial-services/financial-services-refdata-service/src/main/resources/backup_yield_data.json"));
+            Resource resource = new ClassPathResource("backup_yield_data.json");
+            Scanner in = new Scanner(resource.getInputStream());
             while (in.hasNext()) {
                 backupFile.append(in.next());
             }

@@ -9,12 +9,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class WebsocketSubscriptionCache {
 
-    private static final Logger LOGGER = Logger.getLogger(WebsocketSubscriptionCache.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebsocketSubscriptionCache.class);
 
     private final Map<CompositeKey, MarketDataSubscription> keyToSubscription = new ConcurrentHashMap<>();
 

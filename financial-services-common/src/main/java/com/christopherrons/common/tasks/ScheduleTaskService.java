@@ -1,14 +1,14 @@
 package com.christopherrons.common.tasks;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.logging.Logger;
 
 @Service
 public class ScheduleTaskService {
 
-    private static final Logger LOGGER = Logger.getLogger(ScheduleTaskService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleTaskService.class);
     private final PricingTaskHandler pricingTaskHandler;
 
     @Autowired

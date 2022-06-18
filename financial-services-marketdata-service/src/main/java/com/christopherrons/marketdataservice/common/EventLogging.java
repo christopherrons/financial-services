@@ -1,11 +1,13 @@
 package com.christopherrons.marketdataservice.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
 
 public class EventLogging {
-    private static final Logger LOGGER = Logger.getLogger(EventLogging.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventLogging.class);
     private static final int MESSAGE_UPDATE_INTERVAL = 1000;
     private final AtomicLong totalNrOfEvents = new AtomicLong();
     private final Instant startTime = Instant.now();
