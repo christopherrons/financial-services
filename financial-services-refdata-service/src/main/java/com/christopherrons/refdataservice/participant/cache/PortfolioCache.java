@@ -1,4 +1,4 @@
-package com.christopherrons.refdataservice.portfolio.cache;
+package com.christopherrons.refdataservice.participant.cache;
 
 import com.christopherrons.common.model.refdata.Participant;
 import com.christopherrons.common.model.refdata.Portfolio;
@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class PortfolioCache {
-
     private final Map<String, Portfolio> participantToPortfolio = new ConcurrentHashMap<>();
 
     public Portfolio findOrCreatePortfolio(final Participant participant) {

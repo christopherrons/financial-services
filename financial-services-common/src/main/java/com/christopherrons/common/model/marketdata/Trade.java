@@ -116,7 +116,7 @@ public class Trade implements MarketDataTrade {
 
     @Override
     public User tradeAggressorUser() {
-        return isBidSideAggressor ? bidParticipant.getUser() : askParticipant.getUser();
+        return isBidSideAggressor ? bidParticipant.user() : askParticipant.user();
     }
 
     @Override

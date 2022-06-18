@@ -17,12 +17,10 @@ import java.util.List;
 
 @Service
 public class SurveillanceEngineService {
-
     @Autowired
     private AlertRuleService alertRuleService;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-
     @EventListener
     public void onOrderEvent(OrderEventBroadcast event) {
         List<Alert> triggeredAlerts = new ArrayList<>();

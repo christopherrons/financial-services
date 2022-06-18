@@ -25,7 +25,6 @@ public class BitstampWebsocketClient implements MarketDataWebsocketClient {
                           final ChannelEnum channelEnum,
                           Consumer<MarketDataEvent> eventHandler) throws DeploymentException, IOException {
         BitstampSubscription subscription = new BitstampSubscription(
-                new JsonMessageDecoder(channelEnum.getDecodingClass()),
                 eventHandler,
                 channelEnum,
                 tradingPairEnum

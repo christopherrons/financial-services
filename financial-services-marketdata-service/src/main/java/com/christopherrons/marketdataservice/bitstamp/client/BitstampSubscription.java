@@ -1,13 +1,13 @@
 package com.christopherrons.marketdataservice.bitstamp.client;
 
-import com.christopherrons.common.misc.wrappers.ThreadWrapper;
 import com.christopherrons.common.api.marketdata.MarketDataEvent;
-import com.christopherrons.marketdataservice.api.MarketDataSubscription;
-import com.christopherrons.marketdataservice.common.client.CustomClientEndpoint;
-import com.christopherrons.marketdataservice.common.client.JsonMessageDecoder;
 import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
-import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 import com.christopherrons.common.enums.marketdata.TradingPairEnum;
+import com.christopherrons.common.misc.wrappers.ThreadWrapper;
+import com.christopherrons.marketdataservice.api.MarketDataSubscription;
+import com.christopherrons.marketdataservice.bitstamp.model.BitstampEvent;
+import com.christopherrons.marketdataservice.common.client.CustomClientEndpoint;
+import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
 
 import javax.json.Json;
 import javax.websocket.*;
@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -23,40 +25,61 @@ public class BitstampSubscription implements MarketDataSubscription {
     private static final URI websocketURI = MarketDataFeedEnum.BITSTAMP.getUri();
     private static final String SUBSCRIBE = "bts:subscribe";
     private static final String UNSUBSCRIBE = "bts:unsubscribe";
+    private static final String HEART_BEAT = "bts:heartbeat";
+    private static final BitstampJsonMessageDecoder bitstampEventDecoder = new BitstampJsonMessageDecoder(BitstampEvent.class);
 
     private final ChannelEnum channelEnum;
     private final TradingPairEnum tradingPairEnum;
     private Session session;
     private boolean isSubscribed = false;
 
-    public BitstampSubscription(JsonMessageDecoder messageDecoder,
-                                Consumer<MarketDataEvent> eventHandler,
+    public BitstampSubscription(Consumer<MarketDataEvent> eventHandler,
                                 ChannelEnum channelEnum,
                                 TradingPairEnum tradingPairEnum) throws DeploymentException, IOException {
         this.channelEnum = channelEnum;
         this.tradingPairEnum = tradingPairEnum;
-        this.session = createSession(createMessageHandler(messageDecoder, eventHandler));
+        this.session = createSession(createMessageHandler(eventHandler));
+        startHeartBeats();
     }
 
-    private MessageHandler createMessageHandler(final JsonMessageDecoder messageDecoder, final Consumer<MarketDataEvent> eventHandler) {
+    private MessageHandler createMessageHandler(final Consumer<MarketDataEvent> eventHandler) {
         return new MessageHandler.Whole<String>() {
             @Override
             public void onMessage(String message) {
-                MarketDataEvent event = messageDecoder.decodeMessage(message);
-                switch (event.getEventDescriptionEnum()) {
-                    case SUBSCRIPTION_SUCCEEDED -> {
-                        isSubscribed = true;
-                        LOGGER.info(String.format("Successfully subscribed to: %s.", createChannel()));
-                    }
-                    case FORCED_RECONNECT -> {
-                        LOGGER.warning("Forced reconnect received!");
-                        isSubscribed = false;
-                        subscribe();
-                    }
-                    default -> eventHandler.accept(event);
+                BitstampEvent event = bitstampEventDecoder.decodeMessage(message);
+                if (event.getEventDescriptionEnum() != null) {
+                    handleEvent(event, eventHandler);
+                } else {
+                    LOGGER.info(String.format("Message: %s not decodeable.", message));
                 }
             }
         };
+    }
+
+    private void handleEvent(final BitstampEvent event, final Consumer<MarketDataEvent> eventHandler) {
+        switch (event.getEventDescriptionEnum()) {
+            case SUBSCRIPTION_SUCCEEDED -> {
+                isSubscribed = true;
+                LOGGER.info(String.format("Successfully subscribed to: %s.", createChannel()));
+            }
+            case HEART_BEAT -> {
+                if (event.getHeartBeat().isSuccessful()) {
+                    LOGGER.info(String.format("Heatbeat successful." +
+                            " Session status: %s, isSubscribed status: %s.", session.isOpen(), isSubscribed));
+                } else {
+                    LOGGER.warning(String.format("Heatbeat NOT successful. Event: %" +
+                            " Session status: %s, isSubscribed status: %s.", event, session.isOpen(), isSubscribed));
+                }
+            }
+            case FORCED_RECONNECT -> {
+                LOGGER.warning("Forced reconnect received!");
+                isSubscribed = false;
+                subscribe();
+            }
+            case ORDER_CREATED, ORDER_DELETED, ORDER_UPDATED -> eventHandler.accept(event.getOrder());
+            case TRADE -> eventHandler.accept(event.getTrade());
+            default -> LOGGER.warning(String.format("Unhandled Bitstamp event received %s: ", event));
+        }
     }
 
     private Session createSession(final MessageHandler messageHandler) throws DeploymentException, IOException {
@@ -111,6 +134,19 @@ public class BitstampSubscription implements MarketDataSubscription {
         }
     }
 
+    private void startHeartBeats() {
+        RemoteEndpoint.Basic basicRemoteEndpoint = session.getBasicRemote();
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        executorService.scheduleAtFixedRate(() -> {
+                    try {
+                        basicRemoteEndpoint.sendObject(createHeartBeatJson());
+                    } catch (Exception e) {
+                        LOGGER.warning("Could not run heartbeat");
+                    }
+                },
+                0, 30, TimeUnit.SECONDS);
+    }
+
     private String createSubscriptionJson() {
         return createSubscriptionRelatedJson(SUBSCRIBE);
     }
@@ -127,12 +163,19 @@ public class BitstampSubscription implements MarketDataSubscription {
                 .toString();
     }
 
+    private String createHeartBeatJson() {
+        return Json.createObjectBuilder()
+                .add("event", HEART_BEAT)
+                .build()
+                .toString();
+    }
+
     private String createChannel() {
         return String.format("%s_%s", channelEnum.getChannelName(), tradingPairEnum.getName());
     }
 
     @Override
     public boolean isSubscribed() {
-        return isSubscribed;
+        return isSubscribed && session.isOpen();
     }
 }

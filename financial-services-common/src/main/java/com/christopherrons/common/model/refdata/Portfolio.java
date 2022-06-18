@@ -11,17 +11,17 @@ public class Portfolio {
 
     private final Map<String, Position> instrumentIdToPosition = new TreeMap<>();
     private final Participant participant;
-    private final ValueAtRiskCalculationEnum valueAtRiskCalculationEnum = ValueAtRiskCalculationEnum.HISTORICAL_CVAR;
+    private final ValueAtRiskCalculationEnum valueAtRiskCalculationEnum = ValueAtRiskCalculationEnum.MONTE_CARLO_CVAR;
 
     public Portfolio(Participant participant) {
         this.participant = participant;
     }
 
-    public void updatePortfolio(final String instrumentId, final double volume, final boolean isBid) {
+    public void updatePortfolio(final String instrumentId, final double volume, final boolean increasePosition) {
         Position position = instrumentIdToPosition.computeIfAbsent(instrumentId,
                 k -> new Position(instrumentId));
 
-        if (isBid) {
+        if (increasePosition) {
             position.increasePosition(volume);
         } else {
             position.decreasePosition(volume);

@@ -18,7 +18,8 @@ public class LargeOrderValueAlertRule implements AlertRule {
     private final String orderbookId;
 
     private class LargeOrderValueBreachParameters {
-        DoubleSupplier maxOrderValue = () -> 2 * statisticsService.getOrderbookStatistics(orderbookId).getAverageOrderValue();
+
+        DoubleSupplier maxOrderValue = () -> 5 * statisticsService.getOrderbookStatistics(orderbookId).getAverageOrderValue();
     }
 
     private final LargeOrderValueBreachParameters breachParameters = new LargeOrderValueBreachParameters();
@@ -39,7 +40,7 @@ public class LargeOrderValueAlertRule implements AlertRule {
         final double maxOrderValue = breachParameters.maxOrderValue.getAsDouble();
         if (orderValue > maxOrderValue) {
             List<Breach> breaches = new ArrayList<>();
-            breaches.add(new Breach("turnoverTwiceAverage", String.valueOf(maxOrderValue), String.valueOf(orderValue)));
+            breaches.add(new Breach("turnoverAverageExceededFiveFold", String.valueOf(maxOrderValue), String.valueOf(orderValue)));
             return new Alert(ALERT_RULE_NAME, orderbookId, true, breaches);
         }
         return new Alert(ALERT_RULE_NAME, orderbookId, false, Collections.emptyList());

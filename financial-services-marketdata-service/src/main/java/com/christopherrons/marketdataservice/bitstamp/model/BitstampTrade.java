@@ -1,7 +1,10 @@
 package com.christopherrons.marketdataservice.bitstamp.model;
 
 import com.christopherrons.common.api.refdata.Instrument;
-import com.christopherrons.common.enums.marketdata.*;
+import com.christopherrons.common.enums.marketdata.EventDescriptionEnum;
+import com.christopherrons.common.enums.marketdata.EventTypeEnum;
+import com.christopherrons.common.enums.marketdata.MarketDataFeedEnum;
+import com.christopherrons.common.enums.marketdata.TradingPairEnum;
 import com.christopherrons.common.enums.refdata.InstrumentTypeEnum;
 import com.christopherrons.common.model.marketdata.Trade;
 import com.christopherrons.common.model.refdata.Member;

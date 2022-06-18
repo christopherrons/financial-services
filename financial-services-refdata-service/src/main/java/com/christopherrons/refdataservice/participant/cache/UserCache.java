@@ -7,9 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class UserCache {
-
     private final Map<String, User> userIdToUser = new ConcurrentHashMap<>();
-
     public void addUser(final User user) {
         userIdToUser.putIfAbsent(user.getUserId(), user);
     }

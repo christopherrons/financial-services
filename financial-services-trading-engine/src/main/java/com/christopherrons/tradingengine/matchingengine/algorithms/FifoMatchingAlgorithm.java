@@ -59,7 +59,7 @@ public class FifoMatchingAlgorithm implements MatchingAlgorithm {
         updateOrderBook(updateAskOrder);
 
         matchingEngineResult.addOrder(updateBidOrder);
-        matchingEngineResult.addOrder(updateAskOrder);
+        matchingEngineResult.addOrder(updateAskOrder); //TODO Send cancel updates and store the orderbook id at participant level
     }
 
     private void updateOrderBook(final MarketDataOrder order) {

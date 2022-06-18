@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 public class MarketDataService {
     private static final Logger LOGGER = Logger.getLogger(MarketDataService.class.getName());
     private final Map<MarketDataFeedEnum, MarketDataWebsocketClient> dataFeedToWebsocketClient = Map.of(MarketDataFeedEnum.BITSTAMP, new BitstampWebsocketClient());
-
     @Autowired
     private EventHandler eventHandler;
 

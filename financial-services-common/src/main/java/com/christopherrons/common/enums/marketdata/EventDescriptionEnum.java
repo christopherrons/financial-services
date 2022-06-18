@@ -10,7 +10,8 @@ public enum EventDescriptionEnum {
     ORDER_UPDATED(MarketDataFeedEnum.BITSTAMP, "order_changed"),
     TRADE(MarketDataFeedEnum.BITSTAMP, "trade"),
     SUBSCRIPTION_SUCCEEDED(MarketDataFeedEnum.BITSTAMP, "bts:subscription_succeeded"),
-    FORCED_RECONNECT(MarketDataFeedEnum.BITSTAMP, "bts:request_reconnect");
+    FORCED_RECONNECT(MarketDataFeedEnum.BITSTAMP, "bts:request_reconnect"),
+    HEART_BEAT(MarketDataFeedEnum.BITSTAMP, "bts:heartbeat");
 
     private final MarketDataFeedEnum marketDataFeedEnum;
     private final String eventDescription;

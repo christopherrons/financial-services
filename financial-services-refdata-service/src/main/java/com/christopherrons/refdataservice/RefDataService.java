@@ -12,7 +12,6 @@ import com.christopherrons.common.model.refdata.YieldRefData;
 import com.christopherrons.refdataservice.historicalprices.HistoricalPriceService;
 import com.christopherrons.refdataservice.instrument.InstrumentRefDataService;
 import com.christopherrons.refdataservice.participant.ParticipantRefDataService;
-import com.christopherrons.refdataservice.portfolio.PortfolioRefDataService;
 import com.christopherrons.refdataservice.statistics.StatisticsService;
 import com.christopherrons.refdataservice.statistics.model.OrderbookStatistics;
 import com.christopherrons.refdataservice.yield.YieldRefDataService;
@@ -28,7 +27,6 @@ public class RefDataService {
 
     private final InstrumentRefDataService instrumentRefDataService;
     private final ParticipantRefDataService participantRefDataService;
-    private final PortfolioRefDataService portfolioRefDataService;
     private final YieldRefDataService yieldRefDataService;
     private final HistoricalPriceService historicalPriceService;
     private final StatisticsService statisticsService;
@@ -36,13 +34,11 @@ public class RefDataService {
     @Autowired
     public RefDataService(InstrumentRefDataService instrumentRefDataService,
                           ParticipantRefDataService participantRefDataService,
-                          PortfolioRefDataService portfolioRefDataService,
                           YieldRefDataService yieldRefDataService,
                           HistoricalPriceService historicalPriceService,
                           StatisticsService statisticsService) {
         this.instrumentRefDataService = instrumentRefDataService;
         this.participantRefDataService = participantRefDataService;
-        this.portfolioRefDataService = portfolioRefDataService;
         this.yieldRefDataService = yieldRefDataService;
         this.historicalPriceService = historicalPriceService;
         this.statisticsService = statisticsService;
@@ -52,7 +48,7 @@ public class RefDataService {
     public void onOrderEvent(OrderEventBroadcast event) {
         for (MarketDataOrder order : event.getOrders()) {
             instrumentRefDataService.addInstrument(order.getInstrument());
-            participantRefDataService.addParticipant(order.getParticipant());
+            participantRefDataService.handleOrder(order);
             statisticsService.updateStatistics(order);
         }
     }
@@ -60,7 +56,7 @@ public class RefDataService {
     @EventListener
     public void onTradeEvent(TradeEventBroadcast tradeEventBroadcast) {
         for (MarketDataTrade trade : tradeEventBroadcast.getTrades()) {
-            portfolioRefDataService.updatePortfolioFromTrade(trade);
+            participantRefDataService.handleTrade(trade);
             statisticsService.updateStatistics(trade);
         }
     }
@@ -86,7 +82,7 @@ public class RefDataService {
     }
 
     public List<Portfolio> getPortfolios() {
-        return portfolioRefDataService.getPortfolios();
+        return participantRefDataService.getPortfolios();
     }
 
     public OrderbookStatistics getOrderbookStatistics(final String orderbookId) {

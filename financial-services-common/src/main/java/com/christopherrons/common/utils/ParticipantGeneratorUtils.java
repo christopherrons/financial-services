@@ -31,8 +31,8 @@ public class ParticipantGeneratorUtils {
     public static Participant createParticipant(final Participant participant, final ParticipantAggregationLevelEum level) {
         return switch (level) {
             case MEMBER_USER -> participant;
-            case USER -> new Participant(new Member(""), participant.getUser());
-            case MEMBER -> new Participant(participant.getMember(), new User("", ""));
+            case USER -> new Participant(new Member(""), participant.user());
+            case MEMBER -> new Participant(participant.member(), new User("", ""));
         };
     }
 }
