@@ -8,6 +8,8 @@ import com.christopherrons.marketdataservice.api.MarketDataSubscription;
 import com.christopherrons.marketdataservice.bitstamp.model.BitstampEvent;
 import com.christopherrons.marketdataservice.common.client.CustomClientEndpoint;
 import com.christopherrons.marketdataservice.common.enums.ChannelEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.websocket.*;
@@ -18,8 +20,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BitstampSubscription implements MarketDataSubscription {
     private static final Logger LOGGER = LoggerFactory.getLogger(BitstampSubscription.class);
@@ -68,10 +68,10 @@ public class BitstampSubscription implements MarketDataSubscription {
             case HEART_BEAT -> {
                 if (event.getHeartBeat().isSuccessful()) {
                     LOGGER.info(String.format("Heartbeat successful %s." +
-                            " Session status: %s, isSubscribed status: %s.", channelEnum, session.isOpen(), isSubscribed));
+                            " Session status: %s, isSubscribed status: %s.", tradingPairEnum.getName(), session.isOpen(), isSubscribed));
                 } else {
                     LOGGER.warn(String.format("Heartbeat NOT successful %s. Event: %" +
-                            " Session status: %s, isSubscribed status: %s.", channelEnum, event, session.isOpen(), isSubscribed));
+                            " Session status: %s, isSubscribed status: %s.", tradingPairEnum.getName(), event, session.isOpen(), isSubscribed));
                 }
             }
             case FORCED_RECONNECT -> {

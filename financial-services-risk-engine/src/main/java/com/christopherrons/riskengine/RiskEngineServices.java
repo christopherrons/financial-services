@@ -44,8 +44,9 @@ public class RiskEngineServices {
         if (!riskCalculationResults.isEmpty()) {
             applicationEventPublisher.publishEvent(new RiskCalculationResultsBroadCast(this, riskCalculationResults));
             LOGGER.info(String.format("Broadcasting %s risk calculation results", riskCalculationResults.size()));
+        } else {
+            LOGGER.info(String.format("Risk calculation results empty, no broadcast sent."));
         }
-        LOGGER.info(String.format("Risk calculation results empty, no broadcast sent.", riskCalculationResults.size()));
     }
 
 }
