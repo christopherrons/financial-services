@@ -35,6 +35,12 @@ public class WebsocketSubscriptionCache {
         return Optional.ofNullable(keyToSubscription.get(key));
     }
 
+    public Optional<MarketDataSubscription> removeSubscription(final MarketDataFeedEnum marketDataFeedEnum, final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) {
+        CompositeKey key = new CompositeKey(marketDataFeedEnum, tradingPairEnum, channelEnum);
+        LOGGER.info(String.format("Removing subscription %s_%s from cache.", channelEnum.getChannelName(), tradingPairEnum.getName()));
+        return Optional.ofNullable(keyToSubscription.remove(key));
+    }
+
     private record CompositeKey(MarketDataFeedEnum marketDataFeedEnum,
                                 TradingPairEnum tradingPairEnum,
                                 ChannelEnum channelEnum) {

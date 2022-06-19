@@ -34,6 +34,8 @@ public class BitstampSubscription implements MarketDataSubscription {
     private Session session;
     private boolean isSubscribed = false;
 
+    private final ScheduledExecutorService heartBeatExecutorService = Executors.newScheduledThreadPool(1);
+
     public BitstampSubscription(Consumer<MarketDataEvent> eventHandler,
                                 ChannelEnum channelEnum,
                                 TradingPairEnum tradingPairEnum) throws DeploymentException, IOException {
@@ -128,6 +130,7 @@ public class BitstampSubscription implements MarketDataSubscription {
         try {
             basicRemoteEndpoint.sendObject(createUnsubscribeJson());
             isSubscribed = false;
+            heartBeatExecutorService.shutdown();
             session.close();
             LOGGER.info(String.format("Successfully unsubscribe to: %s and closed session.", createChannel()));
         } catch (IOException | EncodeException e) {
@@ -137,8 +140,7 @@ public class BitstampSubscription implements MarketDataSubscription {
 
     private void startHeartBeats() {
         RemoteEndpoint.Basic basicRemoteEndpoint = session.getBasicRemote();
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-        executorService.scheduleAtFixedRate(() -> {
+        heartBeatExecutorService.scheduleAtFixedRate(() -> {
                     try {
                         basicRemoteEndpoint.sendObject(createHeartBeatJson());
                     } catch (Exception e) {

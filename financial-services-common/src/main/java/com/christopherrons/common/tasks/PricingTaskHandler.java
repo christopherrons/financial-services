@@ -28,6 +28,6 @@ public class PricingTaskHandler {
                         LOGGER.warn("Could not create price collection: " + e);
                     }
                 },
-                5, 60, TimeUnit.SECONDS);
+                60, 60, TimeUnit.SECONDS);
     }
 }

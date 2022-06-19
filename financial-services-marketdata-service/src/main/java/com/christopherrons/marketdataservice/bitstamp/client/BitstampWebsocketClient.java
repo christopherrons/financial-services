@@ -35,7 +35,7 @@ public class BitstampWebsocketClient implements MarketDataWebsocketClient {
     }
 
     public void unsubscribe(final TradingPairEnum tradingPairEnum, final ChannelEnum channelEnum) {
-        Optional<MarketDataSubscription> subscription = websocketSubscriptionCache.getSubscription(MarketDataFeedEnum.BITSTAMP, tradingPairEnum, channelEnum);
+        Optional<MarketDataSubscription> subscription = websocketSubscriptionCache.removeSubscription(MarketDataFeedEnum.BITSTAMP, tradingPairEnum, channelEnum);
         subscription.ifPresent(MarketDataSubscription::unsubscribe);
     }
 
