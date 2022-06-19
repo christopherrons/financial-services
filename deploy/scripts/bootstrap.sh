@@ -37,10 +37,10 @@ function updateVersion() {
 function cleanOldReleases() {
   nrOldReleases="$(ls -l "$RELEASE_DIR" | wc -l)"
   while ((nrOldReleases > 5)); do
-    oldestRelease=$(ls -lt "RELEASE_DIR" | tail -1)
-    rm "$oldestRelease"
+    oldestRelease=$(ls -t "$RELEASE_DIR" | tail -1)
+    rm "$RELEASE_DIR"/"$(ls -t "$RELEASE_DIR" | tail -1)"
     echo "Deleting release: $oldestRelease"
-    nrOldReleases="$(ls -l "RELEASE_DIR" | wc -l)"
+    nrOldReleases="$(ls -t "$RELEASE_DIR" | wc -l)"
   done
 }
 
