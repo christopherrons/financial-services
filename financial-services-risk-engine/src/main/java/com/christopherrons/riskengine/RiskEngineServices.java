@@ -43,7 +43,7 @@ public class RiskEngineServices {
     private void broadCastMarginCalculationResult(final List<RiskCalculationResult> riskCalculationResults) {
         if (!riskCalculationResults.isEmpty()) {
             applicationEventPublisher.publishEvent(new RiskCalculationResultsBroadCast(this, riskCalculationResults));
-            LOGGER.info(String.format("Broadcasting % srisk calculation results", riskCalculationResults.size()));
+            LOGGER.info(String.format("Broadcasting %s risk calculation results", riskCalculationResults.size()));
         }
         LOGGER.info(String.format("Risk calculation results empty, no broadcast sent.", riskCalculationResults.size()));
     }

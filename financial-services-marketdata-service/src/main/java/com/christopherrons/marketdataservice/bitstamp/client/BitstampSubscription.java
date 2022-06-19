@@ -67,11 +67,11 @@ public class BitstampSubscription implements MarketDataSubscription {
             }
             case HEART_BEAT -> {
                 if (event.getHeartBeat().isSuccessful()) {
-                    LOGGER.info(String.format("Heatbeat successful." +
-                            " Session status: %s, isSubscribed status: %s.", session.isOpen(), isSubscribed));
+                    LOGGER.info(String.format("Heartbeat successful %s." +
+                            " Session status: %s, isSubscribed status: %s.", channelEnum, session.isOpen(), isSubscribed));
                 } else {
-                    LOGGER.warn(String.format("Heatbeat NOT successful. Event: %" +
-                            " Session status: %s, isSubscribed status: %s.", event, session.isOpen(), isSubscribed));
+                    LOGGER.warn(String.format("Heartbeat NOT successful %s. Event: %" +
+                            " Session status: %s, isSubscribed status: %s.", channelEnum, event, session.isOpen(), isSubscribed));
                 }
             }
             case FORCED_RECONNECT -> {
