@@ -1,6 +1,8 @@
 package com.christopherrons.common.math.probability;
 
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
+import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.stat.correlation.Covariance;
@@ -68,11 +70,27 @@ public class ProbabilityCalculationUtils {
         return new MultivariateNormalDistribution(means, covariance);
     }
 
+    public static NormalDistribution createNormalDistribution(List<Double> values) {
+        return createNormalDistribution(calculateMean(values), calculateStandardDeviation(values));
+    }
+
+    public static NormalDistribution createNormalDistribution(final double mean, final double std) {
+        return new NormalDistribution(mean, std);
+    }
+
     public static RealMatrix createCovarianceMatrix(final RealMatrix data) {
         return new Covariance(data).getCovarianceMatrix();
     }
 
     public static RealMatrix createCorrelationMatrix(final RealMatrix data) {
-        return new PearsonsCorrelation(data).getCorrelationMatrix();
+        if (data.getRowDimension() == 1 && data.getColumnDimension() == 1) {
+            RealMatrix matrix = new Array2DRowRealMatrix(1, 1);
+            matrix.addToEntry(0, 0, 1);
+            return matrix;
+        } else {
+            return new PearsonsCorrelation(data).getCorrelationMatrix();
+        }
     }
 }
+
+

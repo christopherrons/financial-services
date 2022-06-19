@@ -25,7 +25,6 @@ public class YahooHistoricalPrices implements Serializable {
         };
     }
 
-
     public List<HistoricalPriceResponse> getResponses() {
         return List.of(BTC_USD, XRP_USD);
     }

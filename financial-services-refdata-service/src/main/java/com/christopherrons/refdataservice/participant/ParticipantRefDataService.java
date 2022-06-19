@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public class ParticipantRefDataService {
-
     private final MemberCache memberCache = new MemberCache();
     private final UserCache userCache = new UserCache();
     private final PortfolioCache portfolioCache = new PortfolioCache();

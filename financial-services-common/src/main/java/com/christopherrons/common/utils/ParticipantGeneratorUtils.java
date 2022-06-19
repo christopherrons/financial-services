@@ -14,7 +14,7 @@ public class ParticipantGeneratorUtils {
 
     private static final Faker NAME_FAKER = new Faker();
     private static final Random RANDOM_UNIFORM = new Random();
-    private static final List<User> USER_POOL = IntStream.of(0, 2000).mapToObj(k -> generateUser()).toList();
+    private static final List<User> USER_POOL = IntStream.range(0, 2000).mapToObj(k -> generateUser()).toList();
 
     private ParticipantGeneratorUtils() {
         throw new IllegalStateException("Utility class");
@@ -35,4 +35,5 @@ public class ParticipantGeneratorUtils {
             case MEMBER -> new Participant(participant.member(), new User("", ""));
         };
     }
+
 }

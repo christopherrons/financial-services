@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HistoricalPriceResponse implements Serializable {
@@ -15,13 +17,13 @@ public class HistoricalPriceResponse implements Serializable {
     private int dataGranularity;
 
     @JsonProperty
-    private Integer[] timestamp;
+    private List<Long> timestamp;
 
     @JsonProperty
-    private Double[] close;
+    private List<Double> close;
 
     public boolean isEmpty() {
-        return close.length == 0;
+        return close.size() == 0;
     }
 
     public String getSymbol() {
@@ -32,11 +34,11 @@ public class HistoricalPriceResponse implements Serializable {
         return dataGranularity;
     }
 
-    public Integer[] getTimestamp() {
+    public List<Long> getTimestamp() {
         return timestamp;
     }
 
-    public Double[] getClose() {
+    public List<Double> getClose() {
         return close;
     }
 
@@ -48,11 +50,21 @@ public class HistoricalPriceResponse implements Serializable {
         this.dataGranularity = dataGranularity;
     }
 
-    public void setTimestamp(Integer[] timestamp) {
+    public void setTimestamp(List<Long> timestamp) {
         this.timestamp = timestamp;
     }
 
-    public void setClose(Double[] close) {
+    public void setClose(List<Double> close) {
         this.close = close;
+    }
+
+    public List<Double> createReturns() {
+        List<Double> returns = new ArrayList<>();
+        for (int i = 0; i < close.size() - 1; i++) {
+            double dailyReturnAbsolut = close.get(i + 1) - close.get(i);
+            double dailyReturnRelative = dailyReturnAbsolut / close.get(i);
+            returns.add(dailyReturnRelative);
+        }
+        return returns;
     }
 }

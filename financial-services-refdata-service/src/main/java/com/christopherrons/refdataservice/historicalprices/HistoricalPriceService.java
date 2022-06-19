@@ -1,6 +1,5 @@
 package com.christopherrons.refdataservice.historicalprices;
 
-
 import com.christopherrons.common.model.refdata.HistoricalPrice;
 import com.christopherrons.common.model.refdata.HistoricalPriceCollection;
 import com.christopherrons.refdataservice.historicalprices.enums.YahooApiSymbolEnum;
@@ -18,11 +17,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.christopherrons.common.math.probability.ProbabilityCalculationUtils.createNormalDistribution;
 import static com.christopherrons.common.requests.HttpClient.getRequestToEntity;
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -32,6 +33,7 @@ public class HistoricalPriceService {
     private static final String BASE_URL = "https://yfapi.net/v8/finance/spark";
     private static final HttpHeaders HEADERS = new HttpHeaders();
     private static final int UPDATE_INTERVAL_IN_DAYS = 365;
+    private final int nrOfYearsOfHistoricalData = 5;
     private static final ObjectMapper mapper = new ObjectMapper();
     private HistoricalPriceCollection historicalPriceCollection = null;
     private LocalDate lastUpdateTime = LocalDate.now();
@@ -68,7 +70,7 @@ public class HistoricalPriceService {
     }
 
     private HistoricalPriceCollection requestHistoricalData() throws URISyntaxException {
-        URI uri = new URI(String.format("%s?interval=%s&range=%s&symbols=%s", BASE_URL, "1d", "5y", YahooApiSymbolEnum.API_SYMBOLS));
+        URI uri = new URI(String.format("%s?interval=%s&range=%s&symbols=%s", BASE_URL, "1d", nrOfYearsOfHistoricalData + "y", YahooApiSymbolEnum.API_SYMBOLS));
         YahooHistoricalPrices responses = getRequestToEntity(uri, HEADERS, YahooHistoricalPrices.class);
         return createHistoricalPriceCollection(responses);
     }
@@ -77,15 +79,38 @@ public class HistoricalPriceService {
         Map<String, HistoricalPrice> instrumentIdToHistoricalDataItem = new ConcurrentHashMap<>();
         for (HistoricalPriceResponse response : responses.getResponses()) {
             if (response != null && !response.isEmpty()) {
-                HistoricalPrice historicalPrice = createHistoricalDataItem(response.getClose());
+                HistoricalPrice historicalPrice = createHistoricalDataItem(response.getClose(), response.createReturns(), response.getTimestamp());
                 instrumentIdToHistoricalDataItem.put(YahooApiSymbolEnum.apiSymbolToInstrumendId(response.getSymbol()), historicalPrice);
             }
         }
         return new HistoricalPriceCollection(instrumentIdToHistoricalDataItem);
     }
 
-    private HistoricalPrice createHistoricalDataItem(final Double[] closingPrices) {
-        return new HistoricalPrice(Arrays.asList(closingPrices));
+    private HistoricalPrice createHistoricalDataItem(final List<Double> closingPrices,
+                                                     final List<Double> returns,
+                                                     final List<Long> timeStamp) {
+        addMissingDates(closingPrices, returns, timeStamp);
+        return new HistoricalPrice(closingPrices);
     }
 
+    private void addMissingDates(final List<Double> closingPrices,
+                                 final List<Double> returns,
+                                 final List<Long> timeStamp) {
+        var returnsNormalDistribution = createNormalDistribution(returns);
+        var lastUpdateDate = lastUpdateTime.atStartOfDay();
+        var startDate = lastUpdateDate.minusYears(nrOfYearsOfHistoricalData);
+        long daysBetween = DAYS.between(startDate, lastUpdateDate);
+        for (int days = 0; days < daysBetween; days++) {
+            long currentDate = startDate.plusDays(days).toEpochSecond(ZoneOffset.UTC);
+            if (currentDate != timeStamp.get(days)) {
+                timeStamp.add(days, currentDate);
+                closingPrices.add(days, (1 + returnsNormalDistribution.sample()) * closingPrices.get(days));
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        var t = new HistoricalPriceService();
+        t.getHistoricalData();
+    }
 }

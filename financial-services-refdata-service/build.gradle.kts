@@ -6,4 +6,5 @@ dependencies {
     // External Libs
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.parent)
+    implementation(libs.commons.math)
 }
