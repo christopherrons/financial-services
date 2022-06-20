@@ -1,7 +1,7 @@
 plugins {
     id("org.springframework.boot") version "2.6.2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("java")
+    id("java-library")
     id("org.hidetake.ssh") version "2.10.1"
     id("maven-publish")
 }
@@ -19,9 +19,7 @@ allprojects {
         }
     }
 
-    apply(plugin = "java")
     apply(plugin = "maven-publish")
-    // apply(plugin = "io.spring.dependency-management")
     apply(plugin = "java-library")
 
     group = "com.christopherrons.financial-services"
@@ -70,7 +68,7 @@ dependencies {
     implementation(project(":financial-services-refdata-service"))
     implementation(project(":financial-services-pricing-engine"))
     implementation(project(":financial-services-websocket"))
-    implementation(project(":financial-services-common"))
+    api(project(":financial-services-common"))
     implementation(project(":financial-services-marketdata-service"))
     implementation(project(":financial-services-trading-engine"))
 
