@@ -3,23 +3,57 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("java")
     id("org.hidetake.ssh") version "2.10.1"
+    id("maven-publish")
 }
-// Configs
+
+// Project Configs
 allprojects {
     repositories {
-        mavenCentral()
-        google()
+        maven {
+            name = "bytesafe"
+            url = uri("https://herron.bytesafe.dev/maven/herron/")
+            credentials {
+                username = extra["username"] as String?
+                password = extra["password"] as String?
+            }
+        }
     }
 
     apply(plugin = "java")
+    apply(plugin = "maven-publish")
     // apply(plugin = "io.spring.dependency-management")
-    // apply(plugin = "java-library")
+    apply(plugin = "java-library")
 
     group = "com.christopherrons.financial-services"
-    version = "0.0.1-SNAPSHOT"
+    version = "1.0.0-SNAPSHOT"
     if (project.hasProperty("releaseVersion")) {
         val releaseVersion: String by project
         version = releaseVersion
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("financial-services") {
+                artifactId = project.name
+                // artifact("build/libs/${artifactId}-${version}.jar")
+                from(components["java"])
+            }
+            repositories {
+                maven {
+                    name = "bytesafe"
+                    url = uri("https://herron.bytesafe.dev/maven/herron/")
+                    credentials {
+                        username = extra["username"] as String?
+                        password = extra["password"] as String?
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -27,18 +61,43 @@ springBoot {
     mainClass.set("com.christopherrons.FinancialServicesApplication")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
 dependencies {
+    // Project Modules
     implementation(project(":financial-services-application"))
+    implementation(project(":financial-services-rest-api"))
+    implementation(project(":financial-services-risk-engine"))
+    implementation(project(":financial-services-surveillance-engine"))
+    implementation(project(":financial-services-refdata-service"))
+    implementation(project(":financial-services-pricing-engine"))
+    implementation(project(":financial-services-websocket"))
+    implementation(project(":financial-services-common"))
+    implementation(project(":financial-services-marketdata-service"))
+    implementation(project(":financial-services-trading-engine"))
+
+    // External Libs
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.parent)
+    implementation(libs.javax.json.api)
+    implementation(libs.javax.json)
+    implementation(libs.spring.websocket)
+    implementation(libs.spring.messaging)
+    implementation(libs.tyrus.standalone.client)
+    implementation(libs.jackson.databind)
+    implementation(libs.org.springdoc)
+    implementation(libs.javafaker)
+    implementation(libs.commons.math)
+    implementation(libs.org.slf4j)
+
+    // External Test Libs
+    testImplementation(testlibs.junit.jupiter.api)
+    testImplementation(testlibs.junit.jupiter.engine)
+    testImplementation(testlibs.spring.boot.starter.test)
 }
 
 // Tasks
 val releaseDirName = "releases"
 tasks.register<Tar>("buildAndPackage") {
+    dependsOn("clean")
     dependsOn("build")
     compression = Compression.GZIP
     archiveExtension.set("tar.gz")

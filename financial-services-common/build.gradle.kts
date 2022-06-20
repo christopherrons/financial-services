@@ -1,6 +1,4 @@
 dependencies {
-    // Project Modules
-
     // External Libs
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.parent)
@@ -16,4 +14,3 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-
