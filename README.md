@@ -73,11 +73,13 @@ Start the application from the root folder by running`./gradlew bootRun`.
 
 ### Building the Application
 
-Build the application from the root folder by running`/gradlew packageRelease -PreleaseVersion=<release-version>` to build and bundle the application jar and relevant deploy
+Build the application from the root folder by running`/gradlew packageRelease -PreleaseVersion=<release-version>` to
+build and bundle the application jar and relevant deploy
 scripts.
 
 ### Deploying the Application
 
-See [deploy.md](deploy/deploy.md) and [jenkins.md](cicd/jenkins/jenkins.md)
+The application can be deployed to a remote machine using the `deploy` task. See [deploy.md](deploy/deploy.md)
+and [jenkins.md](cicd/jenkins/jenkins.md) for further documentation.
 
 

@@ -1,6 +1,6 @@
 # Deploy Scripts
 
-Once the application is deploy script are used for starting, monitoring and stopping the application.
+Once the application is deployed, script are used for starting, monitoring and stopping the application.
 
 ## Variables
 

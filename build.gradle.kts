@@ -9,6 +9,7 @@ plugins {
 // Project Configs
 allprojects {
     repositories {
+        //  mavenCentral() use if no access to bytesafe artifactory
         maven {
             name = "bytesafe"
             url = uri("https://herron.bytesafe.dev/maven/herron/")
@@ -106,8 +107,7 @@ tasks.register<Tar>("buildAndPackage") {
     from(layout.buildDirectory.file("libs/${rootProject.name}-${version}.jar"))
 }
 
-tasks.register("buildPackageDeploy") {
-    dependsOn("buildAndPackage")
+tasks.register("deploy") {
     remotes {
         withGroovyBuilder {
             "create"("webServer") {
@@ -133,5 +133,10 @@ tasks.register("buildPackageDeploy") {
             })
         })
     }
+}
+
+tasks.register("buildPackageDeploy") {
+    dependsOn("buildAndPackage")
+    dependsOn("deploy")
 }
 
