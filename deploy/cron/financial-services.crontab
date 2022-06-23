@@ -1,0 +1,6 @@
+#### Gzip old log files ####
+0 3 * * * gzip /home/herron/deploy/logs/archived/*.log
+
+#### Purge Old logs fils ####
+0 3 * * * find /home/herron/deploy/logs/archived/ -type f -not -newermt "$(date +%Y-%m-%d -d "30 day ago")" -delete
+0 3 * * * find /home/herron/deploy/old_nohup/ -type f -not -newermt "$(date +%Y-%m-%d -d "30 day ago")" -delete
