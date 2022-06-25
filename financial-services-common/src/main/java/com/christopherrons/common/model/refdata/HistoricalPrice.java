@@ -13,7 +13,6 @@ public class HistoricalPrice {
     private final List<Double> dailyRelativeReturns;
     private final double relativeReturnMean;
     private final double relativeReturnVariance;
-
     private final double relativeReturnStd;
 
     public HistoricalPrice(List<Double> closingPrices) {

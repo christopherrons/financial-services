@@ -31,9 +31,9 @@ public class ParticipantRefDataService {
 
     private void updatePortfolios(final MarketDataTrade trade) {
         portfolioCache.findOrCreatePortfolio(trade.getBidParticipant())
-                .updatePortfolio(trade.getInstrument().getInstrumentId(), trade.getVolume(), true);
+                .updatePortfolio(trade.getInstrument().getInstrumentId(), trade.getVolume());
         portfolioCache.findOrCreatePortfolio(trade.getAskParticipant())
-                .updatePortfolio(trade.getInstrument().getInstrumentId(), trade.getVolume(), false);
+                .updatePortfolio(trade.getInstrument().getInstrumentId(), -trade.getVolume());
     }
 
     public List<Portfolio> getPortfolios() {

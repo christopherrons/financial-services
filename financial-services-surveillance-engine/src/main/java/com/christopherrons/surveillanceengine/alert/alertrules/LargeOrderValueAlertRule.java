@@ -18,7 +18,6 @@ public class LargeOrderValueAlertRule implements AlertRule {
     private final String orderbookId;
 
     private class LargeOrderValueBreachParameters {
-
         DoubleSupplier maxOrderValue = () -> 5 * statisticsService.getOrderbookStatistics(orderbookId).getAverageOrderValue();
     }
 
