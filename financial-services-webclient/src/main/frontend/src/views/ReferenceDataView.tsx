@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Suspense } from 'react';
 
 
-const ReferenceDataView = () => {
+const ReferenceDataView: React.FC = () => {
     return (
         <div className="reference-data-view">
             <ReferenceDataTabs />

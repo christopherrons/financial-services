@@ -17,7 +17,6 @@ public class WebSocket implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/trading-data-stream").setAllowedOrigins("*");
-        registry.addEndpoint("/trading-data-stream").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/market-data-stream").setAllowedOriginPatterns("*").withSockJS();
     }
 }

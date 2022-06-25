@@ -54,36 +54,36 @@ public class RiskCalculationData {
 
     private double calculatePortfolioValue() {
         return instrumentIdToPosition.values().stream()
-                .mapToDouble(position -> calculatePositionValue(position.getVolume(), position.getInstrumentId()))
+                .mapToDouble(position -> calculatePositionValue(position.volume(), position.instrumentId()))
                 .sum();
     }
 
     private RealVector buildPositionWeightVector() {
         final double[] weights = instrumentIdToPosition.values().stream()
-                .mapToDouble(position -> calculatePositionWeight(position.getInstrumentId()))
+                .mapToDouble(position -> calculatePositionWeight(position.instrumentId()))
                 .toArray();
         return new ArrayRealVector(weights);
     }
 
     private RealVector buildPositionMeanVector() {
         final double[] means = instrumentIdToPosition.values().stream()
-                .mapToDouble(position -> getPositionMean(position.getInstrumentId()))
+                .mapToDouble(position -> getPositionMean(position.instrumentId()))
                 .toArray();
         return new ArrayRealVector(means);
     }
 
     private RealVector buildPositionVarianceVector() {
         final double[] variance = instrumentIdToPosition.values().stream()
-                .mapToDouble(position -> getPositionReturnVariance(position.getInstrumentId()))
+                .mapToDouble(position -> getPositionReturnVariance(position.instrumentId()))
                 .toArray();
         return new ArrayRealVector(variance);
     }
 
     private RealMatrix buildRelativeReturnMatrix(List<Position> positions) { //TODO: Not garanteed to match in size
-        int numberOfReturns = getPositionRelativeReturns(positions.get(0).getInstrumentId()).size();
+        int numberOfReturns = getPositionRelativeReturns(positions.get(0).instrumentId()).size();
         RealMatrix matrix = new Array2DRowRealMatrix(numberOfReturns, numberOfPositions);
         for (int column = 0; column < numberOfPositions; column++) {
-            List<Double> relativeReturns = getPositionRelativeReturns(positions.get(column).getInstrumentId());
+            List<Double> relativeReturns = getPositionRelativeReturns(positions.get(column).instrumentId());
             for (int row = 0; row < relativeReturns.size(); row++) {
                 matrix.addToEntry(row, column, relativeReturns.get(row));
             }
@@ -108,7 +108,7 @@ public class RiskCalculationData {
     }
 
     public double calculatePositionWeight(final String instrumentId) {
-        return (calculatePositionValue(instrumentIdToPosition.get(instrumentId).getVolume(), instrumentId)) / portfolioValue;
+        return (calculatePositionValue(instrumentIdToPosition.get(instrumentId).volume(), instrumentId)) / portfolioValue;
     }
 
     private double calculatePositionValue(final double volume, final String instrumentId) {

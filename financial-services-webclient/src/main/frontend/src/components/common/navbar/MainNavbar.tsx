@@ -5,7 +5,7 @@ import {
   NavMenu,
 } from './NavbarElements';
 
-const AppNameDiv = () => {
+const AppNameDiv: React.FC = () => {
   return (
     <div className="app-name">
       <h1>Financial Services</h1>
@@ -13,7 +13,7 @@ const AppNameDiv = () => {
   );
 }
 
-const MainNavbar = () => {
+const MainNavbar: React.FC = () => {
   return (
     <>
       <Nav>

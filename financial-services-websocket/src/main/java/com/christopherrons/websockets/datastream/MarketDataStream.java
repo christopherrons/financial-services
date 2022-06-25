@@ -23,7 +23,7 @@ import static com.christopherrons.websockets.utils.DataStreamUtils.createOrderDa
 import static com.christopherrons.websockets.utils.DataStreamUtils.createTradeDataStreamItem;
 
 @Service
-public class TradingDataStream {
+public class MarketDataStream {
     private static final String ORDER_BOOK_ENDPOINT = "/topic/orderBook";
     private static final String TRADE_ENDPOINT = "/topic/trade";
     private final SimpMessagingTemplate messagingTemplate;
@@ -32,7 +32,7 @@ public class TradingDataStream {
 
 
     @Autowired
-    public TradingDataStream(SimpMessagingTemplate messagingTemplate) {
+    public MarketDataStream(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
@@ -71,7 +71,7 @@ public class TradingDataStream {
     }
 
     private void pushData(final String endPoint, final DataStream dataStream) {
-        if (dataStream.isEmpty()) {
+        if (!dataStream.isEmpty()) {
             messagingTemplate.convertAndSend(endPoint, dataStream);
         }
     }
