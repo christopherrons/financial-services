@@ -28,7 +28,6 @@ public class BitstampSubscription implements MarketDataSubscription {
     private static final String UNSUBSCRIBE = "bts:unsubscribe";
     private static final String HEART_BEAT = "bts:heartbeat";
     private static final BitstampJsonMessageDecoder bitstampEventDecoder = new BitstampJsonMessageDecoder(BitstampEvent.class);
-
     private final ChannelEnum channelEnum;
     private final TradingPairEnum tradingPairEnum;
     private Session session;
@@ -144,7 +143,8 @@ public class BitstampSubscription implements MarketDataSubscription {
                     try {
                         basicRemoteEndpoint.sendObject(createHeartBeatJson());
                     } catch (Exception e) {
-                        LOGGER.warn("Could not run heartbeat");
+                        LOGGER.warn(String.format("Could not run heartbeat for %s! Session status: %s, isSubscribed status: %s",
+                                tradingPairEnum.getName(), session.isOpen(), isSubscribed));
                     }
                 },
                 0, 30, TimeUnit.SECONDS);

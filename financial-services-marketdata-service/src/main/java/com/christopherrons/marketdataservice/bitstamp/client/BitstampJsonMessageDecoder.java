@@ -1,7 +1,6 @@
 package com.christopherrons.marketdataservice.bitstamp.client;
 
 import com.christopherrons.marketdataservice.bitstamp.model.BitstampEvent;
-import com.christopherrons.marketdataservice.bitstamp.model.BitstampInvalidEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
