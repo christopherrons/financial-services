@@ -28,6 +28,8 @@ public class BitstampSubscription implements MarketDataSubscription {
     private static final String UNSUBSCRIBE = "bts:unsubscribe";
     private static final String HEART_BEAT = "bts:heartbeat";
     private static final BitstampJsonMessageDecoder bitstampEventDecoder = new BitstampJsonMessageDecoder(BitstampEvent.class);
+
+    private final MessageHandler messageHandler;
     private final ChannelEnum channelEnum;
     private final TradingPairEnum tradingPairEnum;
     private Session session;
@@ -40,7 +42,8 @@ public class BitstampSubscription implements MarketDataSubscription {
                                 TradingPairEnum tradingPairEnum) throws DeploymentException, IOException {
         this.channelEnum = channelEnum;
         this.tradingPairEnum = tradingPairEnum;
-        this.session = createSession(createMessageHandler(eventHandler));
+        this.messageHandler = createMessageHandler(eventHandler);
+        this.session = createSession();
         startHeartBeats();
     }
 
@@ -84,7 +87,7 @@ public class BitstampSubscription implements MarketDataSubscription {
         }
     }
 
-    private Session createSession(final MessageHandler messageHandler) throws DeploymentException, IOException {
+    private Session createSession() throws DeploymentException, IOException {
         LOGGER.info(String.format("Attempting to connect to: %s.", websocketURI));
 
         final WebSocketContainer webSocketContainer = ContainerProvider.getWebSocketContainer();
@@ -131,7 +134,7 @@ public class BitstampSubscription implements MarketDataSubscription {
             isSubscribed = false;
             heartBeatExecutorService.shutdown();
             session.close();
-            LOGGER.info(String.format("Successfully unsubscribe to: %s and closed session.", createChannel()));
+            LOGGER.info(String.format("Successfully unsubscribed to: %s and closed session.", createChannel()));
         } catch (IOException | EncodeException e) {
             e.printStackTrace();
         }
@@ -145,9 +148,22 @@ public class BitstampSubscription implements MarketDataSubscription {
                     } catch (Exception e) {
                         LOGGER.warn(String.format("Could not run heartbeat for %s! Session status: %s, isSubscribed status: %s",
                                 tradingPairEnum.getName(), session.isOpen(), isSubscribed));
+                        try {
+                            unsubscribe();
+                            reconnect();
+                        } catch (DeploymentException | IOException | InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 },
                 0, 30, TimeUnit.SECONDS);
+    }
+
+    private void reconnect() throws DeploymentException, IOException, InterruptedException {
+        LOGGER.info(String.format("Reconnecting to %s in 10 seconds", tradingPairEnum.getName()));
+        Thread.sleep(1000 * 10L);
+        this.session = createSession();
+        subscribe();
     }
 
     private String createSubscriptionJson() {

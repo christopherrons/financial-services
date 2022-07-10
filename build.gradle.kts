@@ -98,6 +98,7 @@ val releaseDirName = "releases"
 tasks.register<Tar>("buildAndPackage") {
     dependsOn("clean")
     dependsOn("build")
+    tasks.findByName("build")?.mustRunAfter("clean")
     compression = Compression.GZIP
     archiveExtension.set("tar.gz")
     destinationDirectory.set(layout.buildDirectory.dir(releaseDirName))
@@ -107,7 +108,7 @@ tasks.register<Tar>("buildAndPackage") {
     from(layout.buildDirectory.file("libs/${rootProject.name}-${version}.jar"))
 }
 
-tasks.register("deploy") {
+tasks.register("deployToServer") {
     remotes {
         withGroovyBuilder {
             "create"("webServer") {
@@ -137,6 +138,7 @@ tasks.register("deploy") {
 
 tasks.register("buildPackageDeploy") {
     dependsOn("buildAndPackage")
-    dependsOn("deploy")
+    dependsOn("deployToServer")
+    tasks.findByName("deployToServer")?.mustRunAfter("buildAndPackage")
 }
 
