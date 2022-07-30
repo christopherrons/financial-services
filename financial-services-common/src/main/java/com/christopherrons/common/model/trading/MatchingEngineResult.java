@@ -13,7 +13,6 @@ public class MatchingEngineResult {
     private final List<MarketDataTrade> trades = new ArrayList<>();
     private final Set<MarketDataOrder> effectedOrders = ConcurrentHashMap.newKeySet();
 
-
     public boolean isEmpty() {
         return trades.isEmpty() && effectedOrders.isEmpty();
     }

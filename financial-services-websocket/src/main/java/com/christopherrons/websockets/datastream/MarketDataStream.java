@@ -45,7 +45,8 @@ public class MarketDataStream {
                     order.getPrice(),
                     order.getCurrentVolume(),
                     order.getOrderType(),
-                    order.getOrderOperationEnum())
+                    order.getOrderOperationEnum(),
+                    order.getTimeStampMs())
             );
         }
         pushData(ORDER_BOOK_ENDPOINT, new OrderDataStream(orderDataStreamItems));
@@ -64,9 +65,9 @@ public class MarketDataStream {
                                     final List<OrderDataStreamItem> orderDataStreamItems,
                                     final List<MarketDataTrade> trades) {
         for (MarketDataTrade trade : trades) {
-            tradeDataStreamItems.add(createTradeDataStreamItem(trade.getPrice(), trade.getVolume(), trade.isBidSideAggressor()));
+            tradeDataStreamItems.add(createTradeDataStreamItem(trade.getPrice(), trade.getVolume(), trade.isBidSideAggressor(), trade.getTimeStampMs()));
             orderDataStreamItems.add(createOrderDataStreamItem(trade.getPrice(), trade.getVolume(),
-                    OrderTypeEnum.INVALID_ORDER_TYPE.getValue(), OrderOperationEnum.DELETE));
+                    OrderTypeEnum.INVALID_ORDER_TYPE.getValue(), OrderOperationEnum.DELETE, trade.getTimeStampMs()));
         }
     }
 

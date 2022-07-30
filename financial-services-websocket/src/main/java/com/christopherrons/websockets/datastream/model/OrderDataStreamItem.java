@@ -6,6 +6,7 @@ import com.christopherrons.common.enums.marketdata.OrderTypeEnum;
 public record OrderDataStreamItem(double price,
                                   double volume,
                                   OrderTypeEnum orderTypeEnum,
-                                  OrderOperationEnum orderOperationEnum) {
+                                  OrderOperationEnum orderOperationEnum,
+                                  long timeStampMs) {
 
 }
