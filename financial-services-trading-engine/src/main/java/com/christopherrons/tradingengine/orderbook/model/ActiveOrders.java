@@ -152,6 +152,20 @@ public class ActiveOrders {
                 .orElse(0.0);
     }
 
+    public double getAskPriceAtPriceLevel(int priceLevel) {
+        return askPriceToPriceLevel.values().stream()
+                .skip(priceLevel - 1L)
+                .findFirst().map(PriceLevel::getPrice)
+                .orElse(0.0);
+    }
+
+    public double getBidPriceAtPriceLevel(int priceLevel) {
+        return bidPriceToPriceLevel.values().stream()
+                .skip(priceLevel - 1L)
+                .findFirst().map(PriceLevel::getPrice)
+                .orElse(0.0);
+    }
+
     public boolean hasBidAndAskOrders() {
         return bidPriceToPriceLevel.size() != 0 && askPriceToPriceLevel.size() != 0;
     }

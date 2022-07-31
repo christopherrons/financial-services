@@ -1,12 +1,12 @@
 package com.christopherrons.pricingengine;
 
 import com.christopherrons.common.api.marketdata.MarketDataTrade;
-import com.christopherrons.common.broadcasts.OrderbookUpdateBroadcast;
+import com.christopherrons.common.broadcasts.OrderbookSnapshotBroadcast;
 import com.christopherrons.common.broadcasts.PriceCollectionsEventBroadcast;
 import com.christopherrons.common.broadcasts.TradeEventBroadcast;
 import com.christopherrons.common.broadcasts.TriggerPriceCollectionBroadcast;
 import com.christopherrons.common.model.pricing.PriceCollection;
-import com.christopherrons.common.model.trading.OrderbookUpdate;
+import com.christopherrons.common.model.trading.OrderbookSnapshot;
 import com.christopherrons.pricingengine.cache.PricingCache;
 import com.christopherrons.pricingengine.pricecollection.PriceCollectionCalculator;
 import com.christopherrons.pricingengine.pricecollection.model.SnapshotPrice;
@@ -37,11 +37,11 @@ public class PricingEngineService {
     }
 
     @EventListener
-    public void onMatching(OrderbookUpdateBroadcast orderbookUpdateBroadcast) {
-        for (OrderbookUpdate orderbookUpdate : orderbookUpdateBroadcast.getOrderbookUpdates()) {
-            SnapshotPrice snapshotPrice = pricingCache.findOrCreateSnapshot(orderbookUpdate.getInstrumentId());
-            snapshotPrice.setBidPrice(orderbookUpdate.getBestBid());
-            snapshotPrice.setAskPrice(orderbookUpdate.getBestAsk());
+    public void onMatching(OrderbookSnapshotBroadcast orderbookSnapshotBroadcast) {
+        for (OrderbookSnapshot orderbookSnapShot : orderbookSnapshotBroadcast.getOrderbookSnapshots()) {
+            SnapshotPrice snapshotPrice = pricingCache.findOrCreateSnapshot(orderbookSnapShot.getInstrumentId());
+            snapshotPrice.setBidPrice(orderbookSnapShot.getBestBid());
+            snapshotPrice.setAskPrice(orderbookSnapShot.getBestAsk());
         }
     }
 

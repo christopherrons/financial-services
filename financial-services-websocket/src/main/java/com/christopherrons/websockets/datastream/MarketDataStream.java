@@ -3,14 +3,11 @@ package com.christopherrons.websockets.datastream;
 import com.christopherrons.common.api.marketdata.MarketDataOrder;
 import com.christopherrons.common.api.marketdata.MarketDataTrade;
 import com.christopherrons.common.broadcasts.OrderEventBroadcast;
+import com.christopherrons.common.broadcasts.OrderbookSnapshotBroadcast;
 import com.christopherrons.common.broadcasts.TradeEventBroadcast;
-import com.christopherrons.common.enums.marketdata.OrderOperationEnum;
-import com.christopherrons.common.enums.marketdata.OrderTypeEnum;
+import com.christopherrons.common.model.trading.OrderbookSnapshot;
 import com.christopherrons.websockets.api.DataStream;
-import com.christopherrons.websockets.datastream.model.OrderDataStream;
-import com.christopherrons.websockets.datastream.model.OrderDataStreamItem;
-import com.christopherrons.websockets.datastream.model.TradeDataStream;
-import com.christopherrons.websockets.datastream.model.TradeDataStreamItem;
+import com.christopherrons.websockets.datastream.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -25,11 +22,9 @@ import static com.christopherrons.websockets.utils.DataStreamUtils.createTradeDa
 @Service
 public class MarketDataStream {
     private static final String ORDER_BOOK_ENDPOINT = "/topic/orderBook";
+    private static final String ORDER_EVENT_ENDPOINT = "/topic/orderEvent";
     private static final String TRADE_ENDPOINT = "/topic/trade";
     private final SimpMessagingTemplate messagingTemplate;
-
-    //TODO: Store in DataStream in timeBoundlist to set update interval
-
 
     @Autowired
     public MarketDataStream(SimpMessagingTemplate messagingTemplate) {
@@ -49,25 +44,23 @@ public class MarketDataStream {
                     order.getTimeStampMs())
             );
         }
-        pushData(ORDER_BOOK_ENDPOINT, new OrderDataStream(orderDataStreamItems));
+        pushData(ORDER_EVENT_ENDPOINT, new OrderDataStream(orderDataStreamItems));
     }
 
     @EventListener
     public void onTradeEvent(TradeEventBroadcast tradeEventBroadcast) {
-        List<OrderDataStreamItem> orderDataStreamItems = new ArrayList<>();
         List<TradeDataStreamItem> tradeDataStreamItems = new ArrayList<>();
-        addDataStreamItems(tradeDataStreamItems, orderDataStreamItems, tradeEventBroadcast.getTrades());
-        pushData(ORDER_BOOK_ENDPOINT, new OrderDataStream(orderDataStreamItems));
+        for (MarketDataTrade trade : tradeEventBroadcast.getTrades()) {
+            tradeDataStreamItems.add(createTradeDataStreamItem(trade.getPrice(), trade.getVolume(), trade.isBidSideAggressor(), trade.getTimeStampMs()));
+        }
         pushData(TRADE_ENDPOINT, new TradeDataStream(tradeDataStreamItems));
     }
 
-    private void addDataStreamItems(final List<TradeDataStreamItem> tradeDataStreamItems,
-                                    final List<OrderDataStreamItem> orderDataStreamItems,
-                                    final List<MarketDataTrade> trades) {
-        for (MarketDataTrade trade : trades) {
-            tradeDataStreamItems.add(createTradeDataStreamItem(trade.getPrice(), trade.getVolume(), trade.isBidSideAggressor(), trade.getTimeStampMs()));
-            orderDataStreamItems.add(createOrderDataStreamItem(trade.getPrice(), trade.getVolume(),
-                    OrderTypeEnum.INVALID_ORDER_TYPE.getValue(), OrderOperationEnum.DELETE, trade.getTimeStampMs()));
+    @EventListener
+    public void onOrderbookSnapshotEvent(OrderbookSnapshotBroadcast orderbookSnapshotBroadcast) {
+        List<TradeDataStreamItem> tradeDataStreamItems = new ArrayList<>();
+        for (OrderbookSnapshot snapshot : orderbookSnapshotBroadcast.getOrderbookSnapshots()) {
+            pushData(ORDER_BOOK_ENDPOINT, new OrderbookSnapshotStream(snapshot.getBidPriceLevelData(), snapshot.getAskPriceLevelData(), snapshot.getBestAsk(), snapshot.getBestBid()));
         }
     }
 

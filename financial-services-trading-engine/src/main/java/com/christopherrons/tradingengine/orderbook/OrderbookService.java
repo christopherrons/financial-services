@@ -6,6 +6,8 @@ import com.christopherrons.tradingengine.orderbook.api.Orderbook;
 import com.christopherrons.tradingengine.orderbook.cache.OrderbookCache;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 public class OrderbookService {
 
@@ -27,5 +29,9 @@ public class OrderbookService {
                 break;
         }
         return orderbook;
+    }
+
+    public Collection<Orderbook> getAllOrderbooks() {
+        return orderbookCache.getAllOrderbooks();
     }
 }

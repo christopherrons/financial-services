@@ -13,34 +13,59 @@ const url = "http://localhost:8080/market-data-stream";
 const socket = new SockJS(url);
 const stompClient = Stomp.over(socket);
 
-function addData(chart, label, data) {
-    chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(data);
-    });
-    chart.update();
+const addItemToList = (setter, added, limit) => {
+    setter(existingItems => {
+        const currentList = [added, ...existingItems]
+
+        if (currentList.length > limit) {
+            currentList.pop()
+        }
+        return currentList;
+    })
 }
 
 export const MarketDataView: React.FC = () => {
-    const orderData = [{}]
-    const orderDataColor: String[] = []
-    const [orderChartData, setOrderChartData] = useState({
-        datasets: [{
-            label: 'Order Data',
-            data: orderData,
-            backgroundColor: orderDataColor,
-        }],
-    })
-
     const tradeData = [{}]
     const tradeDataColor: String[] = []
-    const [tradeChartData, setTradeChartData] = useState({
-        datasets: [{
-            label: 'Trade Data',
-            data: tradeData,
-            backgroundColor: tradeDataColor,
-        }],
+
+    const [tradeInfoList, setTradeInfo] = useState([{
+        price: 0,
+        volume: 0,
+        time: new Date(0).toTimeString(),
+        aggressor: ""
+    }])
+
+
+    const [orderbookDataAsk, setOrderbookDataAsk] = useState([{
+        price: 0,
+        volume: 0,
+        level: 0,
+    }])
+
+    const [orderbookDataBid, setOrderbookDataBid] = useState([{
+        price: 0,
+        volume: 0,
+        level: 0,
+    }])
+
+
+    const orderData = [{}]
+    const orderDataColor: String[] = []
+    const [chartData, setChartData] = useState({
+        datasets: [
+            {
+                label: 'Trade Data',
+                data: tradeData,
+                backgroundColor: tradeDataColor,
+            },
+            {
+                label: 'Order Data',
+                data: orderData,
+                backgroundColor: orderDataColor,
+            }],
     })
+
+
 
     useEffect(() => {
         stompClient.connect({}, function (frame) {
@@ -48,27 +73,64 @@ export const MarketDataView: React.FC = () => {
             stompClient.subscribe('/topic/trade', function (trade) {
                 console.log(trade);
                 const tradeJsonData = JSON.parse(trade.body).tradeDataStreamItems
-                tradeJsonData.map(tradeJsonData => tradeData.push({ x: tradeJsonData.timeStampMs, y: tradeJsonData.price }))
-                tradeJsonData.map(tradeJsonData => tradeDataColor.push(tradeJsonData.isBidSideAggressor ? 'rgb(38, 204, 23)' : 'rgb(0, 0, 0)'))
-                setTradeChartData({
+                tradeJsonData.map(tradeJsonData => {
+                    tradeData.push({ x: new Date(tradeJsonData.timeStampMs), y: tradeJsonData.price })
+                    tradeDataColor.push(tradeJsonData.isBidSideAggressor ? 'rgb(38, 204, 23)' : 'rgb(0, 0, 0)')
+                    addItemToList(setTradeInfo, {
+                        price: tradeJsonData.price,
+                        volume: tradeJsonData.volume,
+                        time: new Date(tradeJsonData.timeStampMs).toTimeString(),
+                        aggressor: tradeJsonData.isBidSideAggressor ? "BUY" : "SELL",
+                    }, 10)
+                })
+                setChartData({
                     datasets: [{
                         label: 'Trade Data',
                         data: tradeData,
                         backgroundColor: tradeDataColor,
-                    }]
-                })
-            });
-            stompClient.subscribe('/topic/orderBook', function (order) {
-                console.log(order);
-                const orderJsonData = JSON.parse(order.body).orderDataStreamItems
-                orderJsonData.map(orderJsonData => orderData.push({ x: orderJsonData.timeStampMs, y: orderJsonData.price }))
-                orderJsonData.map(orderJsonData => orderDataColor.push(orderJsonData.orderTypeEnum == "BUY" ? 'rgb(255, 99, 138)' : 'rgb(36, 71, 228)'))
-                setOrderChartData({
-                    datasets: [{
+                    },
+                    {
                         label: 'Order Data',
                         data: orderData,
                         backgroundColor: orderDataColor,
                     }]
+                })
+            });
+            stompClient.subscribe('/topic/orderBook', function (orderbookSnapshot) {
+                console.log(orderbookSnapshot);
+                const orderbookJsonData = JSON.parse(orderbookSnapshot.body);
+                const askLevelData = orderbookJsonData.askPriceLevelsData;
+                askLevelData.reverse().map(askLevelData => {
+                    addItemToList(setOrderbookDataAsk, {
+                        price: askLevelData.price,
+                        volume: askLevelData.volume,
+                        level: askLevelData.priceLevel
+                    }, 5)
+                })
+                orderData.push({ x: new Date(), y: orderbookJsonData.bestAsk })
+                orderDataColor.push('rgb(40, 37, 206)')
+                const bidLevelData = orderbookJsonData.bidPriceLevelsData;
+                bidLevelData.reverse().map(bidLevelData => {
+                    addItemToList(setOrderbookDataBid, {
+                        price: bidLevelData.price,
+                        volume: bidLevelData.volume,
+                        level: bidLevelData.priceLevel
+                    }, 5)
+                })
+                orderData.push({ x: new Date(), y: orderbookJsonData.bestBid })
+                orderDataColor.push('rgb(241, 50, 50)')
+                setChartData({
+                    datasets: [
+                        {
+                            label: 'Trade Data',
+                            data: tradeData,
+                            backgroundColor: tradeDataColor,
+                        },
+                        {
+                            label: 'Order Data',
+                            data: orderData,
+                            backgroundColor: orderDataColor,
+                        }]
                 })
             });
         });
@@ -77,7 +139,75 @@ export const MarketDataView: React.FC = () => {
     return (
         <div className='marketData'>
             <div className='martketDataChart'>
-                <ScatterChart chartData={tradeChartData} />
+                <ScatterChart chartData={chartData} />
+            </div>
+            <div className='tradeEvents'>
+                <h3>Trades</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trade Time</th>
+                            <th>Price</th>
+                            <th>Volume</th>
+                            <th>Aggressor Side</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tradeInfoList.map((tradeInfo) => (
+                            <tr>
+                                <td>{tradeInfo.time}</td>
+                                <td>{tradeInfo.price}</td>
+                                <td>{tradeInfo.volume}</td>
+                                <td>{tradeInfo.aggressor}</td>
+                            </tr>
+                        ))}
+
+                    </tbody>
+                </table>
+            </div>
+            <div className='orderbookBid'>
+                <h3>Bid</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Price</th>
+                            <th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {orderbookDataBid.map((orderbookDataBid) => (
+                            <tr>
+                                <td>{orderbookDataBid.level}</td>
+                                <td>{orderbookDataBid.price}</td>
+                                <td>{orderbookDataBid.volume}</td>
+                            </tr>
+                        ))}
+
+                    </tbody>
+                </table>
+            </div>
+            <div className='orderbookAsk'>
+                <h3>Ask</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Price</th>
+                            <th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {orderbookDataAsk.map((orderbookDataAsk) => (
+                            <tr>
+                                <td>{orderbookDataAsk.level}</td>
+                                <td>{orderbookDataAsk.price}</td>
+                                <td>{orderbookDataAsk.volume}</td>
+                            </tr>
+                        ))}
+
+                    </tbody>
+                </table>
             </div>
         </div>
     );

@@ -51,5 +51,12 @@ public interface Orderbook {
     int totalNumberOfBidPriceLevels();
 
     int totalNumberOfAskPriceLevels();
+
+    String getInstrumentId();
+
+    double getAskPriceAtPriceLevel(int priceLevel);
+
+    double getBidPriceAtPriceLevel(int priceLevel);
+
 }
 
