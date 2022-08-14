@@ -4,6 +4,7 @@ plugins {
     id("java-library")
     id("org.hidetake.ssh") version "2.10.1"
     id("maven-publish")
+    id("com.github.node-gradle.node") version "3.4.0"
 }
 
 // Project Configs
@@ -72,11 +73,13 @@ dependencies {
     api(project(":financial-services-common"))
     implementation(project(":financial-services-marketdata-service"))
     implementation(project(":financial-services-trading-engine"))
+    implementation(project(":financial-services-webclient"))
 
     // External Libs
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.parent)
     implementation(libs.javax.json.api)
+    implementation(libs.jackson.xml)
     implementation(libs.javax.json)
     implementation(libs.spring.websocket)
     implementation(libs.spring.messaging)
@@ -142,3 +145,10 @@ tasks.register("buildPackageDeploy") {
     tasks.findByName("deployToServer")?.mustRunAfter("buildAndPackage")
 }
 
+node {
+    version.set("16.14.2")
+    npmVersion.set("8.5.0")
+    npmInstallCommand.set("install")
+    distBaseUrl.set("https://nodejs.org/dist")
+    download.set(true)
+}

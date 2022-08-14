@@ -24,11 +24,14 @@ dependencyResolutionManagement {
             library("spring.messaging", "org.springframework:spring-messaging:5.3.14")
             library("tyrus.standalone.client", "org.glassfish.tyrus.bundles:tyrus-standalone-client:1.18")
             library("jackson.databind", "com.fasterxml.jackson.core:jackson-databind:2.13.2.1")
+            library("jackson.xml", "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0")
             library("org.springdoc", "org.springdoc:springdoc-openapi-ui:1.6.3")
             library("javafaker", "com.github.javafaker:javafaker:1.0.2")
             library("commons.math", "org.apache.commons:commons-math3:3.2")
             library("org.slf4j", "org.slf4j:slf4j-api:1.7.25")
         }
+
+
 
         create("testlibs") {
             library("spring.boot.starter.test", "org.springframework.boot:spring-boot-starter-test:2.5.2")

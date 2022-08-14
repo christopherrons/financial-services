@@ -7,9 +7,9 @@ import com.christopherrons.common.model.risk.RiskCalculationData;
 import com.christopherrons.common.model.risk.RiskCalculationResult;
 import com.christopherrons.common.model.risk.ValueAtRiskModelResult;
 import com.christopherrons.riskengine.riskcalculations.api.ValueAtRiskModel;
-import com.christopherrons.riskengine.riskcalculations.riskmodels.ConditionalValueAtRiskHistorical;
-import com.christopherrons.riskengine.riskcalculations.riskmodels.ConditionalValueAtRiskMonteCarlo;
-import com.christopherrons.riskengine.riskcalculations.riskmodels.ConditionalValueAtRiskParametric;
+import com.christopherrons.riskengine.riskcalculations.riskmodels.var.ConditionalValueAtRiskHistorical;
+import com.christopherrons.riskengine.riskcalculations.riskmodels.var.ConditionalValueAtRiskMonteCarlo;
+import com.christopherrons.riskengine.riskcalculations.riskmodels.var.ConditionalValueAtRiskParametric;
 
 import java.util.ArrayList;
 import java.util.List;
