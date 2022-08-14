@@ -47,7 +47,8 @@ public class ClearingOrg {
     private List<PointDef> pointDef;
 
     @JacksonXmlProperty
-    private Exchange exchange;
+    @JacksonXmlElementWrapper(useWrapping = false)
+    private List<Exchange> exchange;
 
     @JacksonXmlProperty
     @JacksonXmlElementWrapper(useWrapping = false)
@@ -55,4 +56,18 @@ public class ClearingOrg {
 
     @JacksonXmlProperty
     private InterSpreads interSpreads;
+
+    public List<Exchange> getExchanges() {
+        return exchange;
+    }
+
+    public List<CcDef> getCcDef() {
+        return ccDef;
+    }
+
+    public InterSpreads getInterSpreads() {
+        return interSpreads;
+    }
+
+
 }

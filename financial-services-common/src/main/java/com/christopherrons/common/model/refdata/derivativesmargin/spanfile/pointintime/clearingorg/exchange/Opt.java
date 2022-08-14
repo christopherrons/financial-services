@@ -8,7 +8,7 @@ public class Opt implements Product  {
     private RiskArray ra;
 
     @JacksonXmlProperty
-    private int cId;
+    private String cId;
 
     @JacksonXmlProperty
     private String o;
@@ -30,4 +30,14 @@ public class Opt implements Product  {
 
     @JacksonXmlProperty
     private double val;
+
+    @Override
+    public String getProductId() {
+        return cId;
+    }
+
+    @Override
+    public RiskArray getRiskArray() {
+        return ra;
+    }
 }

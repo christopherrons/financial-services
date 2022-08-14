@@ -63,4 +63,12 @@ public class CcDef {
     @JacksonXmlProperty
     @JacksonXmlElementWrapper(useWrapping = false)
     private List<DSpread> dSpread;
+
+    public List<PfLink> getPfLink() {
+        return pfLink;
+    }
+
+    public String getCombinedCommodityId() {
+        return cc;
+    }
 }

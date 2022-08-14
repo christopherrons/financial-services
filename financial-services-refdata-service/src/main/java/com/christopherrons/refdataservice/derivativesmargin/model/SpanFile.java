@@ -18,4 +18,8 @@ public class SpanFile {
 
     @JacksonXmlProperty
     private PointInTime pointInTime;
+
+    public PointInTime getPointInTime() {
+        return pointInTime;
+    }
 }

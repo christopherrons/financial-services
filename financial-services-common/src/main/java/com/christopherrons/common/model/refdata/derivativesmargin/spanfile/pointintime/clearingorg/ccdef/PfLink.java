@@ -8,7 +8,7 @@ public class PfLink {
     private String exch;
 
     @JacksonXmlProperty
-    private int pfId;
+    private String pfId;
 
     @JacksonXmlProperty
     private String pfCode;
@@ -27,4 +27,8 @@ public class PfLink {
 
     @JacksonXmlProperty
     private int arrayPrecision;
+
+    public String getPfId() {
+        return pfId;
     }
+}

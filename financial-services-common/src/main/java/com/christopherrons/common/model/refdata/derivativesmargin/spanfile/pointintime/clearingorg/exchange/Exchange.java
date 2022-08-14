@@ -3,6 +3,7 @@ package com.christopherrons.common.model.refdata.derivativesmargin.spanfile.poin
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Exchange {
@@ -26,14 +27,14 @@ public class Exchange {
     private List<OofPf> oofPf;
 
     public List<PhyPf> getPhyPf() {
-        return phyPf;
+        return phyPf != null ? phyPf : Collections.emptyList();
     }
 
     public List<FutPf> getFutPf() {
-        return futPf;
+        return futPf != null ? futPf : Collections.emptyList();
     }
 
     public List<OofPf> getOofPf() {
-        return oofPf;
+        return oofPf != null ? oofPf : Collections.emptyList();
     }
 }

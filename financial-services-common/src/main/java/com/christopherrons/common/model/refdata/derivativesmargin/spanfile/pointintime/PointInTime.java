@@ -16,4 +16,8 @@ public class PointInTime {
 
     @JacksonXmlProperty
     private ClearingOrg clearingOrg;
+
+    public ClearingOrg getClearingOrg() {
+        return clearingOrg;
+    }
 }

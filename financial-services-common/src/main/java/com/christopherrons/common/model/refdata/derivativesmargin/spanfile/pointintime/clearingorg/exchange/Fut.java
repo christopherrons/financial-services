@@ -48,4 +48,14 @@ public class Fut implements Product {
 
     @JacksonXmlProperty
     private RiskArray ra;
+
+    @Override
+    public String getProductId() {
+        return cId;
+    }
+
+    @Override
+    public RiskArray getRiskArray() {
+        return ra;
+    }
 }
