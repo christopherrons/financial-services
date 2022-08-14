@@ -4,6 +4,7 @@ dependencies {
     implementation(libs.spring.boot.starter.parent)
     implementation(libs.commons.math)
     implementation(libs.javafaker)
+    implementation(libs.jackson.xml)
 
     // External Test Libs
     testImplementation(testlibs.junit.jupiter.api)
